@@ -114,4 +114,36 @@
 
 ::
 
-   add
+   add_institution
+
+
+- 删除机构
+
+::
+
+  delete_institution
+
+
+- 查询机构
+
+::
+
+   get_all_institution
+
+- 修改机构
+
+::
+
+  update_institution
+
+
+联网单位管理API
+^^^^^^^^^^^^^^^^^
+
+- 获取联网单位信息
+
+::
+   
+   get_unit_info
+
+- 

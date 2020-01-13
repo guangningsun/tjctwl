@@ -41,6 +41,7 @@ release = u'1.0'
 # ones.
 extensions = [
    "sphinx_rtd_theme",
+   "sphinxcontrib.fulltoc",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

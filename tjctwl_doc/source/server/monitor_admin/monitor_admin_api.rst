@@ -1,8 +1,8 @@
-消防管理 API设计
+监控管理 API设计
 ====================
 
 
-巡检管理 API
+设备中心 API
 ^^^^^^^^^^^^
 
 - 增加巡检计划
@@ -63,46 +63,37 @@
 
 
 
-隐患整改 API
+报警中心 API
 ^^^^^^^^^^^^
 
 
 
-- 新增隐患整改计划
+- 增加报警记录
 
 ::
   
-  create_danger_check_plan
-  参数：
-  返回值：
+
 
 - 删除隐患
 
 ::
 
-  delete_danger_check_plan
-  参数：
-  返回值：
 
 - 查询所有隐患
 
 ::
 
-  get_all_danger_check_plan
-  参数：
-  返回值：
+
 
 - 修改隐患记录
 
 ::
 
-  modify_danger_check_plan
-  参数：
-  返回值：
+  
   
 
-维修保养 API
+视频中心 API
 ^^^^^^^^^^^^
 
 
-- pass （待设备到位后开发）
+- pass （后续链接视频中心url地址）

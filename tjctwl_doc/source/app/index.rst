@@ -5,3 +5,6 @@ APP API设计
    :maxdepth: 3
 
    login/index
+   user_device/index
+   danger_submit/index
+   telephone_notice/index

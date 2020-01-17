@@ -8,3 +8,5 @@ APP API设计
    user_device/index
    danger_submit/index
    telephone_notice/index
+   event/index
+   admin_device/index

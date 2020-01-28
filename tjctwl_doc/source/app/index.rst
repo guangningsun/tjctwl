@@ -10,3 +10,4 @@ APP API设计
    telephone_notice/index
    event/index
    admin_device/index
+   admin_install/index

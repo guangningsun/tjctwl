@@ -20,6 +20,10 @@ import requests
 logger = logging.getLogger(__name__)
 
 
+def test(request):
+
+    return render(request, 'test.html' )
+
 # 内部方法，用于获取当前时间戳
 # done
 def _get_timestamp():

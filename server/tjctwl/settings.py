@@ -29,8 +29,10 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
+#    
 
 INSTALLED_APPS = [
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -112,7 +114,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+#LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-Hans'
 
 TIME_ZONE = 'UTC'
 
@@ -128,6 +131,94 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+
+# simple ui setting
+
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, "static"),
+#]
+# 首页信息是否展示
+SIMPLEUI_HOME_INFO = False
+
+# 操作是否展示
+SIMPLEUI_HOME_ACTION = True
+
+# 数据分析是否展示
+
+SIMPLEUI_ANALYSIS = False
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+SIMPLEUI_CONFIG = {
+    'menus': [{
+        'app': 'AppModel',
+        'name': '系统管理',
+        'icon': 'fab fa-dashcube',
+        'models': [{
+            'name': '设备管理',
+            'url': 'AppModel/userinfo/',
+            'icon': 'far fa-surprise'
+        }, {
+            'name': '绑定记录',
+            'url': '/AppModel/test',
+            'icon': 'fab fa-github'
+        }, {
+            'name': '组织机构管理',
+            'url': '',
+            'icon': 'fab fa-github'
+        }, {
+            'name': '联网单位信息',
+            'url': '',
+            'icon': 'fab fa-github'
+        }]
+    }, {
+        'app': 'auth',
+        'name': '权限认证',
+        'icon': 'fas fa-user-shield',
+        'models': [{
+            'name': '用户',
+            'icon': 'fa fa-user',
+            'url': 'auth/user/'
+        },{
+            'name': '用户组',
+            'icon': 'fa fa-group',
+            'url': 'auth/group/'
+        }]
+    },{
+        'name': '消防管理',
+        'icon': 'fab fa-cloudversify',
+        'models': [{
+            'name': '巡检管理',
+            'url': '',
+            'icon': 'far fa-surprise'
+        }, {
+            'name': '隐患整改',
+            'url': '',
+            'icon': 'fab fa-github'
+        }, {
+            'name': '维修保养',
+            'url': '',
+            'icon': 'fab fa-github'
+        }]
+    },{
+        'name': '监控中心',
+        'icon': 'fab fa-cloudversify',
+        'models': [{
+            'name': '设备中心',
+            'url': '',
+            'icon': 'far fa-surprise'
+        }, {
+            'name': '报警中心',
+            'url': '',
+            'icon': 'fab fa-github'
+        }, {
+            'name': '视频中心',
+            'url': '',
+            'icon': 'fab fa-github'
+        }]
+    },{
+        'name': '系统设置',
+        'icon': 'fab fa-cloudversify',
+        'url': ''
+    }]
+}

@@ -84,6 +84,12 @@
 
    add_user
 
+- 创建初始化用户
+
+::
+
+  python manage.py createsuperuser
+
 - 删除用户
 
 :: 

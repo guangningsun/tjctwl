@@ -11,3 +11,4 @@ APP API设计
    event/index
    admin_device/index
    admin_install/index
+   admin_danger_manage/index

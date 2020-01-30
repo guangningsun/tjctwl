@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'simpleui',
+    'import_export',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -147,6 +148,9 @@ SIMPLEUI_HOME_ACTION = True
 
 SIMPLEUI_ANALYSIS = False
 
+# 批量导入数据
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 SIMPLEUI_CONFIG = {
@@ -156,19 +160,23 @@ SIMPLEUI_CONFIG = {
         'icon': 'fab fa-dashcube',
         'models': [{
             'name': '设备管理',
-            'url': 'AppModel/userinfo/',
+            'url': 'AppModel/deviceinfo/',
             'icon': 'far fa-surprise'
         }, {
             'name': '绑定记录',
-            'url': '/AppModel/test',
+            'url': '',
             'icon': 'fab fa-github'
         }, {
             'name': '组织机构管理',
-            'url': '',
+            'url': 'AppModel/institutioninfo/',
             'icon': 'fab fa-github'
         }, {
             'name': '联网单位信息',
             'url': '',
+            'icon': 'fab fa-github'
+        }, {
+            'name': '用户管理',
+            'url': 'AppModel/userinfo/',
             'icon': 'fab fa-github'
         }]
     }, {
@@ -176,7 +184,7 @@ SIMPLEUI_CONFIG = {
         'name': '权限认证',
         'icon': 'fas fa-user-shield',
         'models': [{
-            'name': '用户',
+            'name': '系统用户',
             'icon': 'fa fa-user',
             'url': 'auth/user/'
         },{
@@ -219,6 +227,10 @@ SIMPLEUI_CONFIG = {
     },{
         'name': '系统设置',
         'icon': 'fab fa-cloudversify',
-        'url': ''
+        'models': [{
+            'name': '系统设置',
+            'url': '',
+            'icon': 'far fa-surprise'
+        }]
     }]
 }

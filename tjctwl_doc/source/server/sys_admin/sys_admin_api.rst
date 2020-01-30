@@ -5,6 +5,14 @@
 设备管理 API
 ^^^^^^^^^^^^
 
+- 系统初始化设置
+
+::
+
+  pip install django-import-export
+  python manage.py collectstatic
+  pip install django-simpleui
+
 - 新增设备
 
 ::

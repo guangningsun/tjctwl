@@ -158,11 +158,7 @@ SIMPLEUI_CONFIG = {
         'app': 'AppModel',
         'name': '系统管理',
         'icon': 'fab fa-dashcube',
-        'models': [{
-            'name': '设备管理',
-            'url': 'AppModel/deviceinfo/',
-            'icon': 'far fa-surprise'
-        }, {
+        'models': [ {
             'name': '绑定记录',
             'url': '',
             'icon': 'fab fa-github'
@@ -172,7 +168,7 @@ SIMPLEUI_CONFIG = {
             'icon': 'fab fa-github'
         }, {
             'name': '联网单位信息',
-            'url': '',
+            'url': 'AppModel/companyinfo',
             'icon': 'fab fa-github'
         }, {
             'name': '用户管理',
@@ -197,11 +193,11 @@ SIMPLEUI_CONFIG = {
         'icon': 'fab fa-cloudversify',
         'models': [{
             'name': '巡检管理',
-            'url': '',
+            'url': 'AppModel/patrolscheme',
             'icon': 'far fa-surprise'
         }, {
             'name': '隐患整改',
-            'url': '',
+            'url': 'AppModel/dangerrectification',
             'icon': 'fab fa-github'
         }, {
             'name': '维修保养',
@@ -213,11 +209,11 @@ SIMPLEUI_CONFIG = {
         'icon': 'fab fa-cloudversify',
         'models': [{
             'name': '设备中心',
-            'url': '',
+            'url': 'AppModel/deviceinfo/',
             'icon': 'far fa-surprise'
         }, {
             'name': '报警中心',
-            'url': '',
+            'url': 'AppModel/alarminfo',
             'icon': 'fab fa-github'
         }, {
             'name': '视频中心',

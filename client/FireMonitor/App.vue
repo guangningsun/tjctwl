@@ -1,4 +1,4 @@
-<script>
+﻿<script>
     import Vue from 'vue'
     export default {
         onLaunch: function() {

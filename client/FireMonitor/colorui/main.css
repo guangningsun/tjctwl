@@ -3473,6 +3473,11 @@ scroll-view.cu-steps .cu-item {
 	color: #ffffff;
 }
 
+.bg-dark-purple{
+	background-color: #201B4F;
+	color: #ffffff;
+}
+
 .bg-white {
 	background-color: #ffffff;
 	color: #666666;
@@ -3565,6 +3570,11 @@ scroll-view.cu-steps .cu-item {
 
 .bg-gradual-purple {
 	background-image: linear-gradient(45deg, #9000ff, #5e00ff);
+	color: #ffffff;
+}
+
+.bg-gradual-dark-purple {
+	background-image: linear-gradient(45deg, #201B4F, #352a7d);
 	color: #ffffff;
 }
 

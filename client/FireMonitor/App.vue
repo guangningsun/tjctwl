@@ -1,4 +1,4 @@
-﻿<script>
+<script>
     import Vue from 'vue'
     export default {
         onLaunch: function() {
@@ -118,6 +118,7 @@
 <style>
     @import "colorui/main.css";
     @import "colorui/icon.css";
+	/* @import "common/uni.css"; */
 
     .nav-list {
         display: flex;

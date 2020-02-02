@@ -14,6 +14,34 @@
             "path" : "pages/user_home/user_home",
             "style" : {}
         }
+        ,{
+            "path" : "pages/user_event/user_event",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user_me/user_me",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/admin_me/admin_me",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/admin_home/admin_home",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/admin_device/admin_device",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/admin_work/admin_work",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/admin_event/admin_event",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 	  "mp-alipay": {

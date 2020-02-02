@@ -3,11 +3,9 @@
 
         <view class="box">
 
-<view> home</view>
-
             <view class="cu-bar mytabbar foot tabbar bg-white">
 
-                <navigator hover-class="none" :url="'../login/forget'" class="action">
+                <navigator hover-class="none" class="action">
                     <view class="cuIcon-cu-image">
                         <image src="/static/tabbar/device_activate.png"></image>
                     </view>
@@ -19,7 +17,7 @@
                     </view>
                     <view class="text-black">事件</view>
                 </navigator>
-                <navigator hover-class="none" :url="'../login/forget'"class="action">
+                <navigator hover-class="none" :url="'../user_me/user_me'" class="action">
                     <view class="cuIcon-cu-image">
                         <image src="/static/tabbar/me-normal.png"></image>
                     </view>

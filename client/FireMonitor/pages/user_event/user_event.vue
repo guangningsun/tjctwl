@@ -3,6 +3,7 @@
 
         <view class="box">
 
+<view>event</view>
 
             <view class="cu-bar mytabbar foot tabbar bg-white">
 

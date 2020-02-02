@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 import json
 import time
-from AppModel.models import *
+#from AppModel.models import *
 from django.db.models import Avg, Count, Min, Sum
 import xlrd
 import uuid
@@ -15,14 +15,11 @@ import urllib
 import random
 import logging
 import requests
+import base64
 
 
 logger = logging.getLogger(__name__)
 
-
-def test(request):
-
-    return render(request, 'test.html' )
 
 # 内部方法，用于获取当前时间戳
 # done
@@ -84,13 +81,3 @@ def init_web(request):
     return render(request, 'signin.html')
 
 
-def _get_offset(request):
-    try:
-        start_timestap = _get_timestamp()
-        res = requests.get("https://ag-api.ctwing.cn/echo")
-        server_timestamp = int(res.headers["x-ag-timestamp"])
-        end_timestamp = _get_timestamp()
-        offset = server_timestamp - (start_timestap+end_timestamp)/2
-        return offset
-    except:
-        pass

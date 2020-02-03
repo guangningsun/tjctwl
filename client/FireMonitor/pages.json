@@ -42,6 +42,14 @@
             "path" : "pages/admin_event/admin_event",
             "style" : {}
         }
+        ,{
+            "path" : "pages/user_home/user_add_device",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user_home/user_add_danger",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 	  "mp-alipay": {

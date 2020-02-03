@@ -1,9 +1,9 @@
 /*
   ColorUi for uniApp  v2.1.6 | by 文晓港 2019-05-31 10:44:24
-  仅供学习交流，如作它用所承受的法律责任一概与作者无关  
-  
-  *使用ColorUi开发扩展与插件时，请注明基于ColorUi开发 
-  
+  仅供学习交流，如作它用所承受的法律责任一概与作者无关
+
+  *使用ColorUi开发扩展与插件时，请注明基于ColorUi开发
+
   （QQ交流群：240787041）
 */
 
@@ -3408,6 +3408,11 @@ scroll-view.cu-steps .cu-item {
 	color: #ffffff;
 }
 
+.bg-dark-red {
+	background-color: #B71B05;
+	color: #ffffff;
+}
+
 .bg-orange {
 	background-color: #f37b1d;
 	color: #ffffff;
@@ -3466,6 +3471,11 @@ scroll-view.cu-steps .cu-item {
 .bg-gray {
 	background-color: #f0f0f0;
 	color: #333333;
+}
+
+.bg-orange2 {
+	background-color: #F29715;
+	color: #ffffff;
 }
 
 .bg-black {
@@ -3570,6 +3580,11 @@ scroll-view.cu-steps .cu-item {
 
 .bg-gradual-purple {
 	background-image: linear-gradient(45deg, #9000ff, #5e00ff);
+	color: #ffffff;
+}
+
+.bg-gradual-dark-purple {
+	background-image: linear-gradient(45deg, #201B4F, #3f3060);
 	color: #ffffff;
 }
 

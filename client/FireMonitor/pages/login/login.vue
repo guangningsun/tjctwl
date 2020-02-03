@@ -25,13 +25,27 @@
 			</view>
 
             <view class="padding flex flex-direction">
-                <button class="cu-btn bg-dark-purple lg">登录</button>
+                <button class="cu-btn bg-dark-purple lg" @click="onLogin">登录</button>
             </view>
 		</view>
 	</view>
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			onLogin(){
+				uni.navigateTo({
+					url:"../user_home/user_home",
+				})
+			}
+		}
+	}
 </script>
 
 <style>

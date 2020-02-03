@@ -4,14 +4,14 @@
 			<image src="../../static/login.png" mode='aspectFit' class="mak-logo"></image>
 			<view class="mak-title">天津城投物联</view>
 
-			<view class="flex padding align-center">
+			<view class="flex padding align-center radius">
 				<form>
 					<view class="cu-form-group">
 						<view class="title">用户名</view>
 						<input placeholder="请输入用户名" name="input"></input>
 					</view>
 					<view class="cu-form-group">
-						<view class="title">密&nbsp &nbsp码</view>
+						<view class="title">密&nbsp&nbsp&nbsp码</view>
 						<input placeholder="请输入密码" name="input"></input>
 					</view>
 				</form>

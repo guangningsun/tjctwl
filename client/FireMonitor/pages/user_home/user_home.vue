@@ -2,13 +2,13 @@
 	<view>
 		<view style="padding-bottom: 100upx;">
 			<view class="cu-card">
-				<view class="cu-item shadow shadow-lg shadow-blur home-card-bg text-black">
+				<view class="cu-item shadow shadow-lg shadow-blur bg-gradual-dark-purple2 text-black">
 					<view class="padding cf">
-						<image class="fl" style="width: 40upx;height: 40upx; margin-right: 15upx; margin-top: 10upx;" src="/static/home/user_home_device.png"></image>
+						<image class="fl" style="width: 40upx;height: 40upx; margin-right: 15upx; margin-top: 10upx;" src="/static/home/user_home_device.png"> </image>
 						<view class="fl text-white text-lg" style="margin-right: 12upx; margin-top: 8upx;">
 							总设备数
 						</view>
-						<view class="fl text-white text-lg" style="margin-top: 10upx;">
+						<view class="fl text-white text-lg" style="margin-top: 12upx;">
 							{{total_device_num}}
 						</view>
 						<view class="fr">
@@ -307,10 +307,6 @@
 <style>
 	.mytabbar {
 		z-index: 9999;
-	}
-
-	.home-card-bg {
-		background-color: #534E82;
 	}
 
 	.list-item {

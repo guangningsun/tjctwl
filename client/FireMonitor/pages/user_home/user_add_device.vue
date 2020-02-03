@@ -17,53 +17,39 @@
 
 				<form>
 					<view class="cu-form-group margin-top">
-						<view class="title">邮件</view>
-						<input placeholder="两字短标题" name="input"></input>
+						<view class="title">设备编码</view>
+						<input placeholder="设备的编码" name="input"></input>
 					</view>
 					<view class="cu-form-group">
-						<view class="title">输入框</view>
-						<input placeholder="三字标题" name="input"></input>
+						<view class="title">设备名称</view>
+						<input placeholder="设备的型号" name="input"></input>
 					</view>
 					<view class="cu-form-group">
-						<view class="title">收货地址</view>
-						<input placeholder="统一标题的宽度" name="input"></input>
+						<view class="title">地址</view>
+						<input placeholder="设备所在的省市区" name="input"></input>
+					</view>
+					<view class="cu-form-group">
+						<view class="title">详细地址</view>
+						<input placeholder="如道路/门牌号/小区/楼栋号/单元/室等" name="input"></input>
+					</view>
+					<view class="cu-form-group">
+						<view class="title">安装位置</view>
+						<input placeholder="设备的安装位置" name="input"></input>
 					</view>
 				</form>
+			</view>
 
-				<!-- <view class="flex-twice padding-sm" style="font-size: 26upx;">
-						<view class="flex align-center">
-							<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-							<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
-						</view>
-						<view class="flex align-center">
-							<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-							<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
-						</view>
-						<view class="flex align-center">
-							<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-							<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
-						</view>
-						<view class="flex align-center">
-							<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-							<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
-						</view>
-						<view class="flex align-center">
-							<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-							<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
-						</view>
-					</view>
-					<view class="flex-sub">
-						<view class="flex align-end padding-sm">
-							<image style="width: 30upx;height: 30upx; margin-right: 15upx; margin-top: 5upx;" src="/static/home/signal.png"></image>
-							<view class="cu-tag radius bg-orange2 text-xs" style="margin-right: 10upx; padding: 8upx;">故障</view>
-							<image style="width: 55upx;height: 55upx; margin-right: 10upx;" src="/static/home/battery.png"></image>
-							<view class="cu-tag radius line-black text-xs" style="padding: 3upx;">100%</view>
-						</view>
-		
-						<image class="margin-left-xl" src="../../static/tabbar/device_normal.png" style="width: 150upx; height: 150upx;"></image>
-		
-					</view> -->
+			<view class="cu-card cu-item">
+				<view class="cu-form-group">
+					<view class="title">报警时是否启用电话通知</view>
+					<switch @change="switchEnableTel" :class="switch_enable_tel?'checked':''" :checked="switchA?true:false"></switch>
+				</view>
+			</view>
 
+			<view class="justify-between bottom-box">
+				<view class="padding flex flex-direction">
+					<button class="cu-btn bg-dark-purple lg" @click="onAddDevice">添加</button>
+				</view>
 			</view>
 		</view>
 
@@ -74,11 +60,16 @@
 	export default {
 		data() {
 			return {
-
+				switch_enable_tel: false,
 			}
 		},
 		methods: {
+			onAddDevice() {
 
+			},
+			switchEnableTel(e) {
+				this.switch_enable_tel = e.detail.value
+			},
 		}
 	}
 </script>

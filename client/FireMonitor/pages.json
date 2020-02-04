@@ -52,19 +52,25 @@
         }
         ,{
             "path" : "pages/user_home/user_device_detail",
+            "style" : {
+				
+			}
+        }
+        ,{
+            "path" : "pages/user_home/user_modity_device",
             "style" : {}
         }
     ],
 	"globalStyle": {
-	  "mp-alipay": {
-	    /* 支付宝小程序特有相关 */
-	    "transparentTitle": "always",
-	    "allowsBounceVertical": "NO"
-	  },
-	  "navigationBarBackgroundColor": "#201b4f",
-	  "navigationBarTitleText": "天津城投物联",
-	  "navigationStyle": "custom",
-	  "navigationBarTextStyle": "white"
+		"mp-alipay": {
+			/* 支付宝小程序特有相关 */
+			"transparentTitle": "always",
+			"allowsBounceVertical": "NO"
+		},
+		"navigationBarBackgroundColor": "#0081ff",
+		"navigationBarTitleText": "ColorUi for UniApp",
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "white"
 	},
 	"usingComponts": true
 }

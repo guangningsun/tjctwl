@@ -2,7 +2,9 @@
 	<view>
 		<view class="box">
 			<view class="cu-bar bg-gradual-dark-purple" style="z-index: 9999;">
-				<view class="round"></view>
+				<view class="action" @tap="BackPage">
+					<text class="cuIcon-back text-white"></text>
+				</view>
 				<view class="content">
 					设备详情
 				</view>
@@ -75,18 +77,18 @@
 			<view class="cu-dialog basis-lg" @tap.stop="" :style="[{top:CustomBar+'px',height:'calc(100vh - ' + CustomBar + 'px)'}]">
 				<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']">
 					<view class="cu-item" :class="menuArrow?'arrow':''">
-						<button class="cu-btn content" open-type="contact">
+						<button class="cu-btn content" open-type="contact" @tap="showModal" data-target="DeleteModal">
 							<text class="cuIcon-deletefill text-red"></text>
 							<text class="text-black">删除设备</text>
 						</button>
 					</view>
-					<view class="cu-item" :class="menuArrow?'arrow':''">
+					<view class="cu-item" :class="menuArrow?'arrow':''" @tap="onDownloadQrCode">
 						<button class="cu-btn content" open-type="contact">
 							<text class="cuIcon-down text-olive"></text>
 							<text class="text-black">下载二维码</text>
 						</button>
 					</view>
-					<view class="cu-item" :class="menuArrow?'arrow':''">
+					<view class="cu-item" :class="menuArrow?'arrow':''" >
 						<button class="cu-btn content" open-type="contact">
 							<text class="cuIcon-share text-light-orange"></text>
 							<text class="text-black">分享</text>
@@ -95,6 +97,31 @@
 				</view>
 			</view>
 		</view>
+
+		<!-- 删除modal -->
+		<view class="cu-modal" :class="modalName=='DeleteModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">删除设备</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-light-purple"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					是否删除当前设备？
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action">
+						<button class="cu-btn line-green text-purple" @tap="hideModal">取消</button>
+						<button class="cu-btn bg-gradual-dark-purple margin-left" @tap="onConfirmDelete">确定</button>
+
+					</view>
+				</view>
+			</view>
+		</view>
+
+		
+
 	</view>
 </template>
 
@@ -112,9 +139,71 @@
 			hideModal(e) {
 				this.modalName = null
 			},
-			onModifyDevice() {
+			onModifyDevice(e) {
 
+			},
+			BackPage() {
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			onConfirmDelete(e) {
+
+			},
+			onDownloadQrCode(e) {
+				this.hideModal(e);
+				plus.gallery.save('../../static/tabbar/device_normal.png', function() {
+					uni.showToast({
+						title: '保存成功',
+						icon: 'none'
+					});
+				}, function() {
+					uni.showToast({
+						title: '保存失败，请重试！',
+						icon: 'none'
+					});
+				});
+			},
+			
+			// #ifdef APP-PLUS
+			onShare(e) {
+				if (this.providerList.length === 0) {
+					uni.showModal({
+						title: '当前环境无分享渠道!',
+						showCancel: false
+					});
+					return;
+				}
+				let itemList = this.providerList.map(function(value) {
+					return value.name;
+				})
+				uni.showActionSheet({
+					itemList: itemList,
+					success: (res) => {
+						let provider = this.providerList[res.tapIndex].id;
+						uni.share({
+							provider: provider,
+							scene: this.providerList[res.tapIndex].type && this.providerList[res.tapIndex].type === 'WXSenceTimeline' ?
+								'WXSenceTimeline' : "WXSceneSession",
+							type: (provider === "qq") ? 1 : 0,
+							title: '欢迎体验uni-app',
+							summary: 'uni-app 是一个使用 Vue.js 开发跨平台应用的前端框架',
+							imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uploads/nav_menu/8.jpg',
+							href: "https://m3w.cn/uniapp",
+							success: (res) => {
+								console.log("success:" + JSON.stringify(res));
+							},
+							fail: (e) => {
+								uni.showModal({
+									content: e.errMsg,
+									showCancel: false
+								})
+							}
+						});
+					}
+				})
 			}
+			// #endif
 		}
 	}
 </script>

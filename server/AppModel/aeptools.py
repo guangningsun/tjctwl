@@ -120,6 +120,7 @@ def sendSDKRequest(path, head, param, body, version, application, MasterKey, key
         request = urllib2.Request(url = url, headers=headers)
     if (method is not None) :
         request.get_method=lambda : method
+    #import pdb;pdb.set_trace()
     response = urllib2.urlopen(request)
     if('response' in vars()):
         print("response.code: %d" % (response.code))

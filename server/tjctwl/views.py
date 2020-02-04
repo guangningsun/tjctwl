@@ -78,6 +78,6 @@ def get_all_payment_class_info(request):
 
 # 初始化登录界面
 def init_web(request):
-    return render(request, 'signin.html')
+    return render(request, '/admin')
 
 

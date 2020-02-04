@@ -8,9 +8,9 @@ import AppModel.aeptools as aeptools
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(level = logging.INFO)
+logger.setLevel(level = logging.DEBUG)
 handler = logging.FileHandler("tjctwl.log")
-handler.setLevel(logging.INFO)
+handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
@@ -21,6 +21,13 @@ APPLICATION_ID = "AMQROxaUNh"
 VERSION = "20181031202055"
 MasterKey = "ffd9c7a217004acc87f2df46c348e8d2"
 PRODUCTID = 10035737
+
+
+def _if_exist(str):
+    if str is not None:
+        return str
+    else:
+        return ""
 
 @admin.register(UserInfo)
 class UserInfoAdmin(admin.ModelAdmin):
@@ -43,12 +50,11 @@ class PatrolschemeAdmin(admin.ModelAdmin):
 
 @admin.register(DeviceInfo)
 class DeviceInfoAdmin(ImportExportModelAdmin):
-    list_display = ['device_id','device_address','device_name','device_status','device_address_detail']
-    list_editable = ['device_address','device_name','device_status','device_address_detail']
-    search_fields =('device_id','device_address','device_name','device_status','device_address_detail')
+    list_display = ['device_id','device_name','productId','imei','deviceStatus','autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt']
+    list_editable = ['device_name','productId','imei','autoObserver']
+    search_fields =('device_id','device_name','device_sn','tenantId','productId','imei','deviceStatus','autoObserver','createTime','createBy','updateTime','updateBy','netStatus','onlineAt','offlineAt')
     fieldsets = [
-        ('Date information', {'fields': ['device_id','device_address', \
-            'device_name','device_status','device_address_detail'], 'classes': ['collapse']}),
+        ('Date information', {'fields': ['device_name','productId','imei','autoObserver'], 'classes': ['collapse']}),
     ]
     #actions = ["delete_model"]
     #delete_model.icon = 'fas fa-delete'
@@ -56,11 +62,32 @@ class DeviceInfoAdmin(ImportExportModelAdmin):
         version = 20181031202117
         path = "/aep_device_management/device"
         param = {}
-        body = '{"deviceName": "ttttt","deviceSn": "MQTT","imei": "866971036327615","operator": "szy","other": {"autoObserver": 0},"productId": 10035737}'
-        logger.info("create device in aep platform============")
-        res =  aeptools.sendSDKRequest(path,{},param,body,version,APPLICATION_ID,MasterKey,SECRET_ID)
-        logger.info("save device test============")
-        logger.info(json.loads(res.read()))
+        if request.POST:
+            body = "{\"deviceName\": \""+request.POST["device_name"]+"\",\"deviceSn\": \"MQTT\",\"imei\": \""+ \
+                        request.POST["imei"]+"\",\"operator\": \""+request.user.username+"\",\"other\": {\"autoObserver\": "+ \
+                        request.POST["autoObserver"]+"},\"productId\": "+request.POST["productId"]+"}"
+            logger.info("create device in aep platform")
+            try:
+                logger.debug("create device in aep platform %s" % (body))
+                res =  aeptools.sendSDKRequest(path,{},param,body,version,APPLICATION_ID,MasterKey,SECRET_ID)
+                res_json = json.loads(res.read())
+                if res_json["msg"] == "ok":
+                    response_device_data = res_json["result"]
+                    obj.device_id = response_device_data["deviceId"]
+                    obj.tenantId = _if_exist(response_device_data["tenantId"])
+                    obj.deviceStatus = _if_exist(response_device_data["deviceStatus"])
+                    obj.createBy = _if_exist(response_device_data["createBy"])
+                    obj.netStatus = _if_exist(response_device_data["netStatus"])
+                    obj.createTime = _if_exist(response_device_data["createTime"])
+                    obj.lastTime = _if_exist(response_device_data["lastTime"])
+                    obj.onlineAt = _if_exist(response_device_data["onlineAt"])
+                    obj.offlineAt = _if_exist(response_device_data["offlineAt"])    
+                    logger.info("update obj whitch will create in tjctwl platform")            
+                else:
+                    logger.info("aep platform create device failed")
+            except:
+                logger.info("create device in aep platform failed")
+        logger.info("save device in tjctwl platform")
         super().save_model(request, obj, form, change)
     
 
@@ -83,7 +110,6 @@ class DeviceInfoAdmin(ImportExportModelAdmin):
         else:
             queryset |= self.model.objects.filter(age=search_term_as_int)
         return queryset, use_distinct
-    
     
 
 
@@ -134,3 +160,5 @@ class AlarmInfoAdmin(ImportExportModelAdmin):
 #admin.site.register(DeviceInfo, DeviceInfoAdmin)
 admin.site.site_title = "天津城投物联后台管理"
 admin.site.site_header = "天津城投物联"
+
+

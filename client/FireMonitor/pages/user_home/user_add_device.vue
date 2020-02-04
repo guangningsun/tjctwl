@@ -42,7 +42,7 @@
 			<view class="cu-card cu-item">
 				<view class="cu-form-group">
 					<view class="title">报警时是否启用电话通知</view>
-					<switch @change="switchEnableTel" :class="switch_enable_tel?'checked':''" :checked="switchA?true:false"></switch>
+					<switch class="light-purple" @change="switchEnableTel" :class="switch_enable_tel?'checked':''" :checked="switchA?true:false"></switch>
 				</view>
 			</view>
 
@@ -52,7 +52,6 @@
 				</view>
 			</view>
 		</view>
-
 	</view>
 </template>
 

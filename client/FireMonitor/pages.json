@@ -50,6 +50,10 @@
             "path" : "pages/user_home/user_add_danger",
             "style" : {}
         }
+        ,{
+            "path" : "pages/user_home/user_device_detail",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 	  "mp-alipay": {

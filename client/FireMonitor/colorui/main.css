@@ -286,6 +286,17 @@ radio.red.checked .uni-radio-input {
 	color: #ffffff !important;
 }
 
+switch.light-purple[checked] .wx-switch-input.wx-switch-input-checked,
+checkbox.light-purple[checked] .wx-checkbox-input,
+radio.light-purple[checked] .wx-radio-input,
+switch.light-purple.checked .uni-switch-input.uni-switch-input-checked,
+checkbox.light-purple.checked .uni-checkbox-input,
+radio.light-purple.checked .uni-radio-input {
+	background-color: #7B80F4 !important;
+	border-color: #7B80F4 !important;
+	color: #ffffff !important;
+}
+
 switch.orange[checked] .wx-switch-input,
 checkbox.orange[checked] .wx-checkbox-input,
 radio.orange[checked] .wx-radio-input,
@@ -3588,7 +3599,6 @@ scroll-view.cu-steps .cu-item {
 	color: #ffffff;
 }
 
-
 .bg-gradual-dark-purple2 {
 	background-image: linear-gradient(45deg, #362961,#5f588b);
 }
@@ -3892,6 +3902,12 @@ scroll-view.cu-steps .cu-item {
 .line-light-orange,
 .lines-light-orange {
 	color: #FFBE53;
+}
+
+.text-light-purple,
+.line-light-purple,
+.lines-light-purple {
+	color: #7B80F4;
 }
 
 .text-dark-orange,

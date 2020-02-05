@@ -1,11 +1,12 @@
 <template>
 	<view>
-		<view class="box">
-			<view class="cu-bar bg-gradual-dark-purple" style="z-index: 9999;">
+		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
+			<view class="cu-bar bg-gradual-dark-purple fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
+			<!-- <view class="cu-bar bg-gradual-dark-purple" style="z-index: 9999;"> -->
 				<view class="action" @tap="BackPage">
 					<text class="cuIcon-back text-white"></text>
 				</view>
-				<view class="content">
+				<view class="content" :style="[{top:StatusBar + 'px'}]">
 					设备详情
 				</view>
 				<view class="action">
@@ -129,7 +130,21 @@
 	export default {
 		data() {
 			return {
+				StatusBar: this.StatusBar,
+				CustomBar: this.CustomBar,
 				modalName: null,
+			}
+		},
+		computed: {
+			style() {
+				var StatusBar= this.StatusBar;
+				var CustomBar= this.CustomBar;
+				var bgImage = this.bgImage;
+				var style = `height:${CustomBar}px;padding-top:${StatusBar}px;`;
+				if (this.bgImage) {
+					style = `${style}background-image:url(${bgImage});`;
+				}
+				return style
 			}
 		},
 		methods: {

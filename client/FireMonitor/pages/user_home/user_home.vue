@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view style="padding-bottom: 100upx;">
+		<view style="padding-bottom: 100upx;padding-top: 50upx;">
 			<view class="cu-card">
 				<view class="cu-item shadow shadow-lg shadow-blur bg-gradual-dark-purple2 text-black">
 					<view class="padding cf">

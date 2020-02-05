@@ -1233,7 +1233,10 @@ var render = function() {
     [
       _c(
         "v-uni-view",
-        { staticStyle: { "padding-bottom": "100upx" }, attrs: { _i: 1 } },
+        {
+          staticStyle: { "padding-bottom": "100upx", "padding-top": "50upx" },
+          attrs: { _i: 1 }
+        },
         [
           _c(
             "v-uni-view",
@@ -5936,13 +5939,18 @@ var render = function() {
     [
       _c(
         "v-uni-view",
-        { staticClass: _vm._$g(1, "sc"), attrs: { _i: 1 } },
+        {
+          staticClass: _vm._$g(1, "sc"),
+          style: _vm._$g(1, "s"),
+          attrs: { _i: 1 }
+        },
         [
           _c(
             "v-uni-view",
             {
               staticClass: _vm._$g(2, "sc"),
-              staticStyle: { "z-index": "9999" },
+              class: _vm._$g(2, "c"),
+              style: _vm._$g(2, "s"),
               attrs: { _i: 2 }
             },
             [
@@ -5967,7 +5975,11 @@ var render = function() {
               ),
               _c(
                 "v-uni-view",
-                { staticClass: _vm._$g(5, "sc"), attrs: { _i: 5 } },
+                {
+                  staticClass: _vm._$g(5, "sc"),
+                  style: _vm._$g(5, "s"),
+                  attrs: { _i: 5 }
+                },
                 [_vm._v("\n\t\t\t\t设备详情\n\t\t\t")]
               ),
               _c(

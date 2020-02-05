@@ -9,14 +9,15 @@ from django.db import models
 # 用户类
 class UserInfo(models.Model):
     user_id = models.CharField(max_length=200,verbose_name='用户ID')
-    login_name = models.CharField(max_length=200,verbose_name='登录名')
-    username = models.CharField(max_length=200,verbose_name='用户名')
-    password = models.CharField(max_length=200,verbose_name='用户名')
-    user_permission = models.CharField(max_length=200,verbose_name='用户名')
-    create_time = models.CharField(max_length=200,verbose_name='用户名')
-    is_deleted = models.CharField(max_length=200,verbose_name='用户名')
-    description = models.CharField(max_length=200,verbose_name='用户名')
-    class_id = models.CharField(max_length=200,verbose_name='用户名')
+    login_name = models.CharField(max_length=200,verbose_name='用户名')
+    username = models.CharField(max_length=200,verbose_name='姓名')
+    password = models.CharField(max_length=200,verbose_name='密码')
+    user_permission = models.CharField(max_length=200,verbose_name='权限')
+    phone_number = models.CharField(max_length=200,verbose_name='手机号')
+    create_time = models.CharField(max_length=200,verbose_name='创建时间')
+    description = models.CharField(max_length=200,verbose_name='用户描述')
+    user_sex = models.CharField(max_length=200,verbose_name='性别')
+    user_age = models.CharField(max_length=200,verbose_name='年龄')
     class Meta:
         verbose_name = '用户信息'
         verbose_name_plural = '用户信息'
@@ -59,6 +60,9 @@ class DeviceInfo(models.Model):
     class Meta:
         verbose_name = '设备信息'
         verbose_name_plural = '设备信息'
+    
+    def profile(self):
+        return str()
         
     
 class InstitutionInfo(models.Model):

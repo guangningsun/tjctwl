@@ -30,12 +30,12 @@ def _if_exist(str):
         return ""
 
 @admin.register(UserInfo)
-class UserInfoAdmin(admin.ModelAdmin):
-    list_display=['user_id','login_name','username']
-    list_editable = ['login_name', 'username']
-    search_fields =('login_name', 'username')
+class UserInfoAdmin(ImportExportModelAdmin):
+    list_display=['user_id','login_name','username','user_permission','phone_number','create_time','user_sex','user_age','description']
+    list_editable = ['login_name','username','user_permission','phone_number','user_sex','user_age','description']
+    search_fields =('login_name','username','user_permission','phone_number','create_time','user_sex','user_age','description')
     fieldsets = [
-        ('Date information', {'fields': ['login_name'], 'classes': ['collapse']}),
+        ('Date information', {'fields': ['login_name','username','user_permission','phone_number','create_time','user_sex','user_age','description'], 'classes': ['collapse']}),
     ]
 
 @admin.register(Patrolscheme)
@@ -98,6 +98,23 @@ class DeviceInfoAdmin(ImportExportModelAdmin):
 
     def delete_queryset(self, request, queryset):
         logger.info("delete device query test============")
+        version = 20181031202131
+        path = "/aep_device_management/device"
+        if request.POST:
+            for i in range(0,len(queryset)):
+                #param ={}
+                param = {
+                         'deviceIds': queryset[i].device_id ,
+                         'productId': queryset[i].productId 
+                         }
+                #body = "{\"deviceIds\": \""+queryset[i].device_id+"\",\"productId\": "+queryset[i].productId+"}"
+                body = '{}'
+                try:
+                    logger.debug("delete device in aep platform %s" % (param))
+                    res =  aeptools.sendSDKRequest(path,{},param,body,version,APPLICATION_ID,MasterKey,SECRET_ID,'DELETE')
+                except:
+                    logger.info("delete device in aep platform failed")
+        logger.info("delete device in tjctwl platform")
         super().delete_queryset(request, queryset)
 
     def get_search_results(self, request, queryset, search_term):
@@ -139,9 +156,9 @@ class InstitutionInfoAdmin(ImportExportModelAdmin):
 class CompanyInfoAdmin(ImportExportModelAdmin):
     list_display = ['company_id','company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region']
     list_editable = ['company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region']
-    search_fields =('institution_id','company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region')
+    search_fields =('company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region')
     fieldsets = [
-        ('Date information', {'fields': ['institution_id','company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region'], 'classes': ['collapse']}),
+        ('Date information', {'fields': ['company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region'], 'classes': ['collapse']}),
     ]
 
 

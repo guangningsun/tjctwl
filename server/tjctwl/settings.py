@@ -175,7 +175,15 @@ SIMPLEUI_CONFIG = {
             'url': 'AppModel/userinfo/',
             'icon': 'fab fa-github'
         }]
-    }, {
+        }, {
+        'name': '设备管理',
+        'icon': 'fab fa-cloudversify',
+        'models': [{
+            'name': '设备管理',
+            'url': 'AppModel/deviceinfo/',
+            'icon': 'far fa-surprise'
+        }]
+        },{
         'app': 'auth',
         'name': '权限认证',
         'icon': 'fas fa-user-shield',
@@ -209,7 +217,7 @@ SIMPLEUI_CONFIG = {
         'icon': 'fab fa-cloudversify',
         'models': [{
             'name': '设备中心',
-            'url': 'AppModel/deviceinfo/',
+            'url': '',
             'icon': 'far fa-surprise'
         }, {
             'name': '报警中心',

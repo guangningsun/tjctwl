@@ -29,7 +29,7 @@
 					</view>
 					<text class="cuIcon-right text-gray"></text>
 				</view>
-				
+
 				<view class="cu-form-group">
 					<view class="flex align-center">
 						<image class="margin-right-sm" src="../../static/me/tel_me.png" style="width: 47upx;height: 47upx;"></image>
@@ -37,15 +37,15 @@
 					</view>
 					<text class="cuIcon-right text-gray"></text>
 				</view>
-				
-				<view class="cu-form-group">
+
+				<view class="cu-form-group" open-type="contact" @tap="showModal" data-target="ClearCache">
 					<view class="flex align-center">
 						<image class="margin-right-sm" src="../../static/me/clear_me.png" style="width: 50upx;height: 50upx;"></image>
 						<text class="text-lg">清除内存</text>
 					</view>
 					<text class="cuIcon-right text-gray"></text>
 				</view>
-				
+
 				<view class="cu-form-group">
 					<view class="flex align-center">
 						<image class="margin-right-sm" src="../../static/me/version_me.png" style="width: 50upx;height: 50upx;"></image>
@@ -53,7 +53,7 @@
 					</view>
 					<text class="cuIcon-right text-gray"></text>
 				</view>
-				
+
 				<view class="cu-form-group">
 					<view class="flex align-center">
 						<image class="margin-right-sm" src="../../static/me/contact_me.png" style="width: 50upx;height: 50upx;"></image>
@@ -61,7 +61,7 @@
 					</view>
 					<text class="cuIcon-right text-gray"></text>
 				</view>
-				
+
 
 			</view>
 
@@ -96,6 +96,28 @@
 			</view>
 		</view>
 
+		<!-- 删除modal -->
+		<view class="cu-modal" :class="modalName=='ClearCache'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">清除内存</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-light-purple"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					是否清除内存？
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action">
+						<button class="cu-btn line-green text-purple" @tap="hideModal">取消</button>
+						<button class="cu-btn bg-gradual-dark-purple margin-left" @tap="onConfirmClear">确定</button>
+
+					</view>
+				</view>
+			</view>
+		</view>
+
 	</view>
 </template>
 
@@ -103,11 +125,20 @@
 	export default {
 		data() {
 			return {
-
+				modalName: null,
 			}
 		},
 		methods: {
-			onLogout(){
+			onLogout() {
+
+			},
+			showModal(e) {
+				this.modalName = e.currentTarget.dataset.target
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
+			onConfirmClear(){
 				
 			}
 		}

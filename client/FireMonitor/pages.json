@@ -60,6 +60,14 @@
             "path" : "pages/user_home/user_modity_device",
             "style" : {}
         }
+        ,{
+            "path" : "pages/user_me/about_us",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user_me/version_info",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"mp-alipay": {

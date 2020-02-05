@@ -165,8 +165,8 @@
 					}
 				});
 			},
-			onAddDanger(){
-				
+			onAddDanger() {
+
 			}
 		}
 	}

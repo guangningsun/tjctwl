@@ -162,6 +162,16 @@ class CompanyInfoAdmin(ImportExportModelAdmin):
     ]
 
 
+@admin.register(OnlineDeviceInfo)
+class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
+    list_display = ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude']
+    #list_editable = ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude']
+    search_fields =('device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude')
+    fieldsets = [
+        ('Date information', {'fields': ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude'], 'classes': ['collapse']}),
+    ]
+
+
 @admin.register(AlarmInfo)
 class AlarmInfoAdmin(ImportExportModelAdmin):
     list_display = ['alarm_id','company_name','device_sn','alarm_time','alarm_status','alarm_desc','alarm_handling']

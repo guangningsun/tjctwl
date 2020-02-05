@@ -63,7 +63,29 @@ class DeviceInfo(models.Model):
     
     def profile(self):
         return str()
-        
+
+class OnlineDeviceInfo(models.Model):
+    device_name = models.CharField(max_length=200,verbose_name='设备名称')
+    device_sn = models.CharField(max_length=200,verbose_name='设备编码')
+    createTime = models.CharField(max_length=200,verbose_name='创建时间')
+    updateTime = models.CharField(max_length=200,verbose_name='更新时间')
+    deviceStatus = models.CharField(max_length=200,verbose_name='设备状态')
+    netStatus = models.CharField(max_length=200,verbose_name='信号强度')
+    onlineAt = models.CharField(max_length=200,verbose_name='最后上线时间')
+    offlineAt = models.CharField(max_length=200,verbose_name='最后离线时间')
+    bond_user = models.CharField(max_length=200,verbose_name='所属用户')
+    deviceOnlineStatus = models.CharField(max_length=200,verbose_name='设备上线状态')
+    deviceVoltageStatus = models.CharField(max_length=200,verbose_name='设备电压状态')
+    lastUploadTime = models.CharField(max_length=200,verbose_name='上报时间')
+    ownerPhoneNumber = models.CharField(max_length=200,verbose_name='业主电话')
+    ownerName = models.CharField(max_length=200,verbose_name='业主姓名')
+    company_name = models.CharField(max_length=200,verbose_name='联网单位')
+    company_id = models.CharField(max_length=200,verbose_name='联网单位ID')
+    charge_person = models.CharField(max_length=200,verbose_name='安全责任人')
+    charge_phonenumber = models.CharField(max_length=200,verbose_name='责任人电话')
+    longitude_latitude = models.CharField(max_length=200,verbose_name='经纬度')
+    address_desc = models.CharField(max_length=200,verbose_name='位置描述')
+
     
 class InstitutionInfo(models.Model):
     institution_id = models.CharField(max_length=200,verbose_name='组织机构ID')

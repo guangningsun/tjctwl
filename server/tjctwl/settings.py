@@ -217,7 +217,7 @@ SIMPLEUI_CONFIG = {
         'icon': 'fab fa-cloudversify',
         'models': [{
             'name': '设备中心',
-            'url': '',
+            'url': 'AppModel/onlinedeviceinfo',
             'icon': 'far fa-surprise'
         }, {
             'name': '报警中心',

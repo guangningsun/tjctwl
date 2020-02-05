@@ -42,9 +42,20 @@ class CompanyInfo(models.Model):
 class DeviceInfo(models.Model):
     device_id = models.CharField(max_length=200,verbose_name='设备ID')
     device_name = models.CharField(max_length=200,verbose_name='设备名称')
-    device_address = models.CharField(max_length=200,verbose_name='部件地址')
-    device_address_detail = models.CharField(max_length=200,verbose_name='具体位置')
-    device_status = models.CharField(max_length=200,verbose_name='设备状态')
+    device_sn = models.CharField(max_length=200,verbose_name='设备编号')
+    tenantId = models.CharField(max_length=200,verbose_name='租户Id')
+    productId = models.CharField(max_length=200,verbose_name='产品Id')
+    imei = models.CharField(max_length=200,verbose_name='IMEI号')
+    deviceStatus = models.CharField(max_length=200,verbose_name='设备状态')
+    autoObserver = models.CharField(max_length=200,verbose_name='是否订阅')
+    createTime = models.CharField(max_length=200,verbose_name='创建时间')
+    createBy = models.CharField(max_length=200,verbose_name='创建者')
+    updateTime = models.CharField(max_length=200,verbose_name='更新时间')
+    updateBy = models.CharField(max_length=200,verbose_name='更新者')
+    netStatus = models.CharField(max_length=200,verbose_name='状态')
+    onlineAt = models.CharField(max_length=200,verbose_name='最后上线时间')
+    offlineAt = models.CharField(max_length=200,verbose_name='最后离线时间')
+
     class Meta:
         verbose_name = '设备信息'
         verbose_name_plural = '设备信息'

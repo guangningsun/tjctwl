@@ -33,12 +33,7 @@
 			}
 		},
 		methods: {
-			showModal(e) {
-				this.modalName = e.currentTarget.dataset.target
-			},
-			hideModal(e) {
-				this.modalName = null
-			}
+			
 		}
 	}
 </script>

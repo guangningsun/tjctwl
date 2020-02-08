@@ -158,30 +158,30 @@ SIMPLEUI_CONFIG = {
         'app': 'AppModel',
         'name': '系统管理',
         'icon': 'fab fa-dashcube',
-        'models': [ {
-            'name': '绑定记录',
-            'url': '',
-            'icon': 'fab fa-github'
-        }, {
+        'models': [{
             'name': '组织机构管理',
             'url': 'AppModel/institutioninfo/',
-            'icon': 'fab fa-github'
+            'icon': 'fa fa-tags'
         }, {
             'name': '联网单位信息',
             'url': 'AppModel/companyinfo',
-            'icon': 'fab fa-github'
+            'icon': 'fa fa-id-card'
         }, {
             'name': '用户管理',
             'url': 'AppModel/userinfo/',
-            'icon': 'fab fa-github'
+            'icon': 'fa fa-user-circle'
         }]
         }, {
         'name': '设备管理',
-        'icon': 'fab fa-cloudversify',
+        'icon': 'fa fa-bars',
         'models': [{
             'name': '设备管理',
             'url': 'AppModel/deviceinfo/',
-            'icon': 'far fa-surprise'
+            'icon': 'fa fa-server'
+        }, {
+            'name': '上线记录',
+            'url': 'AppModel/mappinguserinfodevicename/',
+            'icon': 'fa fa-paper-plane'
         }]
         },{
         'app': 'auth',
@@ -193,24 +193,24 @@ SIMPLEUI_CONFIG = {
             'url': 'auth/user/'
         },{
             'name': '用户组',
-            'icon': 'fa fa-group',
+            'icon': 'fa fa-users',
             'url': 'auth/group/'
         }]
     },{
         'name': '消防管理',
-        'icon': 'fab fa-cloudversify',
+        'icon': 'fa fa-fire-extinguisher',
         'models': [{
             'name': '巡检管理',
             'url': 'AppModel/patrolscheme',
-            'icon': 'far fa-surprise'
+            'icon': 'fa fa-fire-extinguisher'
         }, {
             'name': '隐患整改',
             'url': 'AppModel/dangerrectification',
-            'icon': 'fab fa-github'
+            'icon': 'far fa-surprise'
         }, {
             'name': '维修保养',
             'url': '',
-            'icon': 'fab fa-github'
+            'icon': 'fa fa-bell-slash'
         }]
     },{
         'name': '监控中心',
@@ -222,19 +222,19 @@ SIMPLEUI_CONFIG = {
         }, {
             'name': '报警中心',
             'url': 'AppModel/alarminfo',
-            'icon': 'fab fa-github'
+            'icon': 'fa fa-phone'
         }, {
             'name': '视频中心',
             'url': '',
-            'icon': 'fab fa-github'
+            'icon': 'fa fa-terminal'
         }]
     },{
         'name': '系统设置',
-        'icon': 'fab fa-cloudversify',
+        'icon': 'fa fa-tasks',
         'models': [{
             'name': '系统设置',
             'url': '',
-            'icon': 'far fa-surprise'
+            'icon': 'fa fa-tasks'
         }]
     }]
 }

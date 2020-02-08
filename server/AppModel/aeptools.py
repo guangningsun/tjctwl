@@ -118,7 +118,6 @@ def sendSDKRequest(path, head, param, body, version, application, MasterKey, key
         request = urllib2.Request(url = url, headers=headers, data=body.encode('utf-8'))
     else :
         request = urllib2.Request(url = url, headers=headers)
-    import pdb;pdb.set_trace()
     if (method is not None) :
         request.get_method=lambda : method
     response = urllib2.urlopen(request)

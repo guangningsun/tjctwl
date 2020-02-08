@@ -2,46 +2,8 @@
 from django.db import models
 
 
-# 0 超级管理员
-# 1 管理员
-# 2 老师
-# 3 普通用户，学生
-# 用户类
-class UserInfo(models.Model):
-    user_id = models.CharField(max_length=200,verbose_name='用户ID')
-    login_name = models.CharField(max_length=200,verbose_name='用户名')
-    username = models.CharField(max_length=200,verbose_name='姓名')
-    password = models.CharField(max_length=200,verbose_name='密码')
-    user_permission = models.CharField(max_length=200,verbose_name='权限')
-    phone_number = models.CharField(max_length=200,verbose_name='手机号')
-    create_time = models.CharField(max_length=200,verbose_name='创建时间')
-    description = models.CharField(max_length=200,verbose_name='用户描述')
-    user_sex = models.CharField(max_length=200,verbose_name='性别')
-    user_age = models.CharField(max_length=200,verbose_name='年龄')
-    class Meta:
-        verbose_name = '用户信息'
-        verbose_name_plural = '用户信息'
-
-
-class CompanyInfo(models.Model):
-    fire_rating_number = (('0', u'一级'), ('1', u'二级'))
-    company_id = models.CharField(max_length=200,verbose_name='联网单位ID')
-    company_name = models.CharField(max_length=200,verbose_name='单位全称')
-    established_time = models.CharField(max_length=200,verbose_name='成立时间')
-    company_address = models.CharField(max_length=200,verbose_name='单位地址')
-    post_number =  models.CharField(max_length=200,verbose_name='邮政编码')
-    floor_area = models.CharField(max_length=200,verbose_name='占地面积')
-    fire_rating = models.CharField(max_length=200,choices=fire_rating_number,verbose_name='防火等级')
-    detectors_number = models.CharField(max_length=200,verbose_name='探测器数量')
-    fire_brigade = models.CharField(max_length=200,verbose_name='所属消防队')
-    region = models.CharField(max_length=200,verbose_name='所属区域')
-    class Meta:
-        verbose_name = '联网单位'
-        verbose_name_plural = '联网单位'
-
-
 class DeviceInfo(models.Model):
-    device_id = models.CharField(max_length=200,verbose_name='设备ID')
+    id = models.CharField(max_length=200,verbose_name='设备ID',primary_key=True)
     device_name = models.CharField(max_length=200,verbose_name='设备名称')
     device_sn = models.CharField(max_length=200,verbose_name='设备编号')
     tenantId = models.CharField(max_length=200,verbose_name='租户Id')
@@ -53,16 +15,21 @@ class DeviceInfo(models.Model):
     createBy = models.CharField(max_length=200,verbose_name='创建者')
     updateTime = models.CharField(max_length=200,verbose_name='更新时间')
     updateBy = models.CharField(max_length=200,verbose_name='更新者')
-    netStatus = models.CharField(max_length=200,verbose_name='状态')
+    netStatus = models.CharField(max_length=200,verbose_name='信号状态')
     onlineAt = models.CharField(max_length=200,verbose_name='最后上线时间')
     offlineAt = models.CharField(max_length=200,verbose_name='最后离线时间')
-
+    isOnline = models.CharField(max_length=200,verbose_name='是否已上线')
+    
     class Meta:
         verbose_name = '设备信息'
         verbose_name_plural = '设备信息'
     
     def profile(self):
         return str()
+    
+    def __str__(self):
+        return self.device_name
+
 
 class OnlineDeviceInfo(models.Model):
     device_name = models.CharField(max_length=200,verbose_name='设备名称')
@@ -86,7 +53,60 @@ class OnlineDeviceInfo(models.Model):
     longitude_latitude = models.CharField(max_length=200,verbose_name='经纬度')
     address_desc = models.CharField(max_length=200,verbose_name='位置描述')
 
+    class Meta:
+        verbose_name = '上线设备信息'
+        verbose_name_plural = '上线设备信息'
     
+    def profile(self):
+        return str()
+    
+    def __str__(self):
+        return self.device_name
+
+
+class UserInfo(models.Model):
+    id = models.CharField(max_length=200,verbose_name='用户ID',primary_key=True)
+    login_name = models.CharField(max_length=200,verbose_name='用户名')
+    username = models.CharField(max_length=200,verbose_name='姓名')
+    password = models.CharField(max_length=200,verbose_name='密码')
+    user_permission = models.CharField(max_length=200,verbose_name='权限')
+    phone_number = models.CharField(max_length=200,verbose_name='手机号')
+    create_time = models.CharField(max_length=200,verbose_name='创建时间')
+    description = models.CharField(max_length=200,verbose_name='用户描述')
+    user_sex = models.CharField(max_length=200,verbose_name='性别')
+    user_age = models.CharField(max_length=200,verbose_name='年龄')
+    #device_name = models.ForeignKey(DeviceInfo,on_delete="CASCADE",null=True, blank=True,verbose_name='设备名字')
+    device_name = models.ManyToManyField(DeviceInfo,null=True, blank=True,verbose_name='设备名字')
+
+    filter_horizontal = ('device_name',)
+    class Meta:
+        verbose_name = '用户信息'
+        verbose_name_plural = '用户信息'
+    
+    def __str__(self):
+        return self.username
+
+
+class CompanyInfo(models.Model):
+    fire_rating_number = (('0', u'一级'), ('1', u'二级'))
+    company_id = models.CharField(max_length=200,verbose_name='联网单位ID')
+    company_name = models.CharField(max_length=200,verbose_name='单位全称')
+    established_time = models.CharField(max_length=200,verbose_name='成立时间')
+    company_address = models.CharField(max_length=200,verbose_name='单位地址')
+    post_number =  models.CharField(max_length=200,verbose_name='邮政编码')
+    floor_area = models.CharField(max_length=200,verbose_name='占地面积')
+    fire_rating = models.CharField(max_length=200,choices=fire_rating_number,verbose_name='防火等级')
+    detectors_number = models.CharField(max_length=200,verbose_name='探测器数量')
+    fire_brigade = models.CharField(max_length=200,verbose_name='所属消防队')
+    region = models.CharField(max_length=200,verbose_name='所属区域')
+    class Meta:
+        verbose_name = '联网单位'
+        verbose_name_plural = '联网单位'
+    
+    def __str__(self):
+        return self.company_name
+
+
 class InstitutionInfo(models.Model):
     institution_id = models.CharField(max_length=200,verbose_name='组织机构ID')
     company_name = models.CharField(max_length=200,verbose_name='公司名称')
@@ -97,6 +117,9 @@ class InstitutionInfo(models.Model):
     class Meta:
         verbose_name = '组织机构'
         verbose_name_plural = '组织机构'
+    
+    def __str__(self):
+        return self.company_name
 
 
 class Patrolscheme(models.Model):
@@ -110,6 +133,9 @@ class Patrolscheme(models.Model):
     class Meta:
         verbose_name = '巡检计划'
         verbose_name_plural = '巡检计划'
+    
+    def __str__(self):
+        return self.scheme_name
 
 
 class Dangerrectification(models.Model):
@@ -143,4 +169,13 @@ class AlarmInfo(models.Model):
     class Meta:
         verbose_name = '报警中心'
         verbose_name_plural = '报警中心'
+    
 
+class MappingUserinfoDeviceName(models.Model):
+    userinfo = models.ForeignKey(UserInfo, models.DO_NOTHING,verbose_name='用户名')
+    deviceinfo = models.ForeignKey(DeviceInfo, models.DO_NOTHING,verbose_name='设备名称')
+
+    class Meta:
+        managed = False
+        db_table = 'AppModel_userinfo_device_name'
+        unique_together = (('userinfo', 'deviceinfo'),)

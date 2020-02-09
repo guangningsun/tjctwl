@@ -1,6 +1,9 @@
 <template>
 	<view>
-		<view style="padding-bottom: 100upx;padding-top: 50upx;">
+		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
+			<block slot="content">设备</block>
+		</cu-custom>
+		<view style="padding-bottom: 100upx;">
 			<view class="cu-card">
 				<view class="cu-item shadow shadow-lg shadow-blur bg-gradual-dark-purple2 text-black">
 					<view class="padding cf">

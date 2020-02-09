@@ -17,8 +17,8 @@
 
 					<view class="move">
 						<view class="bg-gradual-green" @tap="showModal" data-target="AddTelModal">添加</view>
-						<view class="bg-gradual-light-purple" @tap="onModifyTel">修改</view>
-						<view class="bg-gradual-red" @tap="onDeleteTel">删除</view>
+						<view class="bg-gradual-light-purple" @tap="showModal" data-target="ModifyTelModal">修改</view>
+						<view class="bg-gradual-red" @tap="showModal" data-target="DeleteTelModal">删除</view>
 					</view>
 				</view>
 			</view>
@@ -28,7 +28,7 @@
 			可选择需要短信通知的设备
 		</view>
 
-		<view style="padding-bottom: 100upx;">
+		<view style="padding-bottom: 120upx;">
 			<view class="cu-card card-margin">
 				<view class="cu-item">
 					<view class="flex padding-sm">
@@ -314,6 +314,61 @@
 				</view>
 			</view>
 		</view>
+		
+		<!-- 修改modal -->
+		<view class="cu-modal" :class="modalName=='ModifyTelModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">修改电话</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-light-purple"></text>
+					</view>
+				</view>
+		
+				<form>
+					<view class="cu-form-group">
+						<view class="title">手机号码</view>
+						<input class="text-left" placeholder="输入新手机号" name="input"></input>
+					</view>
+		
+					<view class="cu-form-group">
+						<view class="title">验 证 码 </view>
+						<input class="text-left" placeholder="请输入验证码" name="input"></input>
+						<view class="cu-btn bg-purple light" @click="veryfiying" v-if="state===false">获取验证码</view>
+						<view class="cu-btn bg-grey" v-if="state===true">倒计时{{ currentTime }}s</view>
+					</view>
+				</form>
+		
+				<view class="cu-bar bg-white justify-end">
+					<view class="action">
+						<button class="cu-btn line-green text-purple" @tap="hideModal">取消</button>
+						<button class="cu-btn bg-gradual-dark-purple margin-left" @tap="onConfirmModify">修改</button>
+					</view>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 删除modal -->
+		<view class="cu-modal" :class="modalName=='DeleteTelModal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">删除号码</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-light-purple"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					是否删除电话号码？
+				</view>
+				<view class="cu-bar bg-white justify-end">
+					<view class="action">
+						<button class="cu-btn line-green text-purple" @tap="hideModal">取消</button>
+						<button class="cu-btn bg-gradual-dark-purple margin-left" @tap="onConfirmDelete">确定</button>
+					</view>
+				</view>
+			</view>
+		</view>
+		
 	</view>
 </template>
 

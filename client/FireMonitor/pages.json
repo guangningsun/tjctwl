@@ -72,6 +72,14 @@
             "path" : "pages/user_me/alarm_tel",
             "style" : {}
         }
+        ,{
+            "path" : "pages/user_me/my_info",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/user_me/modify_pass",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"mp-alipay": {

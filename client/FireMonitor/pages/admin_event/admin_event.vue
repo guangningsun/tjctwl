@@ -1,22 +1,25 @@
 <template>
 	<view>
-
+		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
+			<block slot="content">事件</block>
+		</cu-custom>
+		
 		<view class="box">
 
 			<view> admin-event</view>
 
 			<view class="cu-bar mytabbar foot tabbar bg-white">
-				<navigator hover-class="none" :url="'../admin_home/admin_home'" class="action">
+				<!-- navigator hover-class="none" :url="'../admin_home/admin_home'" class="action">
 					<view class="cuIcon-cu-image">
 						<image src="/static/tabbar/home-normal.png"></image>
 					</view>
 					<view class="text-blackb">首页</view>
-				</navigator>
+				</navigator> -->
 				<navigator hover-class="none" :url="'../admin_device/admin_device'" class="action">
-				    <view class="cuIcon-cu-image">
-				        <image src="/static/tabbar/device_normal.png"></image>
-				    </view>
-				    <view class="text-black">设备</view>
+					<view class="cuIcon-cu-image">
+						<image src="/static/tabbar/device_normal.png"></image>
+					</view>
+					<view class="text-black">设备</view>
 				</navigator>
 				<navigator hover-class="none" :url="'../admin_work/admin_work'" class="action">
 					<view class="cuIcon-cu-image">
@@ -37,7 +40,7 @@
 					<view class="text-blackb">我的</view>
 				</navigator>
 			</view>
-			
+
 		</view>
 	</view>
 </template>

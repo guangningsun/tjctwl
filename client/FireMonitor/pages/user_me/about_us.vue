@@ -4,7 +4,7 @@
 			<block slot="content">关于我们</block>
 		</cu-custom>
 
-		<view class="cu-card margin-top-xl">
+		<view class="cu-card">
 			<view class="cu-item shadow shadow-lg shadow-blur bg-white text-black padding">
 				<view class="flex justify-between">
 					<view class="radius">

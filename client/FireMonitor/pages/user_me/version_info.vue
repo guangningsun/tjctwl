@@ -4,7 +4,7 @@
 			<block slot="content">版本信息</block>
 		</cu-custom>
 
-		<view class="cu-card margin-top-xl">
+		<view class="cu-card">
 			<view class="cu-item shadow shadow-lg shadow-blur bg-white text-black padding">
 				<view class="flex justify-center margin-top margin-bottom">
 					<image src="../../static/logo.png" style="width: 100upx; height: 100upx;"></image>

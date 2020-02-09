@@ -1,9 +1,13 @@
 <template>
 	<view>
-		<view class="cu-card margin-top-xl">
+		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
+			<block slot="content">我的</block>
+		</cu-custom>
+		
+		<view class="cu-card">
 			<view class="flex align-center cu-item bg-gradual-dark-purple2">
 
-				<view class="flex solid-bottom padding justify-between">
+				<view class="flex solid-bottom padding justify-between" @tap="goToMyInfo">
 					<view class="padding-sm margin-xs radius">
 						<view class="flex align-center margin-right">
 							<view class="cu-avatar xl round" style="background-image:url(../../static/me/head3.png);"></view>
@@ -22,7 +26,7 @@
 
 		<view class="cu-card">
 			<view class="cu-item">
-				<view class="cu-form-group">
+				<view class="cu-form-group" @tap="gotToAddDevice">
 					<view class="flex align-center">
 						<image class="margin-right-sm" src="../../static/me/add_device_me.png" style="width: 60upx;height: 60upx;"></image>
 						<text class="text-lg">添加设备</text>
@@ -30,7 +34,7 @@
 					<text class="cuIcon-right text-gray"></text>
 				</view>
 
-				<view class="cu-form-group">
+				<view class="cu-form-group" @tap="gotoTelAlarm">
 					<view class="flex align-center">
 						<image class="margin-right-sm" src="../../static/me/tel_me.png" style="width: 47upx;height: 47upx;"></image>
 						<text class="text-lg">火警电话通知</text>
@@ -46,7 +50,7 @@
 					<text class="cuIcon-right text-gray"></text>
 				</view>
 
-				<view class="cu-form-group">
+				<view class="cu-form-group" @tap="gotoVersion">
 					<view class="flex align-center">
 						<image class="margin-right-sm" src="../../static/me/version_me.png" style="width: 50upx;height: 50upx;"></image>
 						<text class="text-lg">版本信息</text>
@@ -54,15 +58,13 @@
 					<text class="cuIcon-right text-gray"></text>
 				</view>
 
-				<view class="cu-form-group">
+				<view class="cu-form-group" @tap="gotoAboutUs">
 					<view class="flex align-center">
 						<image class="margin-right-sm" src="../../static/me/contact_me.png" style="width: 50upx;height: 50upx;"></image>
 						<text class="text-lg">联系我们</text>
 					</view>
 					<text class="cuIcon-right text-gray"></text>
 				</view>
-
-
 			</view>
 
 		</view>
@@ -112,7 +114,6 @@
 					<view class="action">
 						<button class="cu-btn line-green text-purple" @tap="hideModal">取消</button>
 						<button class="cu-btn bg-gradual-dark-purple margin-left" @tap="onConfirmClear">确定</button>
-
 					</view>
 				</view>
 			</view>
@@ -132,14 +133,39 @@
 			onLogout() {
 
 			},
+			goToMyInfo() {
+				uni.navigateTo({
+					url: './my_info'
+				})
+			},
+			gotToAddDevice() {
+				uni.navigateTo({
+					url: '../user_home/user_add_device'
+				})
+			},
+			gotoTelAlarm() {
+				uni.navigateTo({
+					url: './alarm_tel'
+				})
+			},
+			gotoVersion() {
+				uni.navigateTo({
+					url: './version_info'
+				})
+			},
+			gotoAboutUs() {
+				uni.navigateTo({
+					url: './about_us'
+				})
+			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},
 			hideModal(e) {
 				this.modalName = null
 			},
-			onConfirmClear(){
-				
+			onConfirmClear() {
+
 			}
 		}
 	}

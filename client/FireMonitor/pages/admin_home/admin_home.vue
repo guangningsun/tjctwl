@@ -1,6 +1,8 @@
 <template>
 	<view>
-
+<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
+			<block slot="content">首页˚</block>
+		</cu-custom>
 		<view class="box">
 
 			<view> admin-home</view>

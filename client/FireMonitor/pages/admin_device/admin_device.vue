@@ -1,17 +1,21 @@
 <template>
 	<view>
 
+		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
+			<block slot="content">设备</block>
+		</cu-custom>
+
 		<view class="box">
 
 			<view> admin-device</view>
 
 			<view class="cu-bar mytabbar foot tabbar bg-white">
-				<navigator hover-class="none" :url="'../admin_home/admin_home'" class="action">
+				<!-- <navigator hover-class="none" :url="'../admin_home/admin_home'" class="action">
 					<view class="cuIcon-cu-image">
 						<image src="/static/tabbar/home-normal.png"></image>
 					</view>
 					<view class="text-blackb">首页</view>
-				</navigator>
+				</navigator> -->
 				<navigator hover-class="none" class="action">
 				    <view class="cuIcon-cu-image">
 				        <image src="/static/tabbar/device_activate.png"></image>

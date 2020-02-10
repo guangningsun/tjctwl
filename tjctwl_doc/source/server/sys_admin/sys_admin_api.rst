@@ -12,6 +12,8 @@
   pip install django-import-export
   python manage.py collectstatic
   pip install django-simpleui
+  pip install django-mptt
+  pip install django-mptt-admin
 
 - 新增设备
 

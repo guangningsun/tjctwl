@@ -12,6 +12,7 @@ class DeviceInfo(models.Model):
     tenantId = models.CharField(max_length=200,verbose_name='租户Id')
     productId = models.CharField(max_length=200,verbose_name='产品Id')
     imei = models.CharField(max_length=200,verbose_name='IMEI号')
+    category = TreeForeignKey('Category',on_delete=models.CASCADE,null=True,blank=True,verbose_name='所属单位')
     deviceStatus = models.CharField(max_length=200,verbose_name='设备状态')
     autoObserver = models.CharField(max_length=200,verbose_name='是否订阅')
     createTime = models.CharField(max_length=200,verbose_name='创建时间')
@@ -91,17 +92,18 @@ class UserInfo(models.Model):
 
 
 class CompanyInfo(models.Model):
-    fire_rating_number = (('0', u'一级'), ('1', u'二级'))
+    # fire_rating_number = (('0', u'一级'), ('1', u'二级'))
     company_id = models.CharField(max_length=200,verbose_name='联网单位ID')
     company_name = models.CharField(max_length=200,verbose_name='单位全称')
-    established_time = models.CharField(max_length=200,verbose_name='成立时间')
+    category = TreeForeignKey('Category',on_delete=models.CASCADE,null=True,blank=True,verbose_name='上级部门')
     company_address = models.CharField(max_length=200,verbose_name='单位地址')
-    post_number =  models.CharField(max_length=200,verbose_name='邮政编码')
-    floor_area = models.CharField(max_length=200,verbose_name='占地面积')
-    fire_rating = models.CharField(max_length=200,choices=fire_rating_number,verbose_name='防火等级')
+    latitude =  models.CharField(max_length=200,verbose_name='经纬度')
+    # fire_rating = models.CharField(max_length=200,choices=fire_rating_number,verbose_name='防火等级')
     detectors_number = models.CharField(max_length=200,verbose_name='探测器数量')
     fire_brigade = models.CharField(max_length=200,verbose_name='所属消防队')
-    region = models.CharField(max_length=200,verbose_name='所属区域')
+    fire_number = models.CharField(max_length=200,verbose_name='消防队电话')
+    responsible_person = models.CharField(max_length=200,verbose_name='安全责任人')
+    responsible_number = models.CharField(max_length=200,verbose_name='责任人电话')
     class Meta:
         verbose_name = '联网单位'
         verbose_name_plural = '联网单位'

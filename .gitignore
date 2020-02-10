@@ -19,6 +19,7 @@
 .tox
 .idea
 .venv
+.vscode
 AUTHORS
 Authors
 build-stamp

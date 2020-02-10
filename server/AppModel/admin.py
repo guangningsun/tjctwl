@@ -73,12 +73,12 @@ class UserInfoInline(admin.TabularInline):
 @admin.register(DeviceInfo)
 class DeviceInfoAdmin(ImportExportModelAdmin):
     #list_display = ['id','device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','operation','isOnline']
-    list_display = ['id','device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','trans_isOnline']
+    list_display = ['id','device_name','productId','imei','category','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','trans_isOnline']
     list_filter = ('device_name','imei')
     #list_editable = ['device_name','productId','imei','autoObserver']
     search_fields =('id','device_name','device_sn','tenantId','productId','imei','deviceStatus','autoObserver','createTime','createBy','updateTime','updateBy','netStatus','onlineAt','offlineAt')
     fieldsets = [
-        ('创建设备', {'fields': ['device_name','productId','imei','autoObserver'], 'classes': ['collapse']}),
+        ('创建设备', {'fields': ['device_name','productId','imei','autoObserver','category'], 'classes': ['collapse']}),
     ]
     #actions = ["delete_model"]
     list_per_page = 10
@@ -216,12 +216,13 @@ class InstitutionInfoAdmin(ImportExportModelAdmin):
 
 @admin.register(CompanyInfo)
 class CompanyInfoAdmin(ImportExportModelAdmin):
-    list_display = ['company_id','company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region']
-    list_editable = ['company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region']
-    search_fields =('company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region')
+    list_display = ['company_name','category','latitude','company_address','responsible_person','responsible_number','detectors_number','fire_brigade','fire_number']
+    #list_editable = ['company_name','category','latitude','company_address','responsible_person','responsible_number','detectors_number','fire_brigade','fire_number']
+    search_fields =('company_name','category','latitude','company_address','responsible_person','responsible_number','detectors_number','fire_brigade','fire_number')
     fieldsets = [
-        ('Date information', {'fields': ['company_name','established_time','company_address','post_number','floor_area','fire_rating','detectors_number','fire_brigade','region'], 'classes': ['collapse']}),
+        ('联网单位信息', {'fields': ['company_name','category','latitude','company_address','responsible_person','responsible_number','detectors_number','fire_brigade','fire_number'], 'classes': ['collapse']}),
     ]
+    list_display_links = ('company_name',)
 
 
 @admin.register(OnlineDeviceInfo)

@@ -6,6 +6,10 @@ from import_export.admin import ImportExportModelAdmin, ImportExportActionModelA
 import logging,json
 import AppModel.aeptools as aeptools
 from django.utils.html import format_html
+from django import forms
+from mptt.admin import MPTTModelAdmin
+from mptt.admin import DraggableMPTTAdmin
+from feincms.module.page.models import Page
 
 
 logger = logging.getLogger(__name__)
@@ -45,8 +49,8 @@ class UserInfoAdmin(ImportExportModelAdmin):
         for i in range(0,len(obj.device_name.get_queryset())):
             device_obj = obj.device_name.get_queryset()[i]
             DeviceInfo.objects.filter(id=device_obj.id).update(isOnline='0')
-        # 更新绑定表，若没有该条记录则记录，若有则跳过
         # 更新设备监控表，将用户信息和设备信息同时记录
+        OnlineDeviceInfoAdmin.save_model(request, obj, form, change)
         super().save_model(request, obj, form, change)
 
 
@@ -207,6 +211,7 @@ class InstitutionInfoAdmin(ImportExportModelAdmin):
     fieldsets = [
         ('Date information', {'fields': ['company_name','superior_department','create_time','create_user','connact_number'], 'classes': ['collapse']}),
     ]
+    #change_form_template = 'area.html'
 
 
 @admin.register(CompanyInfo)
@@ -231,6 +236,8 @@ class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
     #inlines = [
     #    UserInfoInline,
     #]
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(AlarmInfo)
@@ -243,9 +250,17 @@ class AlarmInfoAdmin(ImportExportModelAdmin):
     ]
 
 
-# Register your models here.
-#admin.site.register(UserInfo, UserInfoAdmin)
-#admin.site.register(DeviceInfo, DeviceInfoAdmin)
+# 联网单位设置
+#
+# 'indented_title'
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['name','category','createtime','createuser','connected_number','slug']
+
+
+admin.site.register(Category , MPTTModelAdmin)
+
+
 admin.site.site_title = "天津城投物联后台管理"
 admin.site.site_header = "天津城投物联"
 

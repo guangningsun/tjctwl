@@ -21,3 +21,4 @@ urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^$', views.init_web),
 ]
+ 

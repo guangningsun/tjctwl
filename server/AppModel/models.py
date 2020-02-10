@@ -1,5 +1,8 @@
 # -*- coding:UTF-8 -*-
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
+from mptt.admin import DraggableMPTTAdmin
+from feincms.module.page.models import Page
 
 
 class DeviceInfo(models.Model):
@@ -179,3 +182,57 @@ class MappingUserinfoDeviceName(models.Model):
         managed = False
         db_table = 'AppModel_userinfo_device_name'
         unique_together = (('userinfo', 'deviceinfo'),)
+
+
+
+# 联网单位
+# class Genre(MPTTModel):
+#     name = models.CharField(max_length=50, unique=True)
+#     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+
+#     class MPTTMeta:
+#         level_attr = 'mptt_level'
+#         order_insertion_by = ['name']
+
+# 组织机构详细信息
+class Post(models.Model):
+      name = models.CharField(max_length=120,verbose_name='单位名称')
+      category = TreeForeignKey('Category',on_delete=models.CASCADE,null=True,blank=True,verbose_name='上级部门')
+      createtime = models.CharField(max_length=200,verbose_name='创建时间')
+      createuser = models.CharField(max_length=200,verbose_name='创建者')
+      connected_number = models.CharField(max_length=200,verbose_name='联系电话')
+      slug = models.SlugField(verbose_name='标签')
+      
+      def __str__(self):
+          return self.name
+
+
+# 组织机构
+class Category(MPTTModel):
+      name = models.CharField(max_length=50, unique=True,verbose_name='名称')
+      parent = TreeForeignKey('self', null=True, blank=True,on_delete=models.CASCADE, related_name='children', db_index=True,verbose_name='上级部门')
+      slug = models.SlugField(verbose_name='标签')
+    
+      class MPTTMeta:
+        order_insertion_by = ['name']
+    
+      class Meta:
+        unique_together = (('parent', 'slug',))
+        verbose_name_plural = 'categories'
+        verbose_name = '组织机构'
+    
+      def get_slug_list(self):
+        try:
+          ancestors = self.get_ancestors(include_self=True)
+        except:
+          ancestors = []
+        else:
+          ancestors = [ i.slug for i in ancestors]
+        slugs = []
+        for i in range(len(ancestors)):
+          slugs.append('/'.join(ancestors[:i+1]))
+        return slugs
+    
+      def __str__(self):
+        return self.name
+

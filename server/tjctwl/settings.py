@@ -29,7 +29,8 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
-#    
+# 'feincms',  
+# 'django_mptt_admin',
 
 INSTALLED_APPS = [
     'simpleui',
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'tjctwl',
     'AppModel',
     'corsheaders',
+    'mptt',
+    
 ]
 
 # env need pip install django-cors-headers
@@ -160,7 +163,11 @@ SIMPLEUI_CONFIG = {
         'icon': 'fab fa-dashcube',
         'models': [{
             'name': '组织机构管理',
-            'url': 'AppModel/institutioninfo/',
+            'url': 'AppModel/category',
+            'icon': 'fa fa-tags'
+        },{
+            'name': '组织机构列表',
+            'url': 'AppModel/post',
             'icon': 'fa fa-tags'
         }, {
             'name': '联网单位信息',
@@ -209,7 +216,7 @@ SIMPLEUI_CONFIG = {
             'icon': 'far fa-surprise'
         }, {
             'name': '维修保养',
-            'url': '',
+            'url': 'AppModel/post',
             'icon': 'fa fa-bell-slash'
         }]
     },{
@@ -238,3 +245,5 @@ SIMPLEUI_CONFIG = {
         }]
     }]
 }
+
+MPTT_ADMIN_LEVEL_INDENT = 20

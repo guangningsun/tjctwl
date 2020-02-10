@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 import json
 import time
-#from AppModel.models import *
+from AppModel.models import *
 from django.db.models import Avg, Count, Min, Sum
 import xlrd
 import uuid
@@ -16,7 +16,7 @@ import random
 import logging
 import requests
 import base64
-
+from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 

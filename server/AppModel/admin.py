@@ -66,7 +66,7 @@ class PatrolschemeAdmin(admin.ModelAdmin):
         ('Date information', {'fields': ['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc'], 'classes': ['collapse']}),
     ]
     list_display_links = ('scheme_name',)
-
+    list_per_page = 10
 
 class UserInfoInline(admin.TabularInline):
     model = UserInfo
@@ -205,6 +205,7 @@ class DangerrectificationAdmin(ImportExportModelAdmin):
             'danger_floor_level','danger_address_detail','danger_status','if_reject'], 'classes': ['collapse']}),
     ]
     list_display_links = ('danger_level',)
+    list_per_page = 10
     def save_model(self, request, obj, form, change):
         if request.POST:
             try:
@@ -238,6 +239,7 @@ class CompanyInfoAdmin(ImportExportModelAdmin):
         ('联网单位信息', {'fields': ['company_name','category','latitude','company_address','responsible_person','responsible_number','detectors_number','fire_brigade','fire_number'], 'classes': ['collapse']}),
     ]
     list_display_links = ('company_name',)
+    list_per_page = 10
 
 
 @admin.register(OnlineDeviceInfo)
@@ -248,6 +250,7 @@ class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
     fieldsets = [
         ('设备上线', {'fields': ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo','userinfo','lastUploadTime'], 'classes': ['collapse']}),
     ]
+    list_per_page = 10
     
     def companyinfo__responsible_person(self, obj):
         return obj.companyinfo.responsible_person
@@ -284,6 +287,7 @@ class AlarmInfoAdmin(ImportExportModelAdmin):
     fieldsets = [
         ('Date information', {'fields': ['company_name','device_sn','alarm_time','alarm_status','alarm_desc','alarm_handling'], 'classes': ['collapse']}),
     ]
+    list_per_page = 10
 
 
 # 联网单位设置
@@ -292,7 +296,7 @@ class AlarmInfoAdmin(ImportExportModelAdmin):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ['name','category','createtime','createuser','connected_number','slug']
-
+    list_per_page = 10
 
 admin.site.register(Category , MPTTModelAdmin)
 

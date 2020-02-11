@@ -3,6 +3,7 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from mptt.admin import DraggableMPTTAdmin
 from feincms.module.page.models import Page
+import datetime
 
 
 class DeviceInfo(models.Model):
@@ -121,7 +122,7 @@ class InstitutionInfo(models.Model):
 
 
 class Patrolscheme(models.Model):
-    scheme_frequency_list = (('0', u'一天'), ('1', u'一周'), ('1', u'一月'))
+    scheme_frequency_list = (('0', u'一天'), ('1', u'一周'), ('2', u'一月'))
     scheme_name = models.CharField(max_length=200,verbose_name='巡检名称')
     scheme_frequency = models.CharField(max_length=200,choices=scheme_frequency_list,verbose_name='巡检频率')
     scheme_start_time = models.DateField(verbose_name='开始时间')
@@ -136,16 +137,20 @@ class Patrolscheme(models.Model):
         return self.scheme_name
 
 
+# 隐患整改
 class Dangerrectification(models.Model):
-    danger_id = models.CharField(max_length=200,verbose_name='隐患ID')
-    danger_level = models.CharField(max_length=200,verbose_name='隐患级别')
-    danger_type = models.CharField(max_length=200,verbose_name='隐患类型')
+    danger_level_list = (('0', u'一般隐患'), ('1', u'较大隐患'), ('2', u'重大隐患'),('3', u'特别重大隐患'))
+    danger_type_list = (('0', u'消防管理'), ('1', u'消防组织'), ('2', u'人员设备'),('3', u'生产设备'))
+    danger_status_list = (('0', u'待整改'), ('1', u'整改中'), ('2', u'整改完毕'),('3', u'驳回'))
+    if_reject_list = (('0', u'是'), ('1', u'否'))
+    danger_level = models.CharField(max_length=200,choices=danger_level_list,verbose_name='隐患级别')
+    danger_type = models.CharField(max_length=200,choices=danger_type_list,verbose_name='隐患类型')
     danger_create_user = models.CharField(max_length=200,verbose_name='创建者')
     danger_floor_level = models.CharField(max_length=200,verbose_name='楼层')
     danger_address_detail = models.CharField(max_length=200,verbose_name='具体位置')
-    danger_status = models.CharField(max_length=200,verbose_name='隐患状态')
-    danger_create_time = models.CharField(max_length=200,verbose_name='创建时间')
-    if_reject = models.CharField(max_length=200,verbose_name='是否驳回')
+    danger_status = models.CharField(max_length=200,choices=danger_status_list,verbose_name='隐患状态')
+    danger_create_time = models.DateField(default=datetime.date.today,verbose_name='创建时间')
+    if_reject = models.CharField(max_length=200,choices=if_reject_list,verbose_name='是否驳回')
     class Meta:
         verbose_name = '隐患整改'
         verbose_name_plural = '隐患整改'

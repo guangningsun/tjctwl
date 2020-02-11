@@ -3,7 +3,7 @@ from django.contrib import admin
 from AppModel.models import *
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin, ExportActionModelAdmin
-import logging,json
+import logging,json,datetime
 import AppModel.aeptools as aeptools
 from django.utils.html import format_html
 from django import forms
@@ -197,13 +197,24 @@ class MappingUserinfoDeviceNameAdmin(ImportExportModelAdmin):
 
 @admin.register(Dangerrectification)
 class DangerrectificationAdmin(ImportExportModelAdmin):
-    list_display = ['danger_id','danger_level','danger_type','danger_create_user','danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject']
-    list_editable = ['danger_level','danger_type','danger_create_user','danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject']
+    list_display = ['danger_level','danger_type','danger_create_user','danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject']
+    list_editable = ['if_reject']
     search_fields =('danger_level','danger_type','danger_create_user','danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject')
     fieldsets = [
-        ('Date information', {'fields': ['danger_level','danger_type','danger_create_user',\
-            'danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject'], 'classes': ['collapse']}),
+        ('隐患整改', {'fields': ['danger_level','danger_type',\
+            'danger_floor_level','danger_address_detail','danger_status','if_reject'], 'classes': ['collapse']}),
     ]
+    list_display_links = ('danger_level',)
+    def save_model(self, request, obj, form, change):
+        if request.POST:
+            try:
+                obj.danger_create_user = request.user.username
+                # obj.danger_create_time = datetime.date.today
+            except:
+                pass
+        super().save_model(request, obj, form, change)
+
+      
 
 
 

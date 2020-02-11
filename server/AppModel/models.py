@@ -44,18 +44,11 @@ class OnlineDeviceInfo(models.Model):
     netStatus = models.CharField(max_length=200,verbose_name='信号强度')
     onlineAt = models.CharField(max_length=200,verbose_name='最后上线时间')
     offlineAt = models.CharField(max_length=200,verbose_name='最后离线时间')
-    bond_user = models.CharField(max_length=200,verbose_name='所属用户')
     deviceOnlineStatus = models.CharField(max_length=200,verbose_name='设备上线状态')
     deviceVoltageStatus = models.CharField(max_length=200,verbose_name='设备电压状态')
     lastUploadTime = models.CharField(max_length=200,verbose_name='上报时间')
-    ownerPhoneNumber = models.CharField(max_length=200,verbose_name='业主电话')
-    ownerName = models.CharField(max_length=200,verbose_name='业主姓名')
-    company_name = models.CharField(max_length=200,verbose_name='联网单位')
-    company_id = models.CharField(max_length=200,verbose_name='联网单位ID')
-    charge_person = models.CharField(max_length=200,verbose_name='安全责任人')
-    charge_phonenumber = models.CharField(max_length=200,verbose_name='责任人电话')
-    longitude_latitude = models.CharField(max_length=200,verbose_name='经纬度')
-    address_desc = models.CharField(max_length=200,verbose_name='位置描述')
+    userinfo = models.ForeignKey('UserInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='业主姓名')
+    companyinfo = models.ForeignKey('CompanyInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='联网单位')
 
     class Meta:
         verbose_name = '上线设备信息'
@@ -128,12 +121,12 @@ class InstitutionInfo(models.Model):
 
 
 class Patrolscheme(models.Model):
-    scheme_id = models.CharField(max_length=200,verbose_name='巡检ID')
+    scheme_frequency_list = (('0', u'一天'), ('1', u'一周'), ('1', u'一月'))
     scheme_name = models.CharField(max_length=200,verbose_name='巡检名称')
-    scheme_frequency = models.CharField(max_length=200,verbose_name='巡检频率')
-    scheme_start_time = models.CharField(max_length=200,verbose_name='开始时间')
-    scheme_end_time = models.CharField(max_length=200,verbose_name='结束时间')
-    scheme_devices = models.CharField(max_length=200,verbose_name='巡检设备')
+    scheme_frequency = models.CharField(max_length=200,choices=scheme_frequency_list,verbose_name='巡检频率')
+    scheme_start_time = models.DateField(verbose_name='开始时间')
+    scheme_end_time = models.DateField(verbose_name='结束时间')
+    scheme_devices = models.ForeignKey('OnlineDeviceInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='巡检设备')
     scheme_desc = models.CharField(max_length=200,verbose_name='巡检描述')
     class Meta:
         verbose_name = '巡检计划'

@@ -50,18 +50,22 @@ class UserInfoAdmin(ImportExportModelAdmin):
             device_obj = obj.device_name.get_queryset()[i]
             DeviceInfo.objects.filter(id=device_obj.id).update(isOnline='0')
         # 更新设备监控表，将用户信息和设备信息同时记录
-        OnlineDeviceInfoAdmin.save_model(request, obj, form, change)
+        try:
+            OnlineDeviceInfoAdmin.save_model(request, obj, form, change)
+        except:
+            pass
         super().save_model(request, obj, form, change)
 
 
 @admin.register(Patrolscheme)
 class PatrolschemeAdmin(admin.ModelAdmin):
-    list_display=['scheme_id','scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc']
-    list_editable = ['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc']
+    list_display=['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc']
+    #list_editable = ['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc']
     search_fields =('scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc')
     fieldsets = [
         ('Date information', {'fields': ['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc'], 'classes': ['collapse']}),
     ]
+    list_display_links = ('scheme_name',)
 
 
 class UserInfoInline(admin.TabularInline):
@@ -227,16 +231,36 @@ class CompanyInfoAdmin(ImportExportModelAdmin):
 
 @admin.register(OnlineDeviceInfo)
 class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
-    list_display = ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude']
+    list_display = ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo__address_desc','companyinfo__latitude','companyinfo__responsible_person','companyinfo__responsible_number','companyinfo','userinfo','lastUploadTime']
     #list_editable = ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude']
-    search_fields =('device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude')
+    search_fields =('device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo__address_desc','companyinfo__latitude','companyinfo__responsible_person','companyinfo__responsible_number','companyinfo','userinfo','lastUploadTime','companyinfo__latitude')
     fieldsets = [
-        ('Date information', {'fields': ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude'], 'classes': ['collapse']}),
+        ('设备上线', {'fields': ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo','userinfo','lastUploadTime'], 'classes': ['collapse']}),
     ]
- 
+    
+    def companyinfo__responsible_person(self, obj):
+        return obj.companyinfo.responsible_person
+    
+    def companyinfo__responsible_number(self, obj):
+        return obj.companyinfo.responsible_number
+    
+    def companyinfo__latitude(self, obj):
+        return obj.companyinfo.latitude
+    
+    def companyinfo__address_desc(self, obj):
+        return obj.companyinfo.company_address
+    
+    companyinfo__responsible_number.short_description ='责任人电话'
+    companyinfo__responsible_person.short_description ='安全责任人'
+    companyinfo__latitude.short_description ='经纬度'
+    companyinfo__address_desc.short_description ='单位地址'
+
     #inlines = [
     #    UserInfoInline,
     #]
+    def online(self, request, obj, form, change):
+        self.save_model(self, request, obj, form, change)
+
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
 

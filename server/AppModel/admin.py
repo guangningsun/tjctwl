@@ -58,7 +58,7 @@ class UserInfoAdmin(ImportExportModelAdmin):
 
 
 @admin.register(Patrolscheme)
-class PatrolschemeAdmin(admin.ModelAdmin):
+class PatrolschemeAdmin(ImportExportModelAdmin):
     list_display=['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc']
     #list_editable = ['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc']
     search_fields =('scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc')
@@ -210,13 +210,9 @@ class DangerrectificationAdmin(ImportExportModelAdmin):
         if request.POST:
             try:
                 obj.danger_create_user = request.user.username
-                # obj.danger_create_time = datetime.date.today
             except:
                 pass
         super().save_model(request, obj, form, change)
-
-      
-
 
 
 @admin.register(InstitutionInfo)

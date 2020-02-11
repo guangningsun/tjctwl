@@ -125,8 +125,8 @@ class Patrolscheme(models.Model):
     scheme_frequency_list = (('0', u'一天'), ('1', u'一周'), ('2', u'一月'))
     scheme_name = models.CharField(max_length=200,verbose_name='巡检名称')
     scheme_frequency = models.CharField(max_length=200,choices=scheme_frequency_list,verbose_name='巡检频率')
-    scheme_start_time = models.DateField(verbose_name='开始时间')
-    scheme_end_time = models.DateField(verbose_name='结束时间')
+    scheme_start_time = models.DateField(default=datetime.date.today,verbose_name='开始时间')
+    scheme_end_time = models.DateField(default=datetime.date.today,verbose_name='结束时间')
     scheme_devices = models.ForeignKey('OnlineDeviceInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='巡检设备')
     scheme_desc = models.CharField(max_length=200,verbose_name='巡检描述')
     class Meta:

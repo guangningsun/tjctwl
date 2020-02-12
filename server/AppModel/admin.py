@@ -228,12 +228,16 @@ class DangerrectificationAdmin(ImportExportModelAdmin):
 
 @admin.register(MaintenanceInfo)
 class MaintenanceInfoAdmin(admin.ModelAdmin):
-    list_display = ['userinfo','problem_desc','create_time','progress','problem_type','onlinedeviceinfo']
+    list_display = ['userinfo','problem_desc','create_time','progress','problem_type','onlinedeviceinfo','device_owner']
     fieldsets = [
         ('维修保养', {'fields': ['userinfo','problem_desc','progress','problem_type','onlinedeviceinfo'], 'classes': ['collapse']}),
     ]
+    def device_owner(self, obj):
+        return obj.userinfo
+    device_owner.short_description ='所属业主'
     list_display_links = ('userinfo',)
     list_per_page = 10
+    
 
 
 

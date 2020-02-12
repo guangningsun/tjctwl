@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 # 'feincms',  
 # 'django_mptt_admin',
-
+#
 INSTALLED_APPS = [
     'simpleui',
     'import_export',
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'AppModel',
     'corsheaders',
     'mptt',
-    
 ]
 
 # env need pip install django-cors-headers
@@ -247,3 +246,6 @@ SIMPLEUI_CONFIG = {
 }
 
 MPTT_ADMIN_LEVEL_INDENT = 20
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

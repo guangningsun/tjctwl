@@ -16,9 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from tjctwl import views
 from django.conf.urls import include, url
+from django.urls import path,re_path
+from django.views.static import serve
+# from django.conf.urls.static import static
+from django.conf import settings
 
+# + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+# + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^$', views.init_web),
-]
+    re_path(r'^media/(?P<path>.+)$', serve, {'document_root': settings.MEDIA_ROOT}),
+] 
  

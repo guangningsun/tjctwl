@@ -10,6 +10,8 @@ from django import forms
 from mptt.admin import MPTTModelAdmin
 from mptt.admin import DraggableMPTTAdmin
 from feincms.module.page.models import Page
+# from django.utils.safestring import mark_safe
+from django.utils.html import format_html,escape, mark_safe
 
 
 logger = logging.getLogger(__name__)
@@ -197,15 +199,25 @@ class MappingUserinfoDeviceNameAdmin(ImportExportModelAdmin):
 
 @admin.register(Dangerrectification)
 class DangerrectificationAdmin(ImportExportModelAdmin):
-    list_display = ['danger_level','danger_type','danger_create_user','danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject']
+    list_display = ['danger_level','danger_type','danger_create_user','danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject','danger_desc']
     list_editable = ['if_reject']
-    search_fields =('danger_level','danger_type','danger_create_user','danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject')
+    search_fields =('danger_level','danger_type','danger_create_user','danger_floor_level','danger_address_detail','danger_status','danger_create_time','if_reject','danger_desc')
     fieldsets = [
-        ('隐患整改', {'fields': ['danger_level','danger_type',\
-            'danger_floor_level','danger_address_detail','danger_status','if_reject'], 'classes': ['collapse']}),
+        ('隐患整改', {'fields': ['danger_image','danger_level','danger_type',\
+            'danger_floor_level','danger_address_detail','danger_status','if_reject','danger_desc'], 'classes': ['collapse']}),
     ]
     list_display_links = ('danger_level',)
+    # readonly_fields = ['image_data']
     list_per_page = 10
+    
+    # def image_data(self, obj):
+    #     return mark_safe(u'< img src="%s" width="100px" />' % obj.danger_image.url)
+        # return mark_safe('<img src="{url}" width="150px" height="150px" />').format(url = obj.danger_image.url)
+        # return format_html('<img src="{}" width="150" height="150"/>'.format(obj.danger_image.url))
+        # return u'<img src="%s" />' % escape(obj.danger_image.url)
+    # image_data.short_description = '缩略图'
+    # image_data.allow_tags = True
+
     def save_model(self, request, obj, form, change):
         if request.POST:
             try:

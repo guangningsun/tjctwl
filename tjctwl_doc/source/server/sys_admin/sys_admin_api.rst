@@ -14,6 +14,8 @@
   pip install django-simpleui
   pip install django-mptt
   pip install django-mptt-admin
+  pip install pillow
+  pip install django-imagekit
 
 - 新增设备
 

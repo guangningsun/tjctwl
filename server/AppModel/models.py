@@ -160,6 +160,16 @@ class Dangerrectification(models.Model):
         verbose_name = '隐患整改'
         verbose_name_plural = '隐患整改'
 
+class MaintenanceInfo(models.Model):
+    progress_status_list = (('0', u'保养中'), ('1', u'已完成'))
+    problem_type_list = (('0', u'电池更换'), ('1', u'设备损坏'), ('2', u'信号不良'),('3', u'人为损坏'))
+    userinfo = models.ForeignKey('UserInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='维修人员')
+    problem_desc = models.TextField(verbose_name='问题描述')
+    create_time = models.DateField(default=datetime.date.today,verbose_name='问题上报时间')
+    progress = models.CharField(max_length=200,choices=progress_status_list,verbose_name='解决状态')
+    problem_type = models.CharField(max_length=200,choices=problem_type_list,verbose_name='问题类型')
+    onlinedeviceinfo = models.ForeignKey('OnlineDeviceInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='问题设备') 
+    problem_images = models.FileField('图片', upload_to="maintenance_images")
 
 class AlarmInfo(models.Model):
     pre_handling_text = fire_rating_number = (('0', u'真实警情-小型'), \

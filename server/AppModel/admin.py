@@ -226,6 +226,16 @@ class DangerrectificationAdmin(ImportExportModelAdmin):
                 pass
         super().save_model(request, obj, form, change)
 
+@admin.register(MaintenanceInfo)
+class MaintenanceInfoAdmin(admin.ModelAdmin):
+    list_display = ['userinfo','problem_desc','create_time','progress','problem_type','onlinedeviceinfo']
+    fieldsets = [
+        ('维修保养', {'fields': ['userinfo','problem_desc','progress','problem_type','onlinedeviceinfo'], 'classes': ['collapse']}),
+    ]
+    list_display_links = ('userinfo',)
+    list_per_page = 10
+
+
 
 @admin.register(InstitutionInfo)
 class InstitutionInfoAdmin(ImportExportModelAdmin):

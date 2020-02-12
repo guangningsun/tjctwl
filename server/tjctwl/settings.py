@@ -215,7 +215,7 @@ SIMPLEUI_CONFIG = {
             'icon': 'far fa-surprise'
         }, {
             'name': '维修保养',
-            'url': '',
+            'url': 'AppModel/maintenanceinfo',
             'icon': 'fa fa-bell-slash'
         }]
     },{

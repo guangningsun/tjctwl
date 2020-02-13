@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"mytabbar { z-index: 9999; }\n",],undefined,{path:"./pages/admin_work/admin_work.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/admin_work/admin_work.wxml') } }));

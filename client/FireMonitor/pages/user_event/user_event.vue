@@ -1,10 +1,18 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
-			<block slot="content">事件</block>
-		</cu-custom>
+		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
+			<view class="cu-bar bg-gradual-dark-purple fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
+			<!-- <view class="cu-bar bg-gradual-dark-purple" style="z-index: 9999;"> -->
+				<view class="action" @tap="BackPage">
+					<text class="cuIcon-back text-white"></text>
+				</view>
+				<view class="content" :style="[{top:StatusBar + 'px'}]">
+					事件
+				</view>
+			</view>
+		</view>
 
-		<view class="box">
+		<view class="box" >
 			<view class="cu-bar bg-gradual-dark-purple search">
 				<view class="search-form radius">
 					<text class="cuIcon-search"></text>
@@ -70,7 +78,7 @@
 					</view>
 					<view class="text-black">设备</view>
 				</navigator>
-				<navigator hover-class="none" class="action">
+				<navigator hover-class="none" class="action" >
 					<view class="cuIcon-cu-image">
 						<image src="/static/tabbar/event_activate.png"></image>
 					</view>
@@ -132,6 +140,8 @@
 	export default {
 		data() {
 			return {
+				StatusBar: this.StatusBar,
+				CustomBar: this.CustomBar,
 				modalName: null,
 				startDate: '2020-02-01',
 				endDate: '2020-02-01',

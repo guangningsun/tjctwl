@@ -1,0 +1,7 @@
+
+.mytabbar {
+	z-index: 9999;
+}.card-margin {
+	margin-top: -30rpx;
+}
+

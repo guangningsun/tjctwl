@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/login/forget",
+    "pages/user_home/user_home",
+    "pages/user_event/user_event",
+    "pages/user_me/user_me",
+    "pages/admin_me/admin_me",
+    "pages/admin_home/admin_home",
+    "pages/admin_device/admin_device",
+    "pages/admin_work/admin_work",
+    "pages/admin_event/admin_event",
+    "pages/user_home/user_add_device",
+    "pages/user_home/user_add_danger",
+    "pages/user_home/user_device_detail",
+    "pages/user_home/user_modity_device",
+    "pages/user_me/about_us",
+    "pages/user_me/version_info",
+    "pages/user_me/alarm_tel",
+    "pages/user_me/my_info",
+    "pages/user_me/modify_pass",
+    "pages/admin_work/admin_work_list",
+    "pages/admin_work/admin_install",
+    "pages/admin_work/admin_reinstall"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#0081ff",
+    "navigationBarTitleText": "天津城投物联",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white"
+  },
+  "nvueCompiler": "uni-app",
+  "renderer": "auto",
+  "splashscreen": {
+    "alwaysShowBeforeRender": true,
+    "autoclose": false
+  },
+  "appname": "FireMonitor",
+  "compilerVersion": "2.5.1",
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  }
+}

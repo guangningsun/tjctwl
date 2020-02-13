@@ -5,82 +5,113 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
-		}
-        ,{
-            "path" : "pages/login/forget",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_home/user_home",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_event/user_event",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_me/user_me",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/admin_me/admin_me",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/admin_home/admin_home",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/admin_device/admin_device",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/admin_work/admin_work",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/admin_event/admin_event",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_home/user_add_device",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_home/user_add_danger",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_home/user_device_detail",
-            "style" : {
-				
+		}, {
+			"path": "pages/login/forget",
+			"style": {}
+		}, {
+			"path": "pages/user_home/user_home",
+			"style": {
+				"app-plus": {
+					"animationType": "fade-in",
+					"animationDuration": 200
+				}
 			}
-        }
-        ,{
-            "path" : "pages/user_home/user_modity_device",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_me/about_us",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_me/version_info",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_me/alarm_tel",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_me/my_info",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/user_me/modify_pass",
-            "style" : {}
-        }
-    ],
+		}, {
+			"path": "pages/user_event/user_event",
+			"style": {
+				"app-plus": {
+					"animationType": "fade-in",
+					"animationDuration": 200
+				}
+			}
+		}, {
+			"path": "pages/user_me/user_me",
+			"style": {
+				"app-plus": {
+					"animationType": "fade-in",
+					"animationDuration": 200
+				}
+			}
+		}, {
+			"path": "pages/admin_me/admin_me",
+			"style": {
+				"app-plus": {
+					"animationType": "fade-in",
+					"animationDuration": 200
+				}
+			}
+		}, {
+			"path": "pages/admin_home/admin_home",
+			"style": {
+				"app-plus": {
+					"animationType": "fade-in",
+					"animationDuration": 200
+				}
+			}
+		}, {
+			"path": "pages/admin_device/admin_device",
+			"style": {
+				"app-plus": {
+					"animationType": "fade-in",
+					"animationDuration": 200
+				}
+			}
+		}, {
+			"path": "pages/admin_work/admin_work",
+			"style": {
+				"app-plus": {
+					"animationType": "fade-in",
+					"animationDuration": 200
+				}
+			}
+		}, {
+			"path": "pages/admin_event/admin_event",
+			"style": {
+				"app-plus": {
+					"animationType": "fade-in",
+					"animationDuration": 200
+				}
+			}
+		}, {
+			"path": "pages/user_home/user_add_device",
+			"style": {}
+		}, {
+			"path": "pages/user_home/user_add_danger",
+			"style": {}
+		}, {
+			"path": "pages/user_home/user_device_detail",
+			"style": {
+
+			}
+		}, {
+			"path": "pages/user_home/user_modity_device",
+			"style": {}
+		}, {
+			"path": "pages/user_me/about_us",
+			"style": {}
+		}, {
+			"path": "pages/user_me/version_info",
+			"style": {}
+		}, {
+			"path": "pages/user_me/alarm_tel",
+			"style": {}
+		}, {
+			"path": "pages/user_me/my_info",
+			"style": {}
+		}, {
+			"path": "pages/user_me/modify_pass",
+			"style": {}
+		}, {
+			"path": "pages/admin_work/admin_work_list",
+			"style": {}
+		}, {
+			"path": "pages/admin_work/admin_install",
+			"style": {}
+		}, {
+			"path": "pages/admin_work/admin_reinstall",
+			"style": {}
+		}
+	],
 	"globalStyle": {
 		"mp-alipay": {
 			/* 支付宝小程序特有相关 */
@@ -91,6 +122,14 @@
 		"navigationBarTitleText": "天津城投物联",
 		"navigationStyle": "custom",
 		"navigationBarTextStyle": "white"
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [{
+			"name": "", //模式名称
+			"path": "", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
 	},
 	"usingComponts": true
 }

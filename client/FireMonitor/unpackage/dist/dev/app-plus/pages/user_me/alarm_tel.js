@@ -1,0 +1,2 @@
+setCssToHead([".",[1],"mytabbar { z-index: 9999; }\n.",[1],"card-margin { margin-top: ",[0,-30],"; }\n",],undefined,{path:"./pages/user_me/alarm_tel.wxss"})();
+document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/user_me/alarm_tel.wxml') } }));

@@ -1,7 +1,7 @@
 <template>
 	<view>
-<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
-			<block slot="content">首页˚</block>
+		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
+			<block slot="content">首页</block>
 		</cu-custom>
 		<view class="box">
 
@@ -15,10 +15,10 @@
 					<view class="text-light-purple">首页</view>
 				</navigator>
 				<navigator hover-class="none" :url="'../admin_device/admin_device'" class="action">
-				    <view class="cuIcon-cu-image">
-				        <image src="/static/tabbar/device_normal.png"></image>
-				    </view>
-				    <view class="text-black">设备</view>
+					<view class="cuIcon-cu-image">
+						<image src="/static/tabbar/device_normal.png"></image>
+					</view>
+					<view class="text-black">设备</view>
 				</navigator>
 				<navigator hover-class="none" :url="'../admin_work/admin_work'" class="action">
 					<view class="cuIcon-cu-image">
@@ -39,7 +39,7 @@
 					<view class="text-blackb">我的</view>
 				</navigator>
 			</view>
-			
+
 		</view>
 	</view>
 </template>

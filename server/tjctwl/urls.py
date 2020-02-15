@@ -27,6 +27,8 @@ urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^$', views.init_web),
     re_path(r'^media/(?P<path>.+)$', serve, {'document_root': settings.MEDIA_ROOT}),
+
     url(r'^user_login/', views.user_login),
+    url(r'^reset_password/', views.reset_password),
 ] 
  

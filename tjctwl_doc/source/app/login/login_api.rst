@@ -32,7 +32,7 @@
         "user_age": "30"
         }
     }
-    
+
     失败后返回如下数据
 
     {
@@ -61,3 +61,9 @@
         old_password - 旧密码
         new_password - 新密码
     返回值：
+    
+
+    {
+    "error": 0,
+    "msg": "reset password success"
+    }

@@ -52,6 +52,30 @@ def _generate_json_from_models(response_list):
 #                      content_type="application/json")
 
 
+
+def user_login(request):
+    # import pdb;pdb.set_trace()
+    if request.POST:
+        context = {}
+        login_username = request.POST['username']
+        login_password = request.POST['password']
+        try:
+            if login_username:
+                user_info = UserInfo.objects.get(username=login_username)
+            if user_info is not None:
+                if user_info.password == login_password:
+                    dict_tmp = {}
+                    dict_tmp.update(user_info.__dict__)
+                    dict_tmp.pop("_state", None)
+                    res_data = {"error": 0, "msg": dict_tmp}
+                    return _generate_json_from_models(res_data)
+
+                else:
+                    return _generate_json_message(False, "username or password doesn`t match")
+        except:
+            return _generate_json_message(False, "login false")
+
+
 def remove_payment_class(request):
     context = {}
     try:

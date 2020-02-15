@@ -1,7 +1,5 @@
 {
   "animationType": "fade-in",
   "animationDuration": 200,
-  "usingComponents": {
-    "cu-custom": "/colorui/components/cu-custom"
-  }
+  "usingComponents": {}
 }

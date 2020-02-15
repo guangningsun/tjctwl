@@ -33,6 +33,10 @@
 						<input placeholder="请输入业主姓名" name="input"></input>
 					</view>
 					<view class="cu-form-group">
+						<view class="title">业主电话</view>
+						<input placeholder="请输入业主电话" name="input"></input>
+					</view>
+					<view class="cu-form-group">
 						<view class="title">地址</view>
 						<input placeholder="设备所在的省市区" name="input"></input>
 					</view>
@@ -45,28 +49,41 @@
 						<input placeholder="设备的安装位置" name="input"></input>
 					</view>
 					<view class="cu-form-group">
-						<view class="title">地图位置</view>
-
+						<view>
+							<view class="title">地图位置</view>
+							<map :latitude="latitude" :longitude="longitude" :markers="covers"></map>
+						</view>
 					</view>
-
+					<view class="cu-bar bg-white margin-top solid-top">
+						<view class="action">
+							安装照片
+						</view>
+						<view class="action">
+							{{imgList.length}}/4
+						</view>
+					</view>
+					<view class="cu-form-group margin-bottom-sm">
+						<view class="grid col-4 grid-square flex-sub">
+							<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+								<image :src="imgList[index]" mode="aspectFill"></image>
+								<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
+									<text class='cuIcon-close'></text>
+								</view>
+							</view>
+							<view class="solids" @tap="ChooseImage" v-if="imgList.length<4">
+								<text class='cuIcon-cameraadd'></text>
+							</view>
+						</view>
+					</view>
 				</form>
 			</view>
 
 			<view class="justify-between bottom-box">
 				<view class="padding flex flex-direction">
-					<button class="cu-btn bg-dark-purple lg" @click="onAddDevice">添加</button>
+					<button class="cu-btn bg-dark-purple lg" @tap="onAddDevice">添加</button>
 				</view>
 			</view>
 		</view>
-<!-- 		<uni-popup :show="type === 'showpopup'" mode="fixed" @hidePopup="togglePopup('')">
-			<view class="popup-view">
-				<text class="popup-title">需要用户授权位置权限</text>
-				<view class="uni-flex popup-buttons">
-					<button class="uni-flex-item" type="primary" open-type="openSetting" @tap="openSetting">设置</button>
-					<button class="uni-flex-item" @tap="togglePopup('')">取消</button>
-				</view>
-			</view>
-		</uni-popup> -->
 
 		<!-- 申请权限modal -->
 		<view class="cu-modal bottom-modal" :class="modalName=='PermissionModal'?'show':''">
@@ -102,29 +119,65 @@
 		data() {
 			return {
 				imgList: ['111', '222'],
-				title: 'getLocation',
+				modalName: null,
 				hasLocation: false,
-				location: {},
-				type: ''
+				latitude: 39.909,
+				longitude: 116.39742,
+				covers: [{
+					latitude: this.latitude,
+					longitude: this.longitude,
+					iconPath: '/../../static/pin.png'
+				}],
+				imgList: []
 			}
 		},
 		onReady() {
 			this.getLocation();
 		},
 		methods: {
-			togglePopup(type) {
-				this.type = type;
+			showModal(e) {
+				this.modalName = 'PermissionModal'
 			},
-			showConfirm() {
-				this.type = 'showpopup';
+			hideModal(e) {
+				this.modalName = null
 			},
-			hideConfirm() {
-				this.type = '';
+			DelImg(e) {
+				uni.showModal({
+					title: '删除照片',
+					content: '确定要删除这张照片吗？',
+					cancelText: '否',
+					confirmText: '是',
+					success: res => {
+						if (res.confirm) {
+							this.imgList.splice(e.currentTarget.dataset.index, 1)
+						}
+					}
+				})
 			},
-			async getLocation() {
-				uni.showToast({
-					title: "getLocation"
+			ChooseImage() {
+				uni.chooseImage({
+					count: 4, //默认9
+					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'],
+					success: (res) => {
+						if (this.imgList.length != 0) {
+							this.imgList = this.imgList.concat(res.tempFilePaths)
+						} else {
+							this.imgList = res.tempFilePaths
+						}
+					}
 				});
+			},
+			// togglePopup(type) {
+			// 	this.type = type;
+			// },
+			// showConfirm() {
+			// 	this.type = 'showpopup';
+			// },
+			// hideConfirm() {
+			// 	this.type = '';
+			// },
+			async getLocation() {
 				// #ifdef APP-PLUS
 				let status = await this.checkPermission();
 				if (status !== 1) {
@@ -146,6 +199,11 @@
 					success: (res) => {
 						this.hasLocation = true;
 						this.location = formatLocation(res.longitude, res.latitude);
+						this.latitude = res.latitude;
+						this.longitude = res.longitude;
+						this.covers[0].latitude = res.latitude;
+						this.covers[0].longitude = res.longitude;
+						this.covers[0].iconPath = '/../../static/pin.png';
 					},
 					fail: (err) => {
 						// #ifdef MP-BAIDU

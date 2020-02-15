@@ -2,17 +2,13 @@
 	<view>
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar bg-gradual-dark-purple fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
-			<!-- <view class="cu-bar bg-gradual-dark-purple" style="z-index: 9999;"> -->
-				<view class="action" @tap="BackPage">
-					<text class="cuIcon-back text-white"></text>
-				</view>
 				<view class="content" :style="[{top:StatusBar + 'px'}]">
 					事件
 				</view>
 			</view>
 		</view>
 
-		<view class="box" >
+		<view class="box">
 			<view class="cu-bar bg-gradual-dark-purple search">
 				<view class="search-form radius">
 					<text class="cuIcon-search"></text>
@@ -78,7 +74,7 @@
 					</view>
 					<view class="text-black">设备</view>
 				</navigator>
-				<navigator hover-class="none" class="action" >
+				<navigator hover-class="none" class="action">
 					<view class="cuIcon-cu-image">
 						<image src="/static/tabbar/event_activate.png"></image>
 					</view>
@@ -98,7 +94,7 @@
 			<view class="cu-dialog basis-lg" @tap.stop="" :style="[{top:CustomBar+'px',height:'calc(100vh - ' + CustomBar + 'px)'}]">
 				<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']">
 					<view class="cu-item" :class="menuArrow?'arrow':''">
-						<button class="cu-btn content" open-type="contact" @tap="onStartDate">
+						<button class="cu-btn content" @tap="onStartDate" disabled="disable">
 							<text class="cuIcon-btn text-olive"></text>
 							<text class="text-black">起始日期</text>
 						</button>
@@ -113,7 +109,7 @@
 
 					</view>
 					<view class="cu-item" :class="menuArrow?'arrow':''" @tap="onEndDate">
-						<button class="cu-btn content" open-type="contact">
+						<button class="cu-btn content">
 							<text class="cuIcon-btn text-light-orange"></text>
 							<text class="text-black">结束日期</text>
 						</button>
@@ -177,7 +173,7 @@
 				this.showModal(e);
 			},
 			onDateSearch() {
-				
+
 			}
 
 		}

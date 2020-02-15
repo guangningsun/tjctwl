@@ -82,7 +82,7 @@
         }
       }
     },
-    "arguments": "{\"id\":1,\"name\":\"pages/user_event/user_event\",\"pathName\":\"pages/user_event/user_event\",\"query\":\"\"}",
+    "arguments": "{\"id\":1,\"name\":\"pages/admin_work/admin_install\",\"pathName\":\"pages/admin_work/admin_install\",\"query\":\"\"}",
     "allowsInlineMediaPlayback": true,
     "uni-app": {
       "compilerVersion": "2.5.1",

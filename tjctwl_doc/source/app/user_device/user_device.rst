@@ -14,7 +14,7 @@
         get_user_device_index_info
 
         参数：
-
+          user_id - 用户id
         返回值：
           device_total_num - 设备总数
           normal_device_num - 正常设备个数

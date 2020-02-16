@@ -21,7 +21,8 @@
     "pages/user_me/modify_pass",
     "pages/admin_work/admin_work_list",
     "pages/admin_work/admin_install",
-    "pages/admin_work/admin_reinstall"
+    "pages/admin_work/admin_reinstall",
+    "pages/admin_work/admin_install_detail"
   ],
   "window": {
     "navigationBarBackgroundColor": "#0081ff",

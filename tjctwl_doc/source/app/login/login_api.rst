@@ -46,6 +46,7 @@
 
     reset_password
     参数：
+        user_id - 用户id
         old_password - 旧密码
         new_password - 新密码
     返回值：

@@ -7,12 +7,12 @@
 
         <view class="cu-form-group margin-top">
             <view class="title">新密码</view>
-            <input placeholder="请输入新密码" name="input"></input>
+            <input placeholder="请输入新密码" name="input" v-model="new_pass"></input>
         </view>
 
         <view class="cu-form-group">
             <view class="title">新密码</view>
-            <input placeholder="请再次输入新密码" name="input"></input>
+            <input placeholder="请再次输入新密码" name="input" v-mo></input>
         </view>
     </form>
 
@@ -21,7 +21,7 @@
         </view>
 
         <view class="padding flex flex-direction">
-            <button class="cu-btn bg-dark-purple lg">确认修改</button>
+            <button class="cu-btn bg-dark-purple lg" @tap="onModifyPass">确认修改</button>
         </view>
 
 	</view>

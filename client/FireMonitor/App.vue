@@ -1,6 +1,16 @@
 <script>
 	import Vue from 'vue'
 	export default {
+		globalData: {
+			user_id:'',
+			domain_port: 'http://114.115.136.120:8010/',
+			
+			// API 接口
+			api_login: 'user_login/',
+			api_reset_pass: 'reset_password/',
+			api_get_user_index: 'get_user_device_index_info/'
+		},
+
 		onLaunch: function() {
 			uni.getSystemInfo({
 				success: function(e) {
@@ -111,7 +121,6 @@
 		onHide: function() {
 			console.log('App Hide')
 		}
-
 	}
 </script>
 

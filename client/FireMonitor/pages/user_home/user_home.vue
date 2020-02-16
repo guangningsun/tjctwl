@@ -292,6 +292,59 @@
 				]
 			}
 		},
+		onLoad: function(options) {
+			let user_id = getApp().globalData.user_id;
+			if (this.isEmpty(user_id)) {
+				user_id = uni.getStorageSync('key_user_id');
+			}
+			uni.request({
+				url: getApp().globalData.domain_port + getApp().globalData.api_get_user_index,
+				method: "POST",
+				dataType: 'json',
+				header: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				data: {
+					user_id: getApp().globalData.user_id
+				},
+				success: res => {
+			        if (res.data.error === 0) {
+						let rspData = res.data.msg;
+			            let user_type = rspData.user_permission;
+						this.saveUserData(rspData);
+						// console.log('phone:' + uni.getStorageSync('key_phone_number'));
+			            // 管理员跳转
+			            if(user_type === '0'){
+			                uni.navigateTo({
+			                    url: "../admin_home/admin_home",
+			                });
+			            }
+			            // 普通用户跳转
+			            else if(user_type === '1'){
+			                uni.navigateTo({
+			                    url: "../user_home/user_home",
+			                });
+			            }
+			        }
+				},
+				fail: (err) => {
+					console.log('login failed', err);
+					uni.showToast({
+						title:'登录失败:' + err,
+						icon:'none',
+					})
+				},
+				complete: (rsp) => {
+					console.log('complete');
+					if(rsp.data.error === 1){
+						console.log('not match');
+						if(rsp.data.msg.indexOf('doesn`t match') != -1){
+							this.showToast('用户名或密码不正确，\n 请核实后输入')
+						}
+					}
+				}
+			});
+		},
 		methods: {
 			onClickAddDevice() {
 				uni.navigateTo({
@@ -302,7 +355,8 @@
 				uni.navigateTo({
 					url: 'user_add_danger'
 				});
-			}
+			},
+			
 		}
 	}
 </script>

@@ -270,7 +270,7 @@ class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
     #list_editable = ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude']
     search_fields =('device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo__address_desc','companyinfo__latitude','companyinfo__responsible_person','companyinfo__responsible_number','companyinfo','userinfo','lastUploadTime','companyinfo__latitude')
     fieldsets = [
-        ('设备上线', {'fields': ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo','userinfo','lastUploadTime'], 'classes': ['collapse']}),
+        ('设备上线', {'fields': ['device_name','device_sn','companyinfo','userinfo'], 'classes': ['collapse']}),
     ]
     list_per_page = 10
     

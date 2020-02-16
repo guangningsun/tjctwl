@@ -5,28 +5,40 @@
 登录 API
 ^^^^^^^^^^^^
 
-- 获取用户类型
-
-::
-
-   get_user_type
-
-   参数：
-       user_id - 用户ID
-   返回值：
-       user_type: “0” - 管理员
-                  “1” - 普通用户
-
-- 获取用户类型
+- 登录
 
 ::
 
     user_login
 
     参数：
-        user_id - 用户ID
-        pass - 登录密码
+        username - 用户名
+        password - 登录密码
     返回值：
+    成功后返回如下数据
+
+    {
+    "error": 0,
+    "msg": {
+        "id": "22",
+        "login_name": "mm",
+        "username": "mm",
+        "password": "mm",
+        "user_permission": "0",
+        "phone_number": "122222222",
+        "create_time": "11111",
+        "description": "11111",
+        "user_sex": "男",
+        "user_age": "30"
+        }
+    }
+
+    失败后返回如下数据
+
+    {
+        "error": 1,
+        "msg": "login false"
+    }
 
 - 用户登出
 
@@ -50,3 +62,9 @@
         old_password - 旧密码
         new_password - 新密码
     返回值：
+    
+
+    {
+    "error": 0,
+    "msg": "reset password success"
+    }

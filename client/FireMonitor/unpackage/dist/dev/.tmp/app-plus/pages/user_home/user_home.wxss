@@ -21,7 +21,6 @@
 }
 .centerStatus {
 	border-radius: 1600rpx;
-	background-color: #AAE604;
 	padding-left: 44rpx;
 	padding-right: 44rpx;
 	padding-top: 52rpx;

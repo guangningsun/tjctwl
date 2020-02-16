@@ -63,13 +63,11 @@
 				}
 			},
 			failCallback(err) {
-				console.log('login failed', err);
 				this.showToast('登录失败:' + err)
 			},
 			completeCallback (rsp) {
-				console.log('complete');
 				if (rsp.data.error === 1) {
-					console.log('not match');
+					console.log('login not match');
 					if (rsp.data.msg.indexOf('doesn`t match') != -1) {
 						getApp().showToast('用户名或密码不正确，\n 请核实后输入')
 					}

@@ -7,7 +7,8 @@
 			<view class="cu-card">
 				<view class="cu-item shadow shadow-lg shadow-blur bg-gradual-dark-purple2 text-black">
 					<view class="padding cf">
-						<image class="fl" style="width: 40upx;height: 40upx; margin-right: 15upx; margin-top: 10upx;" src="/static/home/user_home_device.png"> </image>
+						<img class="fl" style="width: 40upx;height: 40upx; margin-right: 15upx; margin-top: 10upx;" src="/static/home/user_home_device.png">
+						</img>
 						<view class="fl text-white text-lg" style="margin-right: 12upx; margin-top: 8upx;">
 							总设备数
 						</view>
@@ -15,19 +16,19 @@
 							{{total_device_num}}
 						</view>
 						<view class="fr">
-							<image @click="onClickAddDevice" style="width: 55upx;height: 55upx; margin-right: 15upx;" src="/static/home/add_device.png"></image>
-							<image @click="onClickAddDanger" style="width: 55upx;height: 55upx;" src="/static/home/add_danger.png"></image>
+							<img @click="onClickAddDevice" style="width: 55upx;height: 55upx; margin-right: 15upx;" src="/static/home/add_device.png"></img>
+							<img @click="onClickAddDanger" style="width: 55upx;height: 55upx;" src="/static/home/add_danger.png"></img>
 						</view>
 					</view>
 
 					<view class="flex justify-center">
-						<view class="centerStatus text-xl">正常</view>
+						<view class="centerStatus text-xl" :style="[{backgroundColor:currentSelectBgColor}]">{{current_device_list_name}}</view>
 					</view>
 
 					<view class="flex" style="padding-bottom: 25upx;">
 
-						<view class="flex-sub justify-center text-center solid-right line-white">
-							<image class="device-icon" src="/static/home/normal.png"></image>
+						<view class="flex-sub justify-center text-center solid-right line-white" @tap="onSelectNormal">
+							<img class="device-icon" src="/static/home/normal.png"></img>
 							<view class="text-light-green">
 								正常
 							</view>
@@ -36,8 +37,8 @@
 							</view>
 						</view>
 
-						<view class="flex-sub justify-center text-center solid-right line-white">
-							<image class="device-icon" src="/static/home/offline.png"></image>
+						<view class="flex-sub justify-center text-center solid-right line-white" @tap="onSelectOffline">
+							<img class="device-icon" src="/static/home/offline.png"></img>
 							<view class="text-gray">
 								离线
 							</view>
@@ -46,8 +47,8 @@
 							</view>
 						</view>
 
-						<view class="flex-sub justify-center text-center solid-right line-white">
-							<image class="device-icon" src="/static/home/alert2.png"></image>
+						<view class="flex-sub justify-center text-center solid-right line-white" @tap="onSelectAlert">
+							<img class="device-icon" src="/static/home/alert2.png"></img>
 							<view class="text-light-red">
 								报警
 							</view>
@@ -56,8 +57,8 @@
 							</view>
 						</view>
 
-						<view class="flex-sub justify-center text-center line-white">
-							<image class="device-icon" src="/static/home/break_down.png"></image>
+						<view class="flex-sub justify-center text-center line-white" @tap="onSelectBreakdown">
+							<img class="device-icon" src="/static/home/break_down.png"></img>
 							<view class="text-light-orange">
 								故障
 							</view>
@@ -73,13 +74,8 @@
 			<view class="cu-card">
 				<view class="solids text-black margin-bottom-sm" style="background-color: #FFFFFF; margin-top: -15upx;">
 					<view class="cf" style="padding: 22upx;">
-						<image class="fl" style="width: 42upx;height: 42upx; margin-right: 15upx; margin-top: 10upx; " src="/static/home/notice.png"></image>
+						<img class="fl" style="width: 42upx;height: 42upx; margin-right: 15upx; margin-top: 10upx; " src="/static/home/notice.png"></img>
 						<view class="fl text-lg text-dark-orange" style="margin-right: 12upx; margin-top: 12upx;">
-							<!-- <swiper vertical="true" autoplay="true" circular="true" interval="3000">
-								<swiper-item v-for="(item, index) in msg" :key="index">
-									<navigator class="text-black">{{item}}</navigator>
-								</swiper-item>
-							</swiper> -->
 							test
 						</view>
 					</view>
@@ -87,162 +83,239 @@
 			</view>
 
 			<!-- 设备情况卡片 正常 -->
-			<view class="cu-card">
-				<view class="cu-item list-item">
+			<view class="cu-card" v-show="shouldShowNormal" v-for="(item,index) in normal_device_list" :key="index">
+				<view class="cu-item list-item solid" style="background-color: #ebf5db; margin-top: 1upx;">
 					<view class="flex">
 						<view class="flex-twice padding-sm" style="font-size: 26upx;">
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备编码:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.code}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备名称:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.name}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备型号:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.model}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									地址:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.address}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									安装位置:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.location}}
+								</view>
 							</view>
 						</view>
 						<view class="flex-sub">
-							<view class="flex align-start padding-sm">
-								<image style="width: 30upx;height: 30upx; margin-right: 15upx; margin-top: 5upx;" src="/static/home/signal.png"></image>
-								<view class="cu-tag radius bg-gradual-green text-xs" style="margin-right: 10upx; padding: 8upx;">正常</view>
-								<image style="width: 55upx;height: 55upx; margin-right: 10upx;" src="/static/home/battery.png"></image>
-								<view class="cu-tag radius line-black text-xs" style="padding: 3upx;">100%</view>
+							<view class="flex align-center padding-sm">
+								<img style="width: 30upx;height: 30upx; margin-right: 15upx; margin-top: 5upx;" src="/static/home/signal.png"></img>
+								<view class="cu-tag radius bg-gradual-green text-xs" style="margin-right: 10upx; padding: 8upx;">{{item.signal}}</view>
+								<img style="width: 55upx;height: 55upx; margin-right: 10upx;" src="/static/home/battery.png"></img>
+								<view class="cu-tag radius line-black text-xs text-bold" style="padding: 3upx;">{{item.battery}}</view>
 							</view>
 
-							<image class="margin-left-xl" src="../../static/tabbar/device_normal.png" style="width: 150upx; height: 150upx;"></image>
-
+							<img class="margin-left-xl" :src="item.image" :onerror="default_img" style="width: 150upx; height: 150upx;"></img>
 						</view>
 					</view>
 				</view>
 			</view>
 
 			<!-- 设备情况卡片 离线 -->
-			<view class="cu-card">
-				<view class="cu-item list-item" style="background-color: #DBD8D8;">
+			<view class="cu-card" v-show="shouldShowOffline" v-for="(item,index) in offline_device_list" :key="index">
+				<view class="cu-item list-item solid" style="background-color: #DBD8D8; margin-top: 1upx;">
 					<view class="flex">
 						<view class="flex-twice padding-sm" style="font-size: 26upx;">
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备编码:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.code}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备名称:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.name}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备型号:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.model}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									地址:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.address}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									安装位置:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.location}}
+								</view>
 							</view>
 						</view>
 						<view class="flex-sub">
-							<view class="flex align-start padding-sm">
-								<image style="width: 30upx;height: 30upx; margin-right: 15upx; margin-top: 5upx;" src="/static/home/signal.png"></image>
-								<view class="cu-tag radius bg-grey text-xs" style="margin-right: 10upx; padding: 8upx;">离线</view>
+							<view class="flex align-center justify-end padding-sm">
+								<img style="width: 30upx;height: 30upx; margin-right: 15upx; margin-top: 5upx;" src="/static/home/signal.png"></img>
+								<view class="cu-tag radius bg-grey text-xs" style="margin-right: 10upx; padding: 8upx;">{{item.signal}}</view>
 							</view>
-
-							<image class="margin-left-xl" src="../../static/tabbar/device_normal.png" style="width: 150upx; height: 150upx;"></image>
-
+							<img class="margin-left-xl margin-right-xl" :src="item.image" :onerror="default_img" style="width: 150upx; height: 150upx;"></img>
 						</view>
 					</view>
 				</view>
 			</view>
-			
+
 			<!-- 设备情况卡片 报警 -->
-			<view class="cu-card">
-				<view class="cu-item list-item" style="background-color: #FBE4DF;">
+			<view class="cu-card" v-show="shouldShowAlert" v-for="(item,index) in alert_device_list" :key="index">
+				<view class="cu-item list-item solid" style="background-color: #FBE4DF;margin-top: 1upx;">
 					<view class="flex">
 						<view class="flex-twice padding-sm" style="font-size: 26upx;">
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备编码:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.code}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备名称:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.name}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备型号:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.model}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									地址:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.address}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									安装位置:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.location}}
+								</view>
 							</view>
 						</view>
 						<view class="flex-sub">
-							<view class="flex align-end padding-sm">
+							<view class="flex align-center padding-sm">
 								<image style="width: 30upx;height: 30upx; margin-right: 15upx; margin-top: 5upx;" src="/static/home/signal.png"></image>
-								<view class="cu-tag radius bg-dark-red text-xs" style="margin-right: 10upx; padding: 8upx;">报警</view>
+								<view class="cu-tag radius bg-dark-red text-xs" style="margin-right: 10upx; padding: 8upx;">{{item.signal}}</view>
 								<image style="width: 55upx;height: 55upx; margin-right: 10upx;" src="/static/home/battery.png"></image>
-								<view class="cu-tag radius line-black text-xs" style="padding: 3upx;">100%</view>
+								<view class="cu-tag radius line-black text-xs text-bold" style="padding: 3upx;">{{item.battery}}</view>
 							</view>
-			
-							<image class="margin-left-xl" src="../../static/tabbar/device_normal.png" style="width: 150upx; height: 150upx;"></image>
-			
+
+							<img class="margin-left-xl margin-right-xl" :src="item.image" :onerror="default_img" style="width: 150upx; height: 150upx;"></img>
+
 						</view>
 					</view>
 				</view>
 			</view>
-			
+
 			<!-- 设备情况卡片 故障 -->
-			<view class="cu-card">
-				<view class="cu-item list-item" style="background-color: #FBEFDF;">
+			<view class="cu-card" v-show="shouldShowBreakdown" v-for="(item,index) in breakdown_device_list" :key="index">
+				<view class="cu-item list-item solid" style="background-color: #FBEFDF;margin-top: 1upx;">
 					<view class="flex">
 						<view class="flex-twice padding-sm" style="font-size: 26upx;">
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备编码:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.code}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备名称:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.name}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									设备型号:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.model}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									地址:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.address}}
+								</view>
 							</view>
 							<view class="flex align-center">
-								<view class="text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">设备编码:</view>
-								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">xxxxxxxxxx</view>
+								<view class="text-right text-black margin-top-sm" style="width: 120upx;font-weight: bold; margin-right: 5upx;">
+									安装位置:
+								</view>
+								<view class="text-black margin-top-sm text-cut" style="width: 250upx;">
+									{{item.location}}
+								</view>
 							</view>
 						</view>
 						<view class="flex-sub">
-							<view class="flex align-end padding-sm">
+							<view class="flex align-center padding-sm">
 								<image style="width: 30upx;height: 30upx; margin-right: 15upx; margin-top: 5upx;" src="/static/home/signal.png"></image>
-								<view class="cu-tag radius bg-orange2 text-xs" style="margin-right: 10upx; padding: 8upx;">故障</view>
+								<view class="cu-tag radius bg-orange2 text-xs" style="margin-right: 10upx; padding: 8upx;">{{item.signal}}</view>
 								<image style="width: 55upx;height: 55upx; margin-right: 10upx;" src="/static/home/battery.png"></image>
-								<view class="cu-tag radius line-black text-xs" style="padding: 3upx;">100%</view>
+								<view class="cu-tag radius line-black text-xs text-bold" style="padding: 3upx;">{{item.battery}}</view>
 							</view>
-			
-							<image class="margin-left-xl" src="../../static/tabbar/device_normal.png" style="width: 150upx; height: 150upx;"></image>
-			
+
+							<img class="margin-left-xl margin-right-xl" :src="item.image" :onerror="default_img" style="width: 150upx; height: 150upx;"></img>
+
 						</view>
 					</view>
 				</view>
@@ -279,17 +352,111 @@
 	export default {
 		data() {
 			return {
+				shouldShowNormal: true,
+				shouldShowOffline: false,
+				shouldShowAlert: false,
+				shouldShowBreakdown: false,
+
 				total_device_num: "0",
 				normal_device_num: "0",
 				breakdown_device_num: "0",
 				alert_device_num: "0",
 				offline_device_num: "0",
 
+				current_device_list_name: '正常',
+				currentSelectBgColor: '#AAE604',
+
+				normal_device_list: [{
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '正常',
+					battery: '100%',
+					image: 'ABC123'
+				}, {
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '正常',
+					battery: '100%',
+					image: 'ABC123'
+				}, {
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '正常',
+					battery: '100%',
+					image: 'ABC123'
+				}],
+				offline_device_list: [{
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '离线',
+					image: 'ABC123'
+				}, {
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '离线',
+					image: 'ABC123'
+				}],
+				alert_device_list: [{
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '报警',
+					battery: '100%',
+					image: 'ABC123'
+				}, {
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '报警',
+					battery: '100%',
+					image: 'ABC123'
+				}],
+				breakdown_device_list: [{
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '故障',
+					battery: '100%',
+					image: 'ABC123'
+				}, {
+					code: '123',
+					name: 'AAAAA',
+					model: 'ABC123',
+					address: '乌托邦',
+					location: '南天门',
+					signal: '报警',
+					battery: '100%',
+					image: 'ABC123'
+				}],
+
 				msg: [
 					'测试滚动消息1',
 					'测试滚动消息2',
 					'测试滚动消息3',
-				]
+				],
+
+				default_img: 'this.src="' + require('../../static/default_device_img.png') + '"',
 			}
 		},
 		onLoad: function(options) {
@@ -297,53 +464,12 @@
 			if (this.isEmpty(user_id)) {
 				user_id = uni.getStorageSync('key_user_id');
 			}
-			uni.request({
-				url: getApp().globalData.domain_port + getApp().globalData.api_get_user_index,
-				method: "POST",
-				dataType: 'json',
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				data: {
-					user_id: getApp().globalData.user_id
-				},
-				success: res => {
-			        if (res.data.error === 0) {
-						let rspData = res.data.msg;
-			            let user_type = rspData.user_permission;
-						this.saveUserData(rspData);
-						// console.log('phone:' + uni.getStorageSync('key_phone_number'));
-			            // 管理员跳转
-			            if(user_type === '0'){
-			                uni.navigateTo({
-			                    url: "../admin_home/admin_home",
-			                });
-			            }
-			            // 普通用户跳转
-			            else if(user_type === '1'){
-			                uni.navigateTo({
-			                    url: "../user_home/user_home",
-			                });
-			            }
-			        }
-				},
-				fail: (err) => {
-					console.log('login failed', err);
-					uni.showToast({
-						title:'登录失败:' + err,
-						icon:'none',
-					})
-				},
-				complete: (rsp) => {
-					console.log('complete');
-					if(rsp.data.error === 1){
-						console.log('not match');
-						if(rsp.data.msg.indexOf('doesn`t match') != -1){
-							this.showToast('用户名或密码不正确，\n 请核实后输入')
-						}
-					}
-				}
-			});
+			let params = {
+				username: this.user_name,
+				password: this.user_pwd,
+				user_id: user_id
+			};
+			this.request(getApp().globalData.api_get_user_index, params, this.successCallback, this.failCallback, this.completeCallback);
 		},
 		methods: {
 			onClickAddDevice() {
@@ -356,7 +482,65 @@
 					url: 'user_add_danger'
 				});
 			},
-			
+
+			successCallback(rsp) {
+				if (rsp.data.error === 0) {
+					let rspData = res.data.msg;
+					this.total_device_num = rspData.total_device_num;
+					this.normal_device_num = rspData.normal_device_num;
+					this.breakdown_device_num = rspData.breakdown_device_num;
+					this.alert_device_num = rspData.alert_device_num;
+					this.offline_device_num = rspData.offline_device_num;
+					this.normal_device_list = rspData.normal_device_list;
+					this.offline_device_list = rspData.offline_device_list;
+					this.alert_device_list = rspData.alert_device_list;
+					this.breakdown_device_list = rspData.breakdown_device_list;
+				}
+			},
+			failCallback(err) {
+				console.log('api_get_user_index failed', err);
+			},
+			completeCallback(rsp) {},
+
+			onSelectNormal() {
+				this.current_device_list_name = '正常';
+				this.currentSelectBgColor = '#AAE604';
+
+				this.shouldShowNormal = true;
+				this.shouldShowOffline = false;
+				this.shouldShowAlert = false;
+				this.shouldShowBreakdown = false;
+			},
+			onSelectOffline() {
+				this.current_device_list_name = '离线';
+				this.currentSelectBgColor = '#939393';
+
+				this.shouldShowNormal = false;
+				this.shouldShowOffline = true;
+				this.shouldShowAlert = false;
+				this.shouldShowBreakdown = false;
+			},
+			onSelectAlert() {
+				this.current_device_list_name = '报警';
+				this.currentSelectBgColor = '#FF6B6B';
+
+				this.shouldShowNormal = false;
+				this.shouldShowOffline = false;
+				this.shouldShowAlert = true;
+				this.shouldShowBreakdown = false;
+			},
+			onSelectBreakdown() {
+				this.current_device_list_name = '故障';
+				this.currentSelectBgColor = '#F9A043';
+
+				this.shouldShowNormal = false;
+				this.shouldShowOffline = false;
+				this.shouldShowAlert = false;
+				this.shouldShowBreakdown = true;
+			},
+			show_default_image: function(event) {
+				event.target.src = "https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg";
+			},
 		}
 	}
 </script>
@@ -389,7 +573,6 @@
 
 	.centerStatus {
 		border-radius: 1600upx;
-		background-color: #AAE604;
 		padding-left: 44upx;
 		padding-right: 44upx;
 		padding-top: 52upx;

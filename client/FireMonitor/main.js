@@ -14,7 +14,6 @@ Vue.prototype.showToast = function(msg) {
 }
 
 Vue.prototype.request = function(api, params, successCallback, failedCallback, completeCallback) {
-	console.log('main request');
 	uni.request({
 		url: getApp().globalData.domain_port + api,
 		method: "POST",
@@ -24,7 +23,7 @@ Vue.prototype.request = function(api, params, successCallback, failedCallback, c
 		},
 		data: params,
 		success: res => {
-			console.log(api + ' request success.');
+			console.log('api:' + api + ' request success.');
 			//确保successCallback是一个函数   
 			if (typeof successCallback === "function") {
 				//调用它，既然我们已经确定了它是可调用的
@@ -32,13 +31,13 @@ Vue.prototype.request = function(api, params, successCallback, failedCallback, c
 			}
 		},
 		fail: (err) => {
-			console.log(api + ' request failed:', err);
+			console.log('api:' + api + ' request failed:', err);
 			if (typeof failedCallback === "function") {
 				failedCallback(err);
 			}
 		},
 		complete: (rsp) => {
-			console.log(api + ' request complete.');
+			console.log('api:' + api + ' request complete.');
 			if (typeof completeCallback === "function") {
 				completeCallback(rsp);
 			}

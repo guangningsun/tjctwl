@@ -94,6 +94,22 @@ def reset_password(request):
         except:
             return _generate_json_message(False, "reset password failed")
 
+
+def get_user_device_index_info(request):
+    if request.POST:
+        context = {}
+        user_id = request.POST['user_id']
+        try:
+            if user_id:
+                user_info = UserInfo.objects.get(id=user_id)
+            if user_info is not None:
+                import pdb;pdb.set_trace()
+                user_info.device_name
+                user_info.device_name.related_val
+        except:
+            return _generate_json_message(False, "login false")
+
+
 def remove_payment_class(request):
     context = {}
     try:

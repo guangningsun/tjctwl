@@ -5,6 +5,7 @@ from mptt.admin import DraggableMPTTAdmin
 from feincms.module.page.models import Page
 import datetime
 from django.utils.html import format_html
+from AppModel import *
 
 
 class DeviceInfo(models.Model):
@@ -14,47 +15,22 @@ class DeviceInfo(models.Model):
     tenantId = models.CharField(max_length=200,verbose_name='租户Id')
     productId = models.CharField(max_length=200,verbose_name='产品Id')
     imei = models.CharField(max_length=200,verbose_name='IMEI号')
-    category = TreeForeignKey('Category',on_delete=models.CASCADE,null=True,blank=True,verbose_name='所属单位')
     deviceStatus = models.CharField(max_length=200,verbose_name='设备状态')
     autoObserver = models.CharField(max_length=200,verbose_name='是否订阅')
     createTime = models.CharField(max_length=200,verbose_name='创建时间')
     createBy = models.CharField(max_length=200,verbose_name='创建者')
-    updateTime = models.CharField(max_length=200,verbose_name='更新时间')
-    updateBy = models.CharField(max_length=200,verbose_name='更新者')
-    netStatus = models.CharField(max_length=200,verbose_name='信号状态')
+    netStatus = models.CharField(max_length=200,verbose_name='信号强度')
     onlineAt = models.CharField(max_length=200,verbose_name='最后上线时间')
     offlineAt = models.CharField(max_length=200,verbose_name='最后离线时间')
     isOnline = models.CharField(max_length=200,verbose_name='是否已上线')
+    deviceVoltageStatus = models.CharField(max_length=200,verbose_name='设备电压状态')
+    lastUploadTime = models.CharField(max_length=200,verbose_name='上报时间')
+    # userinfo = models.ManyToManyField(UserInfo,null=True,blank=True,verbose_name='业主姓名')
+    companyinfo = models.ForeignKey('CompanyInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='联网单位')
     
     class Meta:
         verbose_name = '设备信息'
         verbose_name_plural = '设备信息'
-    
-    def profile(self):
-        return str()
-    
-    def __str__(self):
-        return self.device_name
-
-
-class OnlineDeviceInfo(models.Model):
-    device_name = models.CharField(max_length=200,verbose_name='设备名称')
-    device_sn = models.CharField(max_length=200,verbose_name='设备编码')
-    createTime = models.CharField(max_length=200,verbose_name='创建时间')
-    updateTime = models.CharField(max_length=200,verbose_name='更新时间')
-    deviceStatus = models.CharField(max_length=200,verbose_name='设备状态')
-    netStatus = models.CharField(max_length=200,verbose_name='信号强度')
-    onlineAt = models.CharField(max_length=200,verbose_name='最后上线时间')
-    offlineAt = models.CharField(max_length=200,verbose_name='最后离线时间')
-    deviceOnlineStatus = models.CharField(max_length=200,verbose_name='设备上线状态')
-    deviceVoltageStatus = models.CharField(max_length=200,verbose_name='设备电压状态')
-    lastUploadTime = models.CharField(max_length=200,verbose_name='上报时间')
-    userinfo = models.ForeignKey('UserInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='业主姓名')
-    companyinfo = models.ForeignKey('CompanyInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='联网单位')
-
-    class Meta:
-        verbose_name = '上线设备信息'
-        verbose_name_plural = '上线设备信息'
     
     def profile(self):
         return str()
@@ -128,7 +104,7 @@ class Patrolscheme(models.Model):
     scheme_frequency = models.CharField(max_length=200,choices=scheme_frequency_list,verbose_name='巡检频率')
     scheme_start_time = models.DateField(default=datetime.date.today,verbose_name='开始时间')
     scheme_end_time = models.DateField(default=datetime.date.today,verbose_name='结束时间')
-    scheme_devices = models.ForeignKey('OnlineDeviceInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='巡检设备')
+    scheme_device = models.ForeignKey('DeviceInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='巡检设备')
     scheme_desc = models.CharField(max_length=200,verbose_name='巡检描述')
     class Meta:
         verbose_name = '巡检计划'
@@ -168,7 +144,7 @@ class MaintenanceInfo(models.Model):
     create_time = models.DateField(default=datetime.date.today,verbose_name='问题上报时间')
     progress = models.CharField(max_length=200,choices=progress_status_list,verbose_name='解决状态')
     problem_type = models.CharField(max_length=200,choices=problem_type_list,verbose_name='问题类型')
-    onlinedeviceinfo = models.ForeignKey('OnlineDeviceInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='问题设备') 
+    deviceinfo = models.ForeignKey('DeviceInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='问题设备') 
     problem_images = models.FileField('图片', upload_to="maintenance_images")
 
 class AlarmInfo(models.Model):
@@ -198,16 +174,6 @@ class MappingUserinfoDeviceName(models.Model):
         db_table = 'AppModel_userinfo_device_name'
         unique_together = (('userinfo', 'deviceinfo'),)
 
-
-
-# 联网单位
-# class Genre(MPTTModel):
-#     name = models.CharField(max_length=50, unique=True)
-#     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-
-#     class MPTTMeta:
-#         level_attr = 'mptt_level'
-#         order_insertion_by = ['name']
 
 # 组织机构详细信息
 class Post(models.Model):

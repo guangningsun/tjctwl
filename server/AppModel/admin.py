@@ -34,17 +34,20 @@ def _if_exist(str):
     if str is not None:
         return str
     else:
-        return ""
+        return "-"
 
 @admin.register(UserInfo)
 class UserInfoAdmin(ImportExportModelAdmin):
-    list_display=['id','login_name','username','user_permission','phone_number','create_time','user_sex','user_age','description']
+    list_display=['id','login_name','username','user_permission','phone_number','create_time','user_sex','user_age','description','get_devices']
     #list_editable = ['login_name','username','user_permission','phone_number','user_sex','user_age','description']
     #search_fields =('login_name','username','user_permission','phone_number','create_time','user_sex','user_age','description')
     #fieldsets = [
      #   ('用户数据', {'fields': ['login_name','username','user_permission','phone_number','create_time','user_sex','user_age','description'], 'classes': ['collapse']}),
     #]
-    #filter_horizontal = ('device_name',)
+    def get_devices(self, obj):
+             return [bt.device_name for bt in obj.device_name.all()]
+    get_devices.short_description ='所有设备'
+    filter_horizontal = ('device_name',)
     def save_model(self, request, obj, form, change):
         logger.info("save user info  in tjctwl platform")
         # 若绑定了设备则将设备的已上线状态修改为true
@@ -53,7 +56,7 @@ class UserInfoAdmin(ImportExportModelAdmin):
             DeviceInfo.objects.filter(id=device_obj.id).update(isOnline='0')
         # 更新设备监控表，将用户信息和设备信息同时记录
         try:
-            OnlineDeviceInfoAdmin.save_model(request, obj, form, change)
+            pass
         except:
             pass
         super().save_model(request, obj, form, change)
@@ -61,36 +64,38 @@ class UserInfoAdmin(ImportExportModelAdmin):
 
 @admin.register(Patrolscheme)
 class PatrolschemeAdmin(ImportExportModelAdmin):
-    list_display=['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc']
+    list_display=['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_device','scheme_desc']
     #list_editable = ['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc']
-    search_fields =('scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc')
+    search_fields =('scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_device','scheme_desc')
     fieldsets = [
-        ('Date information', {'fields': ['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_devices','scheme_desc'], 'classes': ['collapse']}),
+        ('Date information', {'fields': ['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_device','scheme_desc'], 'classes': ['collapse']}),
     ]
     list_display_links = ('scheme_name',)
     list_per_page = 10
-
-class UserInfoInline(admin.TabularInline):
-    model = UserInfo
-    #filter_horizontal = ('device_name',)
-    #raw_id_fields = ("device_name","device_name")
 
 
 @admin.register(DeviceInfo)
 class DeviceInfoAdmin(ImportExportModelAdmin):
     #list_display = ['id','device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','operation','isOnline']
-    list_display = ['id','device_name','productId','imei','category','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','trans_isOnline']
+    list_display = ['device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','trans_isOnline','owner_list']
     list_filter = ('device_name','imei')
     #list_editable = ['device_name','productId','imei','autoObserver']
-    search_fields =('id','device_name','device_sn','tenantId','productId','imei','deviceStatus','autoObserver','createTime','createBy','updateTime','updateBy','netStatus','onlineAt','offlineAt')
+    search_fields =('device_name','device_sn','tenantId','productId','imei','deviceStatus','autoObserver','createTime','createBy','updateTime','updateBy','netStatus','onlineAt','offlineAt')
     fieldsets = [
-        ('创建设备', {'fields': ['device_name','productId','imei','autoObserver','category'], 'classes': ['collapse']}),
+        ('创建设备', {'fields': ['device_name','productId','imei','autoObserver'], 'classes': ['collapse']}),
     ]
     #actions = ["delete_model"]
     list_per_page = 10
-    list_display_links = ('id', 'device_name')
+    list_display_links = ('device_name',)
     
-    # 修改返回值的展示内容
+    def owner_list(self, obj):
+        if obj.id is not None:
+            user_list = [UserInfo.objects.filter(id = uf.userinfo_id) for uf in MappingUserinfoDeviceName.objects.filter(deviceinfo_id=obj.id)]
+            return [ user[0].username for user in user_list]
+        else:
+            return "-"
+    owner_list.short_description ='所属业主'
+
     def trans_autoObserver(self, obj):
         if obj.autoObserver == '0':
             return "已订阅"
@@ -105,21 +110,6 @@ class DeviceInfoAdmin(ImportExportModelAdmin):
             return "未上线"
     trans_isOnline.short_description = '是否上线'
     
-    #def operation(self, obj):
-    #    parameter_str = 'id={}'.format(str(obj.id))
-    #    color_code = ''
-    #    btn_str = '<a class="btn btn-xs btn-danger" href="{}">' \
-    #              '<input name="绑定用户"' \
-    #              'type="button" id="passButton" ' \
-    #              'title="passButton" value="绑定用户">' \
-    #              '</a>'
-    #    return format_html(btn_str, '/pass_audit/?{}'.format(parameter_str))
-    #operation.short_description = '上线绑定'
-
-    # 增加自定义按钮
-    #def save(self, request):
-    #		# 禁用添加按钮
-    #    return True
     
     # 重写已有CRUD方法
     def save_model(self, request, obj, form, change):
@@ -228,9 +218,9 @@ class DangerrectificationAdmin(ImportExportModelAdmin):
 
 @admin.register(MaintenanceInfo)
 class MaintenanceInfoAdmin(admin.ModelAdmin):
-    list_display = ['userinfo','problem_desc','create_time','progress','problem_type','onlinedeviceinfo','device_owner']
+    list_display = ['userinfo','problem_desc','create_time','progress','problem_type','deviceinfo','device_owner']
     fieldsets = [
-        ('维修保养', {'fields': ['userinfo','problem_desc','progress','problem_type','onlinedeviceinfo'], 'classes': ['collapse']}),
+        ('维修保养', {'fields': ['userinfo','problem_desc','progress','problem_type','deviceinfo'], 'classes': ['collapse']}),
     ]
     def device_owner(self, obj):
         return obj.userinfo
@@ -264,16 +254,31 @@ class CompanyInfoAdmin(ImportExportModelAdmin):
     list_per_page = 10
 
 
+class OnlineDeviceInfo(DeviceInfo): 
+    class Meta:
+        verbose_name = '上线设备信息'
+        verbose_name_plural = '上线设备信息'
+    
+    def profile(self):
+        return str()
+    
+    def __str__(self):
+        return self.device_name
+
 @admin.register(OnlineDeviceInfo)
 class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
-    list_display = ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo__address_desc','companyinfo__latitude','companyinfo__responsible_person','companyinfo__responsible_number','companyinfo','userinfo','lastUploadTime']
-    #list_editable = ['device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude']
-    search_fields =('device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo__address_desc','companyinfo__latitude','companyinfo__responsible_person','companyinfo__responsible_number','companyinfo','userinfo','lastUploadTime','companyinfo__latitude')
+    list_display = ['device_name','device_sn','deviceStatus','netStatus','onlineAt','offlineAt','isOnline','deviceVoltageStatus','companyinfo__address_desc','companyinfo__latitude','companyinfo__responsible_person','companyinfo__responsible_number','companyinfo','lastUploadTime','owner_list']
+    #list_editable = ['device_name','device_sn','deviceStatus','netStatus','onlineAt','offlineAt','bond_user','deviceOnlineStatus','deviceVoltageStatus','address_desc','charge_phonenumber','charge_person','company_name','company_id','ownerName','lastUploadTime','ownerPhoneNumber','longitude_latitude']
+    #search_fields =('device_name','device_sn','updateTime','deviceStatus','netStatus','onlineAt','offlineAt','deviceOnlineStatus','deviceVoltageStatus','companyinfo__address_desc','companyinfo__latitude','companyinfo__responsible_person','companyinfo__responsible_number','companyinfo','get_userinfo','lastUploadTime','companyinfo__latitude')
     fieldsets = [
-        ('设备上线', {'fields': ['device_name','device_sn','companyinfo','userinfo'], 'classes': ['collapse']}),
+        ('设备上线', {'fields': ['device_name','device_sn','companyinfo'], 'classes': ['collapse']}),
     ]
     list_per_page = 10
-    
+
+    def owner_list(self, obj):
+        user_list = [UserInfo.objects.filter(id = uf.userinfo_id) for uf in MappingUserinfoDeviceName.objects.filter(deviceinfo_id=obj.id)]
+        return [ user[0].username for user in user_list]
+
     def companyinfo__responsible_person(self, obj):
         return obj.companyinfo.responsible_person
     
@@ -290,6 +295,7 @@ class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
     companyinfo__responsible_person.short_description ='安全责任人'
     companyinfo__latitude.short_description ='经纬度'
     companyinfo__address_desc.short_description ='单位地址'
+    owner_list.short_description ='所属业主'
 
     #inlines = [
     #    UserInfoInline,

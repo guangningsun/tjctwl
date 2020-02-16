@@ -30,5 +30,7 @@ urlpatterns = [
 
     url(r'^user_login/', views.user_login),
     url(r'^reset_password/', views.reset_password),
+    url(r'^get_user_device_index_info/', views.get_user_device_index_info),
+    
 ] 
  

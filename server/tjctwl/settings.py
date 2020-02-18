@@ -34,6 +34,8 @@ ALLOWED_HOSTS = ["*"]
 #
 INSTALLED_APPS = [
     'simpleui',
+    'rest_framework',
+    'django_filters',
     'import_export',
     'django.contrib.admin',
     'django.contrib.auth',

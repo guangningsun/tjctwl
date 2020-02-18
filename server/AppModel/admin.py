@@ -12,6 +12,7 @@ from mptt.admin import DraggableMPTTAdmin
 from feincms.module.page.models import Page
 # from django.utils.safestring import mark_safe
 from django.utils.html import format_html,escape, mark_safe
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 logger = logging.getLogger(__name__)
@@ -62,6 +63,18 @@ class UserInfoAdmin(ImportExportModelAdmin):
         super().save_model(request, obj, form, change)
 
 
+# class BondDevice(UserInfo): 
+#     class Meta:
+#         proxy = True
+
+# @admin.register(BondDevice)
+# class BondDeviceAdmin(ImportExportModelAdmin):
+#     list_per_page = 10
+
+# # def bond_device(request):
+# #     a = UserInfoAdmin()
+# #     return HttpResponse("{}",content_type='application/json',)
+
 @admin.register(Patrolscheme)
 class PatrolschemeAdmin(ImportExportModelAdmin):
     list_display=['scheme_name','scheme_frequency','scheme_start_time','scheme_end_time','scheme_device','scheme_desc']
@@ -77,12 +90,12 @@ class PatrolschemeAdmin(ImportExportModelAdmin):
 @admin.register(DeviceInfo)
 class DeviceInfoAdmin(ImportExportModelAdmin):
     #list_display = ['id','device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','operation','isOnline']
-    list_display = ['device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','trans_isOnline','owner_list']
+    list_display = ['device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','trans_isOnline','companyinfo','owner_list']
     list_filter = ('device_name','imei')
     #list_editable = ['device_name','productId','imei','autoObserver']
     search_fields =('device_name','device_sn','tenantId','productId','imei','deviceStatus','autoObserver','createTime','createBy','updateTime','updateBy','netStatus','onlineAt','offlineAt')
     fieldsets = [
-        ('创建设备', {'fields': ['device_name','productId','imei','autoObserver'], 'classes': ['collapse']}),
+        ('创建设备', {'fields': ['device_name','productId','imei','autoObserver','companyinfo'], 'classes': ['collapse']}),
     ]
     #actions = ["delete_model"]
     list_per_page = 10
@@ -254,16 +267,14 @@ class CompanyInfoAdmin(ImportExportModelAdmin):
     list_per_page = 10
 
 
+
 class OnlineDeviceInfo(DeviceInfo): 
     class Meta:
         verbose_name = '上线设备信息'
         verbose_name_plural = '上线设备信息'
-    
-    def profile(self):
-        return str()
-    
-    def __str__(self):
-        return self.device_name
+        proxy = True
+
+
 
 @admin.register(OnlineDeviceInfo)
 class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
@@ -280,16 +291,28 @@ class OnlineDeviceInfoAdmin(ImportExportModelAdmin):
         return [ user[0].username for user in user_list]
 
     def companyinfo__responsible_person(self, obj):
-        return obj.companyinfo.responsible_person
+        if obj.companyinfo is not None:
+            return obj.companyinfo.responsible_person
+        else:
+            return "-"
     
     def companyinfo__responsible_number(self, obj):
-        return obj.companyinfo.responsible_number
+        if obj.companyinfo is not None:
+            return obj.companyinfo.responsible_number
+        else:
+            return "-"
     
     def companyinfo__latitude(self, obj):
-        return obj.companyinfo.latitude
+        if obj.companyinfo is not None:
+            return obj.companyinfo.latitude
+        else:
+            return "-"
     
     def companyinfo__address_desc(self, obj):
-        return obj.companyinfo.company_address
+        if obj.companyinfo is not None:
+            return obj.companyinfo.company_address
+        else:
+            return "-"
     
     companyinfo__responsible_number.short_description ='责任人电话'
     companyinfo__responsible_person.short_description ='安全责任人'

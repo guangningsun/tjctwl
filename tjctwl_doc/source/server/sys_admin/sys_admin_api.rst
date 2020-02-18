@@ -16,6 +16,7 @@
   pip install django-mptt-admin
   pip install pillow
   pip install django-imagekit
+  pip install djangorestframework
 
 - 新增设备
 

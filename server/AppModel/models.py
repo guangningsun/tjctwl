@@ -8,6 +8,9 @@ from django.utils.html import format_html
 from AppModel import *
 
 
+
+
+
 class DeviceInfo(models.Model):
     id = models.CharField(max_length=200,verbose_name='设备ID',primary_key=True)
     device_name = models.CharField(max_length=200,verbose_name='设备名称')

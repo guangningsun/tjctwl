@@ -18,6 +18,11 @@ import requests
 import base64
 from django.http import JsonResponse
 
+import django_filters
+from rest_framework import viewsets, filters
+from AppModel.serializer import UserSerializer
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -95,19 +100,90 @@ def reset_password(request):
             return _generate_json_message(False, "reset password failed")
 
 
+def _gen_device_info_json(device_info):
+    device_info_json = {
+                        "device_info": {
+                                "code": device_info.device_sn, 
+                                "name": device_info.device_name, 
+                                "model": "-", 
+                                "address": "-",
+                                "location": "-",
+                                "signal": device_info.netStatus, 
+                                "battery": device_info.deviceVoltageStatus, 
+                                "image": "-", 
+                            }
+                        }
+    return device_info_json
+
+# 用户首页后台方法 
 def get_user_device_index_info(request):
     if request.POST:
-        context = {}
         user_id = request.POST['user_id']
         try:
             if user_id:
-                user_info = UserInfo.objects.get(id=user_id)
-            if user_info is not None:
-                import pdb;pdb.set_trace()
-                user_info.device_name
-                user_info.device_name.related_val
+                own_device_list = [DeviceInfo.objects.filter(id = df.deviceinfo_id) for df in MappingUserinfoDeviceName.objects.filter(userinfo_id=user_id)]
+                #import pdb;pdb.set_trace()
+                if len(own_device_list) >0:
+                    device_total_num = len(own_device_list)
+                    normal_device_num = 0
+                    offline_device_num = 0
+                    alert_device_num = 0 
+                    breakdown_device_num = 0
+                    normal_device_list = []
+                    offline_device_list = []
+                    alert_device_list = []
+                    breakdown_device_list = []
+                    for dev in own_device_list:
+                        if dev[0].deviceStatus == '0':
+                            normal_device_num = normal_device_num + 1
+                            normal_device_list.append(_gen_device_info_json(dev[0]))
+                        elif dev[0].deviceStatus == '1':
+                            offline_device_num = offline_device_num + 1
+                            offline_device_list.append(_gen_device_info_json(dev[0]))
+                        elif dev[0].deviceStatus == '2':
+                            alert_device_num = alert_device_num + 1
+                            alert_device_list.append(_gen_device_info_json(dev[0]))
+                        elif dev[0].deviceStatus == '3':
+                            breakdown_device_num = breakdown_device_num + 1
+                            breakdown_device_list.append(_gen_device_info_json(dev[0]))
+
+
+                    res_json = {
+                        "error": 0,
+                        "msg": {
+                            "device_total_num": device_total_num,
+                            "normal_device_num": normal_device_num,
+                            "offline_device_num": offline_device_num, 
+                            "alert_device_num": alert_device_num, 
+                            "breakdown_device_num": breakdown_device_num,
+                            "notic": "none",
+                            "normal_device_list": normal_device_list,
+                            "offline_device_list": offline_device_list, 
+                            "alert_device_list": alert_device_list, 
+                            "breakdown_device_list": breakdown_device_list
+                            }
+                    }
+                    return _generate_json_from_models(res_json)
+                else:
+                   return _generate_json_message(False, "This user owns no device")
         except:
-            return _generate_json_message(False, "login false")
+            return _generate_json_message(False, "There are some problems when get user devices")
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = UserInfo.objects.all()
+    serializer_class = UserSerializer
+
+def bond_device(request):
+    pass
+
+
+def unbond_device(request):
+    pass
+
+
+def update_device_info(request):
+    pass
 
 
 def remove_payment_class(request):

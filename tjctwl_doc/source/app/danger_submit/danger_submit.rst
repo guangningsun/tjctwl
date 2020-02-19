@@ -15,12 +15,11 @@
 
    参数：
       submitter - 上报人
-      class - 隐患等级
-      type - 隐患类别
       floor - 隐患楼层
       location - 具体位置
       description - 隐患描述
       photo - 隐患照片
+      date - 添加时间
 
    返回值：
 
@@ -47,3 +46,4 @@
         photo - 隐患照片
         date - 上报时间
         status - 任务状态
+        feedback - 后台反馈

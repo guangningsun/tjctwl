@@ -46,12 +46,13 @@
    add_device
 
    参数：
-      code - 设备编码
+      device_sn - 设备编码
       name - 设备名称
       model - 设备型号
       address - 地址
       location - 安装位置
       tel_notic - 是否启用电话通知
+      sms_notic - 是否启用短信通知
 
    返回值：
 
@@ -64,7 +65,8 @@
   get_device_detail
 
   参数：
-     device_code - 设备编码
+     device_sn - 设备编码
+     user_id
 
   返回值：
     device_info:
@@ -88,8 +90,8 @@
  delete_device
 
   参数：
-    device_code - 设备编码
-
+    device_sn - 设备编码
+    user_id
   返回值：
 
 - 修改设备信息
@@ -103,10 +105,7 @@
   参数：
     code - 设备编码
     name - 设备名称
-    IMEI - IMEI号
-    ICCID - ICCID号
     address - 地址
-    detailed_address - 详细地址
     location - 安装位置
 
   返回值：

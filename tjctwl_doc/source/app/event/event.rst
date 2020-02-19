@@ -14,6 +14,7 @@
    get_event_list
 
    参数：
+      user_id
       start_index - 事件起始索引，传 "0" 表示从最新的第一个开始查（必要）
       num - 步长，即每次查询的个数，用于分页查询 (默认 20)
       start_time - 时间条件搜索，起始时间(非必要)
@@ -43,3 +44,16 @@
       event_id - 事件id
 
    返回值：
+
+- 全部已读
+
+  修改该用户下所有事件为已读状态
+
+::
+
+  update_event_read_state_all
+
+  参数：
+     event_id - 事件id
+
+  返回值：

@@ -13,7 +13,7 @@
 							总设备数
 						</view>
 						<view class="fl text-white text-lg" style="margin-top: 12upx;">
-							{{total_device_num}}
+							{{device_total_num}}
 						</view>
 						<view class="fr">
 							<img @click="onClickAddDevice" style="width: 55upx;height: 55upx; margin-right: 15upx;" src="/static/home/add_device.png"></img>
@@ -71,7 +71,7 @@
 			</view>
 
 			<!-- 通知条 -->
-			<view class="cu-card">
+			<!-- <view class="cu-card">
 				<view class="solids text-black margin-bottom-sm" style="background-color: #FFFFFF; margin-top: -15upx;">
 					<view class="cf" style="padding: 22upx;">
 						<img class="fl" style="width: 42upx;height: 42upx; margin-right: 15upx; margin-top: 10upx; " src="/static/home/notice.png"></img>
@@ -80,10 +80,20 @@
 						</view>
 					</view>
 				</view>
+			</view> -->
+
+			<view v-show="shouldShowEmpty" class="flex justify-center margin-top-xl">
+				<view style="background-color: #00000000;">
+					<image src="../../static/empty.png" mode="aspectFit" style="width: 200upx; height: 200upx;"></image>
+					<view class="text-df text-gray text-center">
+						无相关设备
+					</view>
+				</view>
+
 			</view>
 
 			<!-- 设备情况卡片 正常 -->
-			<view class="cu-card" v-show="shouldShowNormal" v-for="(item,index) in normal_device_list" :key="index">
+			<view class="cu-card" v-show="shouldShowNormal" v-for="(item,index) in normal_device_list" :key="index" @tap="goToDeviceDetail(item)">
 				<view class="cu-item list-item solid" style="background-color: #ebf5db; margin-top: 1upx;">
 					<view class="flex">
 						<view class="flex-twice padding-sm" style="font-size: 26upx;">
@@ -356,8 +366,9 @@
 				shouldShowOffline: false,
 				shouldShowAlert: false,
 				shouldShowBreakdown: false,
+				shouldShowEmpty: false,
 
-				total_device_num: "0",
+				device_total_num: "0",
 				normal_device_num: "0",
 				breakdown_device_num: "0",
 				alert_device_num: "0",
@@ -366,89 +377,21 @@
 				current_device_list_name: '正常',
 				currentSelectBgColor: '#AAE604',
 
-				normal_device_list: [{
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '正常',
-					battery: '100%',
-					image: 'ABC123'
-				}, {
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '正常',
-					battery: '100%',
-					image: 'ABC123'
-				}, {
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '正常',
-					battery: '100%',
-					image: 'ABC123'
-				}],
-				offline_device_list: [{
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '离线',
-					image: 'ABC123'
-				}, {
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '离线',
-					image: 'ABC123'
-				}],
-				alert_device_list: [{
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '报警',
-					battery: '100%',
-					image: 'ABC123'
-				}, {
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '报警',
-					battery: '100%',
-					image: 'ABC123'
-				}],
-				breakdown_device_list: [{
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '故障',
-					battery: '100%',
-					image: 'ABC123'
-				}, {
-					code: '123',
-					name: 'AAAAA',
-					model: 'ABC123',
-					address: '乌托邦',
-					location: '南天门',
-					signal: '报警',
-					battery: '100%',
-					image: 'ABC123'
-				}],
+				normal_device_list: [],
+				offline_device_list: [],
+				alert_device_list: [],
+				breakdown_device_list: [],
+
+				// normal_device_list: [{
+				// 	"code": "",
+				// 	"name": "test122",
+				// 	"model": "-",
+				// 	"address": "-",
+				// 	"location": "-",
+				// 	"signal": "-",
+				// 	"battery": "",
+				// 	"image": "-"
+				// }],
 
 				msg: [
 					'测试滚动消息1',
@@ -485,8 +428,8 @@
 
 			successCallback(rsp) {
 				if (rsp.data.error === 0) {
-					let rspData = res.data.msg;
-					this.total_device_num = rspData.total_device_num;
+					let rspData = rsp.data.msg;
+					this.device_total_num = rspData.device_total_num;
 					this.normal_device_num = rspData.normal_device_num;
 					this.breakdown_device_num = rspData.breakdown_device_num;
 					this.alert_device_num = rspData.alert_device_num;
@@ -495,6 +438,36 @@
 					this.offline_device_list = rspData.offline_device_list;
 					this.alert_device_list = rspData.alert_device_list;
 					this.breakdown_device_list = rspData.breakdown_device_list;
+
+					if (this.normal_device_list.length === 0 && this.current_device_list_name === '正常') {
+						this.shouldShowEmpty = true;
+					}
+					if (this.offline_device_list.length === 0 && this.current_device_list_name === '离线') {
+						this.shouldShowEmpty = true;
+					}
+					if (this.alert_device_list.length === 0 && this.current_device_list_name === '报警') {
+						this.shouldShowEmpty = true;
+					}
+					if (this.breakdown_device_list.length === 0 && this.current_device_list_name === '故障') {
+						this.shouldShowEmpty = true;
+					}
+
+					uni.setStorage({
+						key: 'key_user_normal_device_list',
+						data: rspData.normal_device_list,
+					});
+					uni.setStorage({
+						key: 'key_user_offline_device_list',
+						data: rspData.offline_device_list,
+					});
+					uni.setStorage({
+						key: 'key_user_alert_device_list',
+						data: rspData.alert_device_list,
+					});
+					uni.setStorage({
+						key: 'key_user_breakdown_device_list',
+						data: rspData.breakdown_device_list,
+					});
 				}
 			},
 			failCallback(err) {
@@ -510,6 +483,8 @@
 				this.shouldShowOffline = false;
 				this.shouldShowAlert = false;
 				this.shouldShowBreakdown = false;
+
+				this.shouldShowEmpty = this.normal_device_list.length === 0;
 			},
 			onSelectOffline() {
 				this.current_device_list_name = '离线';
@@ -519,6 +494,8 @@
 				this.shouldShowOffline = true;
 				this.shouldShowAlert = false;
 				this.shouldShowBreakdown = false;
+
+				this.shouldShowEmpty = this.offline_device_list.length === 0;
 			},
 			onSelectAlert() {
 				this.current_device_list_name = '报警';
@@ -528,6 +505,8 @@
 				this.shouldShowOffline = false;
 				this.shouldShowAlert = true;
 				this.shouldShowBreakdown = false;
+
+				this.shouldShowEmpty = this.alert_device_list.length === 0;
 			},
 			onSelectBreakdown() {
 				this.current_device_list_name = '故障';
@@ -537,10 +516,19 @@
 				this.shouldShowOffline = false;
 				this.shouldShowAlert = false;
 				this.shouldShowBreakdown = true;
+
+				this.shouldShowEmpty = this.breakdown_device_list.length === 0;
 			},
 			show_default_image: function(event) {
 				event.target.src = "https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg";
 			},
+			goToDeviceDetail(item) {
+				console.log('send:'+JSON.stringify(item));
+				uni.navigateTo({
+					url:'user_device_detail?deviceInfo=' + encodeURIComponent(JSON.stringify(item))
+					// url: 'pages/user_home/user_device_detail?deviceInfo='+ encodeURIComponent(JSON.stringify(item))
+				})
+			}
 		}
 	}
 </script>

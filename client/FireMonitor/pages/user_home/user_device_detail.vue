@@ -2,7 +2,7 @@
 	<view>
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar bg-gradual-dark-purple fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
-			<!-- <view class="cu-bar bg-gradual-dark-purple" style="z-index: 9999;"> -->
+				<!-- <view class="cu-bar bg-gradual-dark-purple" style="z-index: 9999;"> -->
 				<view class="action" @tap="BackPage">
 					<text class="cuIcon-back text-white"></text>
 				</view>
@@ -21,47 +21,39 @@
 					<view class="padding-sm cf">
 						<view class="fl flex align-center">
 							<image style="width: 35upx;height: 35upx; margin-right: 15upx;" src="/static/home/signal.png"></image>
-							<view class="cu-tag radius bg-gradual-green text-sm" style="margin-right: 10upx; padding: 8upx;">正常</view>
+							<view class="cu-tag radius bg-gradual-green text-sm" style="margin-right: 10upx; padding: 8upx;">{{signal}}</view>
 						</view>
 
 						<view class="flex fr align-center">
 							<image style="width: 55upx;height: 55upx; margin-right: 15upx;" src="/static/home/battery.png"></image>
-							<view class="cu-tag radius line-black text-xs" style="margin-right: 10upx; padding: 8upx;">100%</view>
+							<view class="cu-tag radius line-black text-xs" style="margin-right: 10upx; padding: 8upx;">{{battery}}</view>
 						</view>
 					</view>
 
 					<view class="flex justify-center margin-top margin-bottom">
-						<image class="margin-left-xl" src="../../static/tabbar/device_normal.png" style="width: 150upx; height: 150upx;"></image>
+						<img :src="image" :onerror="default_img" style="width: 150upx; height: 150upx;"></img>
 					</view>
 				</view>
 
 				<view class="flex cu-form-group">
 					<view class="title">设备编码</view>
-					<view>0</view>
+					<view>{{code}}</view>
+				</view>
+				<view class="flex cu-form-group">
+					<view class="title">设备名称</view>
+					<view>{{name}}</view>
 				</view>
 				<view class="flex cu-form-group">
 					<view class="title">设备类型</view>
-					<view>0</view>
-				</view>
-				<view class="flex cu-form-group">
-					<view class="title">IMEI</view>
-					<view>0</view>
-				</view>
-				<view class="flex cu-form-group">
-					<view class="title">ICCID</view>
-					<view>0</view>
+					<view>{{model}}</view>
 				</view>
 				<view class="flex cu-form-group">
 					<view class="title">地址</view>
-					<view>0</view>
+					<view>{{address}}</view>
 				</view>
 				<view class="flex cu-form-group">
-					<view class="title">详细地址</view>
-					<view>0</view>
-				</view>
-				<view class="flex cu-form-group">
-					<view class="title">场所名</view>
-					<view>0</view>
+					<view class="title">安装位置</view>
+					<view>{{location}}</view>
 				</view>
 
 			</view>
@@ -77,19 +69,19 @@
 		<view class="cu-modal drawer-modal justify-end" :class="modalName=='DrawerModalR'?'show':''" @tap="hideModal">
 			<view class="cu-dialog basis-lg" @tap.stop="" :style="[{top:CustomBar+'px',height:'calc(100vh - ' + CustomBar + 'px)'}]">
 				<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']">
-					<view class="cu-item" :class="menuArrow?'arrow':''">
+					<view class="cu-item">
 						<button class="cu-btn content" open-type="contact" @tap="showModal" data-target="DeleteModal">
 							<text class="cuIcon-deletefill text-red"></text>
 							<text class="text-black">删除设备</text>
 						</button>
 					</view>
-					<view class="cu-item" :class="menuArrow?'arrow':''" @tap="onDownloadQrCode">
+					<view class="cu-item" @tap="onDownloadQrCode">
 						<button class="cu-btn content" open-type="contact">
 							<text class="cuIcon-down text-olive"></text>
 							<text class="text-black">下载二维码</text>
 						</button>
 					</view>
-					<view class="cu-item" :class="menuArrow?'arrow':''" >
+					<view class="cu-item">
 						<button class="cu-btn content" open-type="contact">
 							<text class="cuIcon-share text-light-orange"></text>
 							<text class="text-black">分享</text>
@@ -130,12 +122,23 @@
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 				modalName: null,
+
+				code: "",
+				name: "",
+				model: "",
+				address: "",
+				location: "",
+				signal: "",
+				battery: "",
+				image: "",
+
+				default_img: 'this.src="' + require('../../static/default_device_img.png') + '"',
 			}
 		},
 		computed: {
 			style() {
-				var StatusBar= this.StatusBar;
-				var CustomBar= this.CustomBar;
+				var StatusBar = this.StatusBar;
+				var CustomBar = this.CustomBar;
 				var bgImage = this.bgImage;
 				var style = `height:${CustomBar}px;padding-top:${StatusBar}px;`;
 				if (this.bgImage) {
@@ -143,6 +146,31 @@
 				}
 				return style
 			}
+		},
+		onLoad: function(option) {
+			let info = JSON.parse(option.deviceInfo);
+			this.code = info.code;
+			this.name = info.name;
+			this.model = info.model;
+			this.address = info.address;
+			this.location = info.location;
+			this.signal = info.signal;
+			this.battery = info.battery;
+			this.image = info.image;
+		},
+		props: {
+			bgColor: {
+				type: String,
+				default: ''
+			},
+			isBack: {
+				type: [Boolean, String],
+				default: false
+			},
+			bgImage: {
+				type: String,
+				default: ''
+			},
 		},
 		methods: {
 			showModal(e) {
@@ -164,7 +192,7 @@
 			},
 			onDownloadQrCode(e) {
 				this.hideModal(e);
-				plus.gallery.save('../../static/tabbar/device_normal.png', function() {
+				plus.gallery.save('../../static/logo.png', function() {
 					uni.showToast({
 						title: '保存成功',
 						icon: 'none'
@@ -176,7 +204,7 @@
 					});
 				});
 			},
-			
+
 			// #ifdef APP-PLUS
 			onShare(e) {
 				if (this.providerList.length === 0) {

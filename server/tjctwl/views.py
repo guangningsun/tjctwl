@@ -101,8 +101,7 @@ def reset_password(request):
 
 
 def _gen_device_info_json(device_info):
-    device_info_json = {
-                        "device_info": {
+    device_info_json =  {
                                 "code": device_info.device_sn, 
                                 "name": device_info.device_name, 
                                 "model": "-", 
@@ -111,8 +110,7 @@ def _gen_device_info_json(device_info):
                                 "signal": device_info.netStatus, 
                                 "battery": device_info.deviceVoltageStatus, 
                                 "image": "-", 
-                            }
-                        }
+                            }       
     return device_info_json
 
 # 用户首页后台方法 

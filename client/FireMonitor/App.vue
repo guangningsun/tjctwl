@@ -8,7 +8,8 @@
 			// API 接口
 			api_login: 'user_login/',
 			api_reset_pass: 'reset_password/',
-			api_get_user_index: 'get_user_device_index_info/'
+			api_get_user_index: 'get_user_device_index_info/',
+			api_device_opt: 'user_opt_device/',
 		},
 
 		onLaunch: function() {

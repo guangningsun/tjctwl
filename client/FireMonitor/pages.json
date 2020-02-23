@@ -72,6 +72,14 @@
 					"animationDuration": 200
 				}
 			}
+		},
+		{
+			"path": "pages/scan/scan",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}, {
 			"path": "pages/user_home/user_add_device",
 			"style": {}
@@ -110,12 +118,11 @@
 		}, {
 			"path": "pages/admin_work/admin_reinstall",
 			"style": {}
+		}, {
+			"path": "pages/admin_work/admin_install_detail",
+			"style": {}
 		}
-	    ,{
-            "path" : "pages/admin_work/admin_install_detail",
-            "style" : {}
-        }
-    ],
+	],
 	"globalStyle": {
 		"mp-alipay": {
 			/* 支付宝小程序特有相关 */

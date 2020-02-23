@@ -10,6 +10,7 @@
     "pages/admin_device/admin_device",
     "pages/admin_work/admin_work",
     "pages/admin_event/admin_event",
+    "pages/scan/scan",
     "pages/user_home/user_add_device",
     "pages/user_home/user_add_danger",
     "pages/user_home/user_device_detail",

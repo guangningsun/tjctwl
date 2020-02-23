@@ -45,6 +45,38 @@ Vue.prototype.request = function(api, params, successCallback, failedCallback, c
 	});
 }
 
+Vue.prototype.requestWithMethod = function(api, method, params, successCallback, failedCallback, completeCallback) {
+	uni.request({
+		url: getApp().globalData.domain_port + api,
+		method: method,
+		dataType: 'json',
+		header: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		data: params,
+		success: res => {
+			console.log('api:' + api + ' request success.');
+			//确保successCallback是一个函数
+			if (typeof successCallback === "function") {
+				//调用它，既然我们已经确定了它是可调用的
+				successCallback(res);
+			}
+		},
+		fail: (err) => {
+			console.log('api:' + api + ' request failed:', err);
+			if (typeof failedCallback === "function") {
+				failedCallback(err);
+			}
+		},
+		complete: (rsp) => {
+			console.log('api:' + api + ' request complete.');
+			if (typeof completeCallback === "function") {
+				completeCallback(rsp);
+			}
+		}
+	});
+}
+
 //判断字符是否为空的方法
 Vue.prototype.isEmpty = function(obj) {
 	if (typeof obj == "undefined" || obj == null || obj == "") {

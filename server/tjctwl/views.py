@@ -3,24 +3,18 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import redirect
-import json
-import time
+from rest_framework import viewsets, filters,permissions
+from AppModel.serializer import *
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+from collections import OrderedDict
 from AppModel.models import *
 from django.db.models import Avg, Count, Min, Sum
-import xlrd
-import uuid
-from collections import OrderedDict
-import hashlib
-import urllib
-import random
-import logging
-import requests
-import base64
-from django.http import JsonResponse
-
-import django_filters
-from rest_framework import viewsets, filters
-from AppModel.serializer import UserSerializer
+import hashlib,urllib,random,logging,requests,base64
+import json,time,django_filters,xlrd,uuid
 
 
 logger = logging.getLogger(__name__)
@@ -168,48 +162,67 @@ def get_user_device_index_info(request):
             return _generate_json_message(False, "There are some problems when get user devices")
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = UserInfo.objects.all()
-    serializer_class = UserSerializer
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = UserInfo.objects.all()
+#     serializer_class = UserSerializer
+#     # permission_classes = (permissions.IsAuthenticated,)
+    
+@api_view(['GET', 'POST'])
+def user_opt_device(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        userset = UserInfo.objects.all()
+        serializer = UserSerializer(userset, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def bond_device(request):
-    pass
+@api_view(['GET', 'PUT', 'DELETE'])
+def user_opt_device_detail(request,pk):
+    """
+    Retrieve, update or delete a code userinfo.
+    """
 
-
-def unbond_device(request):
-    pass
-
-
-def update_device_info(request):
-    pass
-
-
-def remove_payment_class(request):
-    context = {}
     try:
-        payment_class_ids = request.POST['payment_class_ids']
-        for payment_class_id in class_ids.split(","):
-            payment_class_info = PaymentClassInfo.objects.get(payment_class_id=payment_class_id)
-            payment_class_info.delete()
-        return _generate_json_message(True, "Remove payment class Success")
-    except:
-        return _generate_json_message(True, "Remove payment class Success")
+        userinfo = UserInfo.objects.get(id=pk)
+    except UserInfo.DoesNotExist:
+        return HttpResponse(status=404)
 
+    if request.method == 'GET':
+        serializer = UserSerializer(userinfo)
+        return Response(serializer.data)
 
-def get_all_payment_class_info(request):
-    list_response = []
-    list_payment_class = PaymentClassInfo.objects.all()
-    for res in list_payment_class:
-        dict_tmp = {}
-        dict_tmp.update(res.__dict__)
-        dict_tmp.pop("_state", None)
-        list_response.append(dict_tmp)
-    return _generate_json_from_models(list_response)
+    elif request.method == 'PUT':
+        serializer = UserSerializer(userinfo, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    elif request.method == 'DELETE':
+        userinfo.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-# 初始化登录界面
-def init_web(request):
-    return render(request, '/admin')
+@api_view(['GET', 'POST'])
+def device_detail(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        deviceset = DeviceInfo.objects.all()
+        serializer = DeviceSerializer(deviceset, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = DeviceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

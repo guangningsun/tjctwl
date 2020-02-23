@@ -21,23 +21,21 @@ from django.views.static import serve
 # from django.conf.urls.static import static
 from django.conf import settings
 from AppModel import admin as appadmin
-from AppModel.urls import router as app_router
+# from AppModel.urls import router as app_router
 
-# + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 # + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns = [
     url('admin/', admin.site.urls),
-    url(r'^$', views.init_web),
     re_path(r'^media/(?P<path>.+)$', serve, {'document_root': settings.MEDIA_ROOT}),
     
-    url(r'^api/', include(app_router.urls)),
+    # url(r'^api/', include(app_router.urls)),
     url(r'^user_login/', views.user_login),
     url(r'^reset_password/', views.reset_password),
     url(r'^get_user_device_index_info/', views.get_user_device_index_info),
-    #url(r'^bond_device/', appadmin.bond_device),
-    url(r'^unbond_device/', views.unbond_device),
-    url(r'^update_device_info/', views.update_device_info),
-
+    path('user_opt_device/', views.user_opt_device),
+    path('user_opt_device/<int:pk>/', views.user_opt_device_detail),
+    path('device/', views.device_detail),
     
+
 ] 
  

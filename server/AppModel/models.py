@@ -30,6 +30,13 @@ class DeviceInfo(models.Model):
     lastUploadTime = models.CharField(max_length=200,verbose_name='上报时间')
     # userinfo = models.ManyToManyField(UserInfo,null=True,blank=True,verbose_name='业主姓名')
     companyinfo = models.ForeignKey('CompanyInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='联网单位')
+    construction_worker = models.CharField(max_length=200,verbose_name='施工人员')
+    construction_createtime = models.DateField(default=datetime.date.today,verbose_name='施工时间')
+    construction_image = models.ImageField(u'施工图片',null=True, blank=True, upload_to='contruction_image')
+    install_location = models.CharField(max_length=200,verbose_name='安装位置')
+    device_address = models.CharField(max_length=200,verbose_name='设备地址')
+    
+
     
     class Meta:
         verbose_name = '设备信息'

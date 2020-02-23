@@ -15,6 +15,7 @@ from AppModel.models import *
 from django.db.models import Avg, Count, Min, Sum
 import hashlib,urllib,random,logging,requests,base64
 import json,time,django_filters,xlrd,uuid
+from rest_framework import status
 
 
 logger = logging.getLogger(__name__)
@@ -199,11 +200,37 @@ def user_opt_device_detail(request,pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = UserSerializer(userinfo, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #import pdb;pdb.set_trace()
+        # 查询请求的设备sn是否存在
+        try:
+            device_sn = request.data.get('device_sn')
+            bond_device = DeviceInfo.objects.filter(device_sn=device_sn)
+            if len(bond_device) > 0:
+                to_bond_device_id = bond_device[0].id
+                copy_data = request.data.copy()
+                copy_data.pop("device_sn")
+                copy_data.appendlist("device_sn",to_bond_device_id)
+                #获取原有device列表
+                try:
+                    user_own_device_list = MappingUserinfoDeviceName.objects.filter(userinfo_id = pk)
+                    if user_own_device_list.count() > 0:
+                        for user_own_device in user_own_device_list:
+                            copy_data.appendlist("device_sn",user_own_device.deviceinfo_id)
+                except:
+                    pass
+                
+                userinfo = UserInfo.objects.get(id=pk)
+                # serializer = UserSerializer(userinfo, data=request.data)
+                serializer = UserSerializer(userinfo, data=copy_data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            pass
+        
 
     elif request.method == 'DELETE':
         userinfo.delete()

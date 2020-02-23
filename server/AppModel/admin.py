@@ -46,9 +46,9 @@ class UserInfoAdmin(ImportExportModelAdmin):
      #   ('用户数据', {'fields': ['login_name','username','user_permission','phone_number','create_time','user_sex','user_age','description'], 'classes': ['collapse']}),
     #]
     def get_devices(self, obj):
-             return [bt.device_name for bt in obj.device_name.all()]
+             return [bt.device_sn for bt in obj.device_sn.all()]
     get_devices.short_description ='所有设备'
-    filter_horizontal = ('device_name',)
+    filter_horizontal = ('device_sn',)
     def save_model(self, request, obj, form, change):
         logger.info("save user info  in tjctwl platform")
         # 若绑定了设备则将设备的已上线状态修改为true

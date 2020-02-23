@@ -14,11 +14,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserInfo
-        fields = ('id','username','device_name')
+        fields = ('device_sn',)
 
 
 class DeviceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = DeviceInfo
-        fields = ('id','device_sn','device_name')
+        fields = ('id','device_sn','device_name','install_location','device_address')

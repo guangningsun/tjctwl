@@ -61,9 +61,9 @@ class UserInfo(models.Model):
     user_sex = models.CharField(max_length=200,verbose_name='性别')
     user_age = models.CharField(max_length=200,verbose_name='年龄')
     #device_name = models.ForeignKey(DeviceInfo,on_delete="CASCADE",null=True, blank=True,verbose_name='设备名字')
-    device_name = models.ManyToManyField(DeviceInfo,null=True, blank=True,verbose_name='设备名字')
+    device_sn = models.ManyToManyField(DeviceInfo,null=True, blank=True,verbose_name='设备SN')
 
-    filter_horizontal = ('device_name',)
+    filter_horizontal = ('device_sn',)
     class Meta:
         verbose_name = '用户信息'
         verbose_name_plural = '用户信息'
@@ -181,7 +181,7 @@ class MappingUserinfoDeviceName(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'AppModel_userinfo_device_name'
+        db_table = 'AppModel_userinfo_device_sn'
         unique_together = (('userinfo', 'deviceinfo'),)
 
 

@@ -52,8 +52,8 @@ class UserInfoAdmin(ImportExportModelAdmin):
     def save_model(self, request, obj, form, change):
         logger.info("save user info  in tjctwl platform")
         # 若绑定了设备则将设备的已上线状态修改为true
-        for i in range(0,len(obj.device_name.get_queryset())):
-            device_obj = obj.device_name.get_queryset()[i]
+        for i in range(0,len(obj.device_sn.get_queryset())):
+            device_obj = obj.device_sn.get_queryset()[i]
             DeviceInfo.objects.filter(id=device_obj.id).update(isOnline='0')
         # 更新设备监控表，将用户信息和设备信息同时记录
         try:

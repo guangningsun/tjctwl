@@ -231,7 +231,14 @@ def user_opt_device_detail(request,pk):
                 serializer = UserSerializer(userinfo, data=copy_data)
                 if serializer.is_valid():
                     serializer.save()
-                    return Response(serializer.data)
+                    res_json = {
+                        "error": 0,
+                        "msg": {
+                        "device_list": serializer.data
+                          }   
+                        }
+                    # return Response(serializer.data)
+                    return Response(res_json)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -264,7 +271,14 @@ def user_opt_device_detail(request,pk):
                 serializer = UserSerializer(userinfo, data=copy_data)
                 if serializer.is_valid():
                     serializer.save()
-                    return Response(serializer.data)
+                    res_json = {
+                        "error": 0,
+                        "msg": {
+                        "device_list": serializer.data
+                          }   
+                        }
+                    # return Response(serializer.data)
+                    return Response(res_json)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

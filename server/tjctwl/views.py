@@ -19,6 +19,12 @@ from rest_framework import status
 
 
 logger = logging.getLogger(__name__)
+logger.setLevel(level = logging.DEBUG)
+handler = logging.FileHandler("tjctwl.log")
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 # 内部方法，用于获取当前时间戳
@@ -210,16 +216,17 @@ def user_opt_device_detail(request,pk):
                 copy_data = request.data.copy()
                 copy_data.pop("device_sn")
                 copy_data.appendlist("device_sn",to_bond_device_id)
+
+                userinfo = UserInfo.objects.get(id=pk)
                 #获取原有device列表
                 try:
                     user_own_device_list = MappingUserinfoDeviceName.objects.filter(userinfo_id = pk)
                     if user_own_device_list.count() > 0:
                         for user_own_device in user_own_device_list:
                             copy_data.appendlist("device_sn",user_own_device.deviceinfo_id)
+                            logger.info("bond device device_sn:%s to user %s " % (device_sn, userinfo.username))
                 except:
                     pass
-                
-                userinfo = UserInfo.objects.get(id=pk)
                 # serializer = UserSerializer(userinfo, data=request.data)
                 serializer = UserSerializer(userinfo, data=copy_data)
                 if serializer.is_valid():
@@ -233,8 +240,37 @@ def user_opt_device_detail(request,pk):
         
 
     elif request.method == 'DELETE':
-        userinfo.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        # userinfo.delete()
+        import pdb;pdb.set_trace()
+        # 查询请求的设备sn是否存在
+        try:
+            device_sn = request.data.get('device_sn')
+            unbond_device = DeviceInfo.objects.filter(device_sn=device_sn)
+            if len(unbond_device) > 0:
+                to_unbond_device_id = unbond_device[0].id
+                copy_data = request.data.copy()
+                copy_data.pop("device_sn")
+                #获取原有device列表
+                try:
+                    user_own_device_list = MappingUserinfoDeviceName.objects.filter(userinfo_id = pk)
+                    if user_own_device_list.count() > 0:
+                        for user_own_device in user_own_device_list:
+                            if user_own_device.deviceinfo_id != to_unbond_device_id:
+                                copy_data.appendlist("device_sn",user_own_device.deviceinfo_id)
+                except:
+                    pass
+                userinfo = UserInfo.objects.get(id=pk)
+                logger.info("unbond device device_sn:%s from user %s " % (device_sn, userinfo.username))
+                serializer = UserSerializer(userinfo, data=copy_data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            pass
+
 
 @api_view(['GET', 'POST'])
 def device_detail(request):
@@ -253,3 +289,30 @@ def device_detail(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# 未完成
+@api_view(['GET', 'PUT', 'DELETE'])
+def device_opt_detail(request,pk):
+    """
+    Retrieve, update or delete a code userinfo.
+    """
+
+    try:
+        userinfo = UserInfo.objects.get(id=pk)
+    except UserInfo.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = UserSerializer(userinfo)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = UserSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+       
+
+    elif request.method == 'DELETE':
+        userinfo.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

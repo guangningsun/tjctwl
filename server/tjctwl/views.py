@@ -305,25 +305,33 @@ def device_detail(request):
 
 # 未完成
 @api_view(['GET', 'PUT', 'DELETE'])
-def device_opt_detail(request,pk):
+def device_opt_detail(request,sn):
     """
     Retrieve, update or delete a code userinfo.
     """
 
     try:
-        userinfo = UserInfo.objects.get(id=pk)
-    except UserInfo.DoesNotExist:
+        deviceinfo = DeviceInfo.objects.get(device_sn=sn)
+    except DeviceInfo.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
-        serializer = UserSerializer(userinfo)
+        serializer = DeviceSerializer(deviceinfo)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = UserSerializer(snippet, data=request.data)
+        copy_data = request.data.copy()
+        copy_data.pop("user_id")
+        serializer = DeviceSerializer(deviceinfo, data=copy_data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            res_json = {
+                        "error": 0,
+                        "msg": {
+                        "device_info": serializer.data
+                          }   
+                        }
+            return Response(res_json)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
        
 

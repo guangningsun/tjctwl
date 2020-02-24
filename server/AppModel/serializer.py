@@ -21,4 +21,4 @@ class DeviceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = DeviceInfo
-        fields = ('id','device_sn','device_name','install_location','device_address')
+        fields = ('device_name','install_location','device_address')

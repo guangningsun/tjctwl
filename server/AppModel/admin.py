@@ -90,12 +90,12 @@ class PatrolschemeAdmin(ImportExportModelAdmin):
 @admin.register(DeviceInfo)
 class DeviceInfoAdmin(ImportExportModelAdmin):
     #list_display = ['id','device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','operation','isOnline']
-    list_display = ['device_name','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','trans_isOnline','companyinfo','owner_list']
+    list_display = ['device_name','device_sn','productId','imei','deviceStatus','trans_autoObserver','createTime','createBy','netStatus','onlineAt','offlineAt','trans_isOnline','companyinfo','owner_list']
     list_filter = ('device_name','imei')
     #list_editable = ['device_name','productId','imei','autoObserver']
     search_fields =('device_name','device_sn','tenantId','productId','imei','deviceStatus','autoObserver','createTime','createBy','updateTime','updateBy','netStatus','onlineAt','offlineAt')
     fieldsets = [
-        ('创建设备', {'fields': ['device_name','productId','imei','autoObserver','companyinfo'], 'classes': ['collapse']}),
+        ('创建设备', {'fields': ['device_name','productId','imei','autoObserver','companyinfo','device_sn'], 'classes': ['collapse']}),
     ]
     #actions = ["delete_model"]
     list_per_page = 10

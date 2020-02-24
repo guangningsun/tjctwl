@@ -403,6 +403,9 @@
 			}
 		},
 		onLoad: function(options) {
+
+		},
+		onShow() {
 			let user_id = getApp().globalData.user_id;
 			if (this.isEmpty(user_id)) {
 				user_id = uni.getStorageSync('key_user_id');
@@ -412,7 +415,12 @@
 				password: this.user_pwd,
 				user_id: user_id
 			};
-			this.request(getApp().globalData.api_get_user_index, params, this.successCallback, this.failCallback, this.completeCallback);
+			this.request(
+				getApp().globalData.api_get_user_index,
+				params,
+				this.successCallback,
+				this.failCallback,
+				this.completeCallback);
 		},
 		methods: {
 			onClickAddDevice() {
@@ -427,8 +435,22 @@
 			},
 
 			successCallback(rsp) {
-				if (rsp.data.error === 0) {
-					let rspData = rsp.data.msg;
+				console.log(rsp);
+				let rspData = rsp.data.msg;
+				if (rsp.data.error === 1) {
+					if (rspData.indexOf("no device") != -1) {
+						this.device_total_num = 0;
+						this.normal_device_num = 0;
+						this.breakdown_device_num = 0;
+						this.alert_device_num = 0;
+						this.offline_device_num = 0;
+						this.normal_device_list = [];
+						this.offline_device_list = [];
+						this.alert_device_list = [];
+						this.breakdown_device_list = [];
+					}
+
+				} else if (rsp.data.error === 0) {
 					this.device_total_num = rspData.device_total_num;
 					this.normal_device_num = rspData.normal_device_num;
 					this.breakdown_device_num = rspData.breakdown_device_num;
@@ -438,37 +460,27 @@
 					this.offline_device_list = rspData.offline_device_list;
 					this.alert_device_list = rspData.alert_device_list;
 					this.breakdown_device_list = rspData.breakdown_device_list;
-
-					if (this.normal_device_list.length === 0 && this.current_device_list_name === '正常') {
-						this.shouldShowEmpty = true;
-					}
-					if (this.offline_device_list.length === 0 && this.current_device_list_name === '离线') {
-						this.shouldShowEmpty = true;
-					}
-					if (this.alert_device_list.length === 0 && this.current_device_list_name === '报警') {
-						this.shouldShowEmpty = true;
-					}
-					if (this.breakdown_device_list.length === 0 && this.current_device_list_name === '故障') {
-						this.shouldShowEmpty = true;
-					}
-
-					uni.setStorage({
-						key: 'key_user_normal_device_list',
-						data: rspData.normal_device_list,
-					});
-					uni.setStorage({
-						key: 'key_user_offline_device_list',
-						data: rspData.offline_device_list,
-					});
-					uni.setStorage({
-						key: 'key_user_alert_device_list',
-						data: rspData.alert_device_list,
-					});
-					uni.setStorage({
-						key: 'key_user_breakdown_device_list',
-						data: rspData.breakdown_device_list,
-					});
 				}
+
+				this.showEmpty();
+
+				uni.setStorage({
+					key: 'key_user_normal_device_list',
+					data: rspData.normal_device_list,
+				});
+				uni.setStorage({
+					key: 'key_user_offline_device_list',
+					data: rspData.offline_device_list,
+				});
+				uni.setStorage({
+					key: 'key_user_alert_device_list',
+					data: rspData.alert_device_list,
+				});
+				uni.setStorage({
+					key: 'key_user_breakdown_device_list',
+					data: rspData.breakdown_device_list,
+				});
+
 			},
 			failCallback(err) {
 				console.log('api_get_user_index failed', err);
@@ -485,6 +497,39 @@
 				this.shouldShowBreakdown = false;
 
 				this.shouldShowEmpty = this.normal_device_list.length === 0;
+			},
+			showEmpty() {
+				if (this.current_device_list_name === '正常') {
+					if (this.normal_device_list.length === 0) {
+						this.shouldShowEmpty = true;
+					} else {
+						this.shouldShowEmpty = false;
+					}
+				}
+
+				if (this.current_device_list_name === '离线') {
+					if (this.offline_device_list.length === 0) {
+						this.shouldShowEmpty = true;
+					} else {
+						this.shouldShowEmpty = false;
+					}
+				}
+
+				if (this.current_device_list_name === '报警') {
+					if (this.alert_device_list.length === 0) {
+						this.shouldShowEmpty = true;
+					} else {
+						this.shouldShowEmpty = false;
+					}
+				}
+
+				if (this.current_device_list_name === '故障') {
+					if (this.breakdown_device_list.length === 0) {
+						this.shouldShowEmpty = true;
+					} else {
+						this.shouldShowEmpty = false;
+					}
+				}
 			},
 			onSelectOffline() {
 				this.current_device_list_name = '离线';
@@ -523,9 +568,9 @@
 				event.target.src = "https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg";
 			},
 			goToDeviceDetail(item) {
-				console.log('send:'+JSON.stringify(item));
+				console.log('send:' + JSON.stringify(item));
 				uni.navigateTo({
-					url:'user_device_detail?deviceInfo=' + encodeURIComponent(JSON.stringify(item))
+					url: 'user_device_detail?deviceInfo=' + encodeURIComponent(JSON.stringify(item))
 					// url: 'pages/user_home/user_device_detail?deviceInfo='+ encodeURIComponent(JSON.stringify(item))
 				})
 			}

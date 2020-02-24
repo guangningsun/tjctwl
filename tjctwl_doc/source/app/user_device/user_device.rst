@@ -49,9 +49,6 @@
       PUT
    参数：
       device_sn - 设备编码
-      name - 设备名称
-      address - 地址
-      location - 安装位置
 
       tel_notic - 是否启用电话通知(暂时不用)
       sms_notic - 是否启用短信通知(暂时不用)
@@ -105,10 +102,13 @@
 
 ::
 
-  update_device_info
+  device/{device_sn}
+
+  请求方式:
+    PUT
 
   参数：
-    code - 设备编码
+    user_id
     name - 设备名称
     address - 地址
     location - 安装位置

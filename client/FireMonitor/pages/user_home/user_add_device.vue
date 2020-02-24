@@ -65,6 +65,7 @@
 				name: '',
 				address: '',
 				location: '',
+				shouldRequestModify: false,
 			}
 		},
 		// onLoad: function(option) {
@@ -81,7 +82,6 @@
 		// },
 
 		onLoad() {
-			this.showToast("load");
 			// 接收扫码的值
 			uni.$on('scanResult', (data) => {
 				this.device_sn = data.result;
@@ -92,36 +92,96 @@
 			uni.$off('scanResult');
 		},
 		methods: {
+			successUpdateDeviceCb(rsp) {
+				uni.hideLoading();
+
+				if (rsp.data.error === 0) {
+					console.log('successUpdateDeviceCb');
+					uni.showToast({
+						title: "成功添加设备"
+					})
+				}
+				setTimeout(function() {
+					 uni.navigateBack({
+					 	delta: 1
+					 });
+				}, 1500)
+			},
+			failUpdateDeviceCb(err) {
+				uni.hideLoading();
+				console.log('api_update_device failed: 设备成功添加，但是修改设备修复失败' + err);
+				this.showToast("设备成功添加，但是修改设备修复失败");
+				setTimeout(function() {
+					 uni.navigateBack({
+					 	delta: 1
+					 });
+				}, 1500);
+			},
+			completeUpdateDeviceCb(rsp) {},
+
 			successCallback(rsp) {
 				if (rsp.data.error === 0) {
-					this.showToast('成功添加设备!');
-					uni.navigateBack({
-						delta: 1
-					});
+					if (this.shouldRequestModify) {
+						//修改设备信息
+						let user_id = getApp().globalData.user_id;
+						if (this.isEmpty(user_id)) {
+							user_id = uni.getStorageSync('key_user_id');
+						}
+						let params = {
+							user_id: user_id,
+							device_name: this.name,
+							device_address: this.address,
+							install_location: this.location,
+						};
+						this.requestWithMethod(
+							getApp().globalData.api_update_device + this.device_sn + '/',
+							"PUT",
+							params,
+							this.successUpdateDeviceCb,
+							this.failUpdateDeviceCb,
+							this.completeUpdateDeviceCb);
+					} else {
+						uni.hideLoading();
+
+						setTimeout(function() {
+							uni.navigateBack({
+								delta: 1
+							});
+						}, 1500);
+					}
+
 				}
 			},
 			failCallback(err) {
-				console.log('api_bound_device failed', err);
+				uni.hideLoading();
+				console.log('api_device_opt failed', err);
 			},
 			completeCallback(rsp) {},
 			onAddDevice() {
+				if (!this.isEmpty(this.name) ||
+					!this.isEmpty(this.address) ||
+					!this.isEmpty(this.location)) {
+					this.shouldRequestModify = true;
+				}
+				uni.showLoading({
+					title: '正在添加设备',
+				})
 				let user_id = getApp().globalData.user_id;
 				if (this.isEmpty(user_id)) {
 					user_id = uni.getStorageSync('key_user_id');
 				}
 				let params = {
-					device_sn: this.device_sn,
-					name: this.name,
-					address: this.address,
-					location: this.location,
-
+					device_sn: this.device_sn
 				};
-				if (this.isEmpty(this.device_sn) || this.isEmpty(this.name) ||
-					this.isEmpty(this.address) || this.isEmpty(location)) {
-					this.showToast("请检查输入!");
+				if (this.isEmpty(this.device_sn)) {
+					this.showToast("请至少输入设备编码!");
 					return;
 				}
-				this.requestWithMethod(getApp().globalData.api_device_opt + user_id + '/', "PUT", params, this.successCallback,
+				this.requestWithMethod(
+					getApp().globalData.api_device_opt + user_id + '/',
+					"PUT",
+					params,
+					this.successCallback,
 					this.failCallback,
 					this.completeCallback);
 			},

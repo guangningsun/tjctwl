@@ -63,9 +63,13 @@
 				}
 			},
 			failCallback(err) {
-				this.showToast('登录失败:' + err)
+				this.showToast('登录失败!')
+				console.log("登录失败：" + err.errMsg);
 			},
 			completeCallback (rsp) {
+				if(rsp.data == undefined){
+					return;
+				}
 				if (rsp.data.error === 1) {
 					console.log('login not match');
 					if (rsp.data.msg.indexOf('doesn`t match') != -1) {

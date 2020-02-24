@@ -68,21 +68,21 @@
 		<!-- 右侧model -->
 		<view class="cu-modal drawer-modal justify-end" :class="modalName=='DrawerModalR'?'show':''" @tap="hideModal">
 			<view class="cu-dialog basis-lg" @tap.stop="" :style="[{top:CustomBar+'px',height:'calc(100vh - ' + CustomBar + 'px)'}]">
-				<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']">
+				<view class="cu-list menu" >
 					<view class="cu-item">
-						<button class="cu-btn content" open-type="contact" @tap="showModal" data-target="DeleteModal">
+						<button class="cu-btn content" @tap="showModal" data-target="DeleteModal">
 							<text class="cuIcon-deletefill text-red"></text>
 							<text class="text-black">删除设备</text>
 						</button>
 					</view>
 					<view class="cu-item" @tap="onDownloadQrCode">
-						<button class="cu-btn content" open-type="contact">
+						<button class="cu-btn content" >
 							<text class="cuIcon-down text-olive"></text>
 							<text class="text-black">下载二维码</text>
 						</button>
 					</view>
 					<view class="cu-item">
-						<button class="cu-btn content" open-type="contact">
+						<button class="cu-btn content" >
 							<text class="cuIcon-share text-light-orange"></text>
 							<text class="text-black">分享</text>
 						</button>
@@ -107,7 +107,6 @@
 					<view class="action">
 						<button class="cu-btn line-green text-purple" @tap="hideModal">取消</button>
 						<button class="cu-btn bg-gradual-dark-purple margin-left" @tap="onConfirmDelete">确定</button>
-
 					</view>
 				</view>
 			</view>
@@ -187,8 +186,42 @@
 					delta: 1
 				});
 			},
+			successDeleteCb(rsp) {
+				console.log('success delete cb')
+				if (rsp.data.error === 0) {
+					uni.hideLoading();
+					this.showToast('成功删除设备');
+					
+					setTimeout(function() {
+						uni.navigateBack({
+							delta: 1
+						});
+					}, 1500)
+				}
+			},
+			failDeleteCb(err) {
+				console.log('api_bound_device failed', err);
+			},
+			completeDeleteCb(rsp) {},
 			onConfirmDelete(e) {
-
+				this.hideModal();
+				uni.showLoading({
+					title:'正在删除设备...'
+				})
+				let user_id = getApp().globalData.user_id;
+				if (this.isEmpty(user_id)) {
+					user_id = uni.getStorageSync('key_user_id');
+				}
+				let params = {
+					device_sn: this.code
+				};
+				this.requestWithMethod(
+					getApp().globalData.api_device_opt + user_id + '/',
+					"DELETE",
+					params,
+					this.successDeleteCb,
+					this.failDeleteCb,
+					this.completeDeleteCb);
 			},
 			onDownloadQrCode(e) {
 				this.hideModal(e);

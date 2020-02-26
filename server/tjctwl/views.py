@@ -16,6 +16,7 @@ from django.db.models import Avg, Count, Min, Sum
 import hashlib,urllib,random,logging,requests,base64
 import json,time,django_filters,xlrd,uuid
 from rest_framework import status
+import time, datetime
 
 
 logger = logging.getLogger(__name__)
@@ -356,7 +357,13 @@ def danger_detail(request):
                         }
         return Response(res_json)
     elif request.method == 'POST':
-        serializer = DangerSerializer(data=request.data)
+        dateArray = datetime.datetime.fromtimestamp(request.data.get('danger_create_time'))
+        # otherStyleTime = dateArray.strftime("%Y--%m--%d %H:%M:%S")
+        otherStyleTime = dateArray.strftime("%Y-%m-%d")
+        copy_data = request.data.copy()
+        copy_data.pop("danger_create_time")
+        copy_data.appendlist("danger_create_time",otherStyleTime)
+        serializer = DangerSerializer(data=copy_data)
         if serializer.is_valid():
             serializer.save()
             res_json = {

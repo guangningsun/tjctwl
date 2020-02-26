@@ -54,3 +54,4 @@ doc/source/_static/nova.policy.yaml.sample
 releasenotes/build
 
 server/AppModel/migrations/*
+server/media/*

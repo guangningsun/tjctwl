@@ -16,6 +16,7 @@ from django.db.models import Avg, Count, Min, Sum
 import hashlib,urllib,random,logging,requests,base64
 import json,time,django_filters,xlrd,uuid
 from rest_framework import status
+import time, datetime
 
 
 logger = logging.getLogger(__name__)
@@ -338,3 +339,39 @@ def device_opt_detail(request,sn):
     elif request.method == 'DELETE':
         userinfo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET', 'POST'])
+def danger_detail(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        dangerset = Dangerrectification.objects.all()
+        serializer = DangerSerializer(dangerset, many=True)
+        res_json = {
+                        "error": 0,
+                        "msg": {
+                        "danger_info": serializer.data
+                          }   
+                        }
+        return Response(res_json)
+    elif request.method == 'POST':
+        dateArray = datetime.datetime.fromtimestamp(int(request.data.get('danger_create_time')))
+        # otherStyleTime = dateArray.strftime("%Y--%m--%d %H:%M:%S")
+        otherStyleTime = dateArray.strftime("%Y-%m-%d")
+        copy_data = request.data.copy()
+        copy_data.pop("danger_create_time")
+        copy_data.appendlist("danger_create_time",otherStyleTime)
+        serializer = DangerSerializer(data=copy_data)
+        if serializer.is_valid():
+            serializer.save()
+            res_json = {
+                        "error": 0,
+                        "msg": {
+                        "danger_info": serializer.data
+                          }   
+                        }
+            return Response(res_json)
+            # return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

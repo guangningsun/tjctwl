@@ -36,6 +36,7 @@ urlpatterns = [
     path('user_opt_device/<int:pk>/', views.user_opt_device_detail),
     path('device/', views.device_detail),
     path('device/<int:sn>/', views.device_opt_detail),
+    path('danger/', views.danger_detail),
     
 
 ] 

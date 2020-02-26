@@ -357,7 +357,7 @@ def danger_detail(request):
                         }
         return Response(res_json)
     elif request.method == 'POST':
-        dateArray = datetime.datetime.fromtimestamp(request.data.get('danger_create_time'))
+        dateArray = datetime.datetime.fromtimestamp(int(request.data.get('danger_create_time')))
         # otherStyleTime = dateArray.strftime("%Y--%m--%d %H:%M:%S")
         otherStyleTime = dateArray.strftime("%Y-%m-%d")
         copy_data = request.data.copy()

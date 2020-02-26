@@ -43,6 +43,7 @@
 		},
 		methods: {
 			successCallback(res) {
+				uni.hideLoading();
 				if (res.data.error === 0) {
 					let rspData = res.data.msg;
 					let user_type = rspData.user_permission;
@@ -63,6 +64,7 @@
 				}
 			},
 			failCallback(err) {
+				uni.hideLoading();
 				this.showToast('登录失败!')
 				console.log("登录失败：" + err.errMsg);
 			},
@@ -78,6 +80,9 @@
 				}
 			},
 			onLogin() {
+				uni.showLoading({
+					title:'正在登录'
+				})
 				let params = {
 					username: this.user_name,
 					password: this.user_pwd

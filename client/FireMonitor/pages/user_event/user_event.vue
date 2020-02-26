@@ -2,8 +2,12 @@
 	<view>
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar bg-gradual-dark-purple fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
+				<view class="action" ></view>
 				<view class="content" :style="[{top:StatusBar + 'px'}]">
 					事件
+				</view>
+				<view class="action">
+					<text class="cuIcon-roundcheck" :class="[enableClearAll ? 'text-white' : 'text-gray']" @tap="clearAll"></text>
 				</view>
 			</view>
 		</view>
@@ -141,6 +145,7 @@
 				modalName: null,
 				startDate: '2020-02-01',
 				endDate: '2020-02-01',
+				enableClearAll: false,
 			}
 		},
 		computed: {

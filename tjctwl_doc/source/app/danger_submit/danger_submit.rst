@@ -11,15 +11,18 @@
 
 ::
 
-   add_danger
+   danger
+
+   请求方式：
+   post
 
    参数：
-      submitter - 上报人
-      floor - 隐患楼层
-      location - 具体位置
-      description - 隐患描述
-      photo - 隐患照片
-      date - 添加时间
+      danger_create_user - 上报人
+      danger_floor_level - 隐患楼层
+      danger_address_detail - 具体位置
+      danger_desc - 隐患描述
+      danger_image - 隐患照片
+      danger_create_time - 添加时间
 
    返回值：
 
@@ -29,9 +32,13 @@
 
 ::
 
-   get_danger_list
+   danger
+
+   请求方式：
+   get
 
    参数：
+    user_id
 
    返回值：
     danger_list - 隐患列表

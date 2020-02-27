@@ -389,14 +389,14 @@ def event_detail(request, user_id,start_index,num,start_time,end_time):
             device_list.append(DeviceInfo.objects.get(id=i.deviceinfo_id))
         start_at = start_index*num
         end_at = num+start_at
-        starttimeArray = time.localtime(int(start_time))
-        endtimeArray = time.localtime(int(end_time))
-        startTime = time.strftime("%Y-%m-%d %H:%M:%S", starttimeArray)
-        endTime = time.strftime("%Y-%m-%d %H:%M:%S", endtimeArray)
+        # starttimeArray = time.localtime(int(start_time))
+        # endtimeArray = time.localtime(int(end_time))
+        # startTime = time.strftime("%Y-%m-%d %H:%M:%S", starttimeArray)
+        # endTime = time.strftime("%Y-%m-%d %H:%M:%S", endtimeArray)
         if start_time != '0' and end_time != '0':
             eventinfo = EventInfo.objects.filter(event_device__in=device_list).\
-                            filter(event_create_time__gte=startTime).\
-                            filter(event_create_time__lte=endTime)[start_at:end_at]
+                            filter(event_create_time__gte=start_time).\
+                            filter(event_create_time__lte=end_time)[start_at:end_at]
         else:
             eventinfo = EventInfo.objects.filter(event_device__in=device_list)[start_at:end_at]
         

@@ -33,3 +33,13 @@ class DangerSerializer(serializers.ModelSerializer):
         model = Dangerrectification
         fields = ('danger_create_user','danger_floor_level','danger_address_detail','danger_desc', \
         'danger_image','danger_create_time','danger_status','danger_level','danger_type')
+
+class EventSerializer(serializers.ModelSerializer):
+    # event_create_time = serializers.CharField(required=False)
+    # event_device_location = serializers.CharField(required=False)
+    # event_msg = serializers.CharField(required=False)
+    # if_read = serializers.CharField(required=False)
+
+    class Meta:
+        model = EventInfo
+        fields = ('if_read','event_create_time','event_device_location','event_msg')

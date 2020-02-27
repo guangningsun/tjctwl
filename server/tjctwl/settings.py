@@ -232,6 +232,10 @@ SIMPLEUI_CONFIG = {
             'url': 'AppModel/alarminfo',
             'icon': 'fa fa-phone'
         }, {
+            'name': '事件历史',
+            'url': 'AppModel/eventinfo',
+            'icon': 'fa fa-terminal'
+        }, {
             'name': '视频中心',
             'url': '',
             'icon': 'fa fa-terminal'

@@ -240,7 +240,17 @@ class MaintenanceInfoAdmin(admin.ModelAdmin):
     device_owner.short_description ='所属业主'
     list_display_links = ('userinfo',)
     list_per_page = 10
-    
+
+@admin.register(EventInfo)
+class EventInfoAdmin(admin.ModelAdmin):
+    list_display = ['event_create_time','event_msg','event_device','if_read','event_device_location']
+    list_editable = ['if_read']
+    fieldsets = [
+        ('事件历史', {'fields': ['if_read','event_msg','event_device','event_device_location'], 'classes': ['collapse']}),
+    ]
+
+    list_display_links = ('event_device',)
+    list_per_page = 10
 
 
 

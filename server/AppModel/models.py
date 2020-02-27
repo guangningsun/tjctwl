@@ -48,6 +48,18 @@ class DeviceInfo(models.Model):
     def __str__(self):
         return self.device_name
 
+class EventInfo(models.Model):
+    # id = models.CharField(max_length=200,verbose_name='事件ID',primary_key=True)
+    event_create_time = models.DateTimeField(auto_now=True,verbose_name='上报时间')
+    event_msg = models.TextField(verbose_name='事件描述')
+    if_read = models.BooleanField(verbose_name='是否已读')
+    event_device_location = models.CharField(max_length=200,verbose_name='具体位置')
+    event_device = models.ForeignKey('DeviceInfo',on_delete=models.CASCADE,null=True,blank=True,verbose_name='事件设备')
+    
+
+    class Meta:
+        verbose_name = '事件历史'
+        verbose_name_plural = '事件历史'
 
 class UserInfo(models.Model):
     id = models.CharField(max_length=200,verbose_name='用户ID',primary_key=True)
@@ -146,6 +158,7 @@ class Dangerrectification(models.Model):
         verbose_name = '隐患整改'
         verbose_name_plural = '隐患整改'
 
+
 class MaintenanceInfo(models.Model):
     progress_status_list = (('0', u'保养中'), ('1', u'已完成'))
     problem_type_list = (('0', u'电池更换'), ('1', u'设备损坏'), ('2', u'信号不良'),('3', u'人为损坏'))
@@ -226,4 +239,5 @@ class Category(MPTTModel):
     
       def __str__(self):
         return self.name
+
 

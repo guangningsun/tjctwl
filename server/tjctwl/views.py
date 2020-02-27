@@ -304,7 +304,6 @@ def device_detail(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# 未完成
 @api_view(['GET', 'PUT', 'DELETE'])
 def device_opt_detail(request,sn):
     """
@@ -375,3 +374,59 @@ def danger_detail(request):
             return Response(res_json)
             # return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def event_detail(request, user_id,start_index,num,start_time,end_time):
+    """
+    Retrieve, update or delete a code eventinfo.
+    """
+    try:
+        # import pdb;pdb.set_trace()
+        user_own_device_list = MappingUserinfoDeviceName.objects.filter(userinfo_id = user_id)
+        device_list = []
+        for i in user_own_device_list:
+            device_list.append(DeviceInfo.objects.get(id=i.deviceinfo_id))
+        start_at = start_index*num
+        end_at = num+start_at
+        starttimeArray = time.localtime(int(start_time))
+        endtimeArray = time.localtime(int(end_time))
+        startTime = time.strftime("%Y-%m-%d %H:%M:%S", starttimeArray)
+        endTime = time.strftime("%Y-%m-%d %H:%M:%S", endtimeArray)
+        if start_time != '0' and end_time != '0':
+            eventinfo = EventInfo.objects.filter(event_device__in=device_list).\
+                            filter(event_create_time__gte=startTime).\
+                            filter(event_create_time__lte=endTime)[start_at:end_at]
+        else:
+            eventinfo = EventInfo.objects.filter(event_device__in=device_list)[start_at:end_at]
+        
+    except EventInfo.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = EventSerializer(eventinfo,many=True)
+        res_json = {
+                        "error": 0,
+                        "msg": {
+                        "event_info": serializer.data
+                          }   
+                        }
+        return Response(res_json)
+
+    elif request.method == 'PUT':
+        serializer = EventSerializer(eventinfo, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            res_json = {
+                        "error": 0,
+                        "msg": {
+                        "device_info": serializer.data
+                          }   
+                        }
+            return Response(res_json)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+       
+
+    elif request.method == 'DELETE':
+        eventinfo.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

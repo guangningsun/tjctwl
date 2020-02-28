@@ -49,7 +49,7 @@ class DeviceInfo(models.Model):
         return self.device_name
 
 class EventInfo(models.Model):
-    # id = models.CharField(max_length=200,verbose_name='事件ID',primary_key=True)
+    id = models.CharField(max_length=200,verbose_name='事件ID',primary_key=True)
     event_create_time = models.DateTimeField(auto_now=True,verbose_name='上报时间')
     event_msg = models.TextField(verbose_name='事件描述')
     if_read = models.BooleanField(verbose_name='是否已读')

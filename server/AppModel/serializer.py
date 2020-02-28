@@ -42,4 +42,4 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventInfo
-        fields = ('if_read','event_create_time','event_device_location','event_msg')
+        fields = ('id','if_read','event_create_time','event_device_location','event_msg')

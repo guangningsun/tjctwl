@@ -243,7 +243,7 @@ class MaintenanceInfoAdmin(admin.ModelAdmin):
 
 @admin.register(EventInfo)
 class EventInfoAdmin(admin.ModelAdmin):
-    list_display = ['event_create_time','event_msg','event_device','if_read','event_device_location']
+    list_display = ['id','event_create_time','event_msg','event_device','if_read','event_device_location']
     list_editable = ['if_read']
     fieldsets = [
         ('事件历史', {'fields': ['if_read','event_msg','event_device','event_device_location'], 'classes': ['collapse']}),

@@ -376,6 +376,28 @@ def danger_detail(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+def update_event_read_state(request):
+    
+    if request.POST:
+        event_id = request.POST['event_id']
+    try:
+        eventinfo = EventInfo.objects.filter(id = event_id).update(if_read=True)
+        return _generate_json_message(True, "已标记为已读")
+    except:
+        pass
+
+def update_event_read_state_all(request):
+    
+    if request.POST:
+        user_id = request.POST['user_id']
+        user_own_device_list = MappingUserinfoDeviceName.objects.filter(userinfo_id = user_id)
+        for device_info in user_own_device_list:
+            EventInfo.objects.filter(event_device_id=device_info.deviceinfo_id).update(if_read=True)
+        return _generate_json_message(True, "该用户所有事件已标记为已读")
+
+
+
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def event_detail(request, user_id,start_index,num,start_time,end_time):
     """

@@ -38,6 +38,9 @@ urlpatterns = [
     path('device/<int:sn>/', views.device_opt_detail),
     path('danger/', views.danger_detail),
     path('event/<int:user_id>/<int:start_index>/<int:num>/<start_time>/<end_time>', views.event_detail),
+    url(r'^update_event_read_state/', views.update_event_read_state),
+    url(r'^update_event_read_state_all/', views.update_event_read_state_all),
+    
 
 ] 
  

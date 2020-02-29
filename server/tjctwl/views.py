@@ -286,6 +286,38 @@ def user_opt_device_detail(request,pk):
         except:
             pass
 
+@api_view(['GET', 'POST'])
+def install_device_detail(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        deviceset = DeviceInfo.objects.all()
+        # import pdb;pdb.set_trace()
+        serializer = InstallDeviceSerializer(deviceset, many=True)
+        for device_data in serializer.data:
+            user_info_list = []
+            user_id_list = MappingUserinfoDeviceName.objects.filter(deviceinfo_id = device_data["id"])
+            for user_id in user_id_list:
+                user_info = UserInfo.objects.get(id=user_id.userinfo_id)
+                res_user = {"owner_name":user_info.username,"owner_tel":user_info.phone_number}
+                user_info_list.append(res_user)
+            device_data["owner_info_list"] = user_info_list
+            
+        res_json = {
+                    "error": 0,
+                    "msg": {
+                        "install_device_list": serializer.data
+                      }   
+                    }
+        return Response(res_json)
+    elif request.method == 'POST':
+        serializer = InstallDeviceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'POST'])
 def device_detail(request):

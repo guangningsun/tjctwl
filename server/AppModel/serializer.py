@@ -43,3 +43,13 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventInfo
         fields = ('id','if_read','event_create_time','event_device_location','event_msg')
+
+
+class InstallDeviceSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(required=False)
+    
+    class Meta:
+        model = DeviceInfo
+        fields = ('id','construction_createtime','deviceStatus','construction_image','device_sn','device_name',\
+            'construction_worker','install_location','device_address')
+

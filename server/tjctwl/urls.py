@@ -40,6 +40,8 @@ urlpatterns = [
     path('event/<int:user_id>/<int:start_index>/<int:num>/<start_time>/<end_time>', views.event_detail),
     url(r'^update_event_read_state/', views.update_event_read_state),
     url(r'^update_event_read_state_all/', views.update_event_read_state_all),
+    path('install_device/', views.install_device_detail),
+    
     
 
 ] 

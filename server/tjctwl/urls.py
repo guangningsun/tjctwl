@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^update_event_read_state/', views.update_event_read_state),
     url(r'^update_event_read_state_all/', views.update_event_read_state_all),
     path('install_device/', views.install_device_detail),
+    path('install_device/<phone_number>', views.install_device_update),
     
     
 

@@ -2,7 +2,7 @@
 	<view>
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar bg-gradual-dark-purple fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
-				<view class="action" ></view>
+				<view class="action"></view>
 				<view class="content" :style="[{top:StatusBar + 'px'}]">
 					事件
 				</view>
@@ -25,7 +25,7 @@
 		</view>
 
 		<view class="cu-list margin-top bg-white">
-			<view class="cu-item flex solid-bottom">
+			<view class="cu-item flex solid-bottom" v-for="(item,index) in event_list" :key="index">
 				<view class="flex align-center margin">
 					<image src="../../static/event/upload.png" style="width: 80upx; height: 80upx;"></image>
 				</view>
@@ -47,7 +47,7 @@
 				</view>
 			</view>
 
-			<view class="cu-item flex solid-bottom">
+			<!-- <view class="cu-item flex solid-bottom">
 				<view class="flex align-center margin">
 					<image src="../../static/event/heartbeat.png" style="width: 80upx; height: 80upx;"></image>
 				</view>
@@ -67,7 +67,7 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 		</view>
 
 		<view class="box">
@@ -146,6 +146,24 @@
 				startDate: '2020-02-01',
 				endDate: '2020-02-01',
 				enableClearAll: false,
+
+				// event_list:[],
+				event_list: [{
+					if_read: true,
+					event_create_time: '2020-02-01 10:00',
+					event_device_location: 'jjjjj',
+					event_msg: '心跳',
+				}, {
+					if_read: false,
+					event_create_time: '2020-02-01 10:00',
+					event_device_location: 'jjjjj',
+					event_msg: '电压',
+				}, {
+					if_read: false,
+					event_create_time: '2020-02-01 10:00',
+					event_device_location: 'jjjjj',
+					event_msg: 'msgmsg',
+				}],
 			}
 		},
 		computed: {
@@ -159,6 +177,23 @@
 				}
 				return style
 			}
+		},
+		onLoad() {
+			let user_id = getApp().globalData.user_id;
+			if (this.isEmpty(user_id)) {
+				user_id = uni.getStorageSync('key_user_id');
+			}
+			let params = {
+				danger_create_user: user_id,
+			};
+			
+			// this.requestWithMethod(
+			// 	getApp().globalData.api_event,
+			// 	"GET",
+			// 	params,
+			// 	this.successCb,
+			// 	this.failCb,
+			// 	this.completeCb);
 		},
 		methods: {
 			showModal(e) {
@@ -177,6 +212,16 @@
 				e.currentTarget.dataset.target = 'DrawerModalR';
 				this.showModal(e);
 			},
+			successCb(rsp) {
+				console.log('success event cb')
+				if (rsp.data.error === 0) {
+					this.event_list = rsp.data.msg.event_info;
+				}
+			},
+			failCb(err) {
+				console.log('api_event_list failed', err);
+			},
+			completeCb(rsp) {},
 			onDateSearch() {
 
 			}

@@ -77,6 +77,13 @@ Vue.prototype.requestWithMethod = function(api, method, params, successCallback,
 	});
 }
 
+Vue.prototype.containsStr = function(rawStr, containStr){
+	if(rawStr != undefined && containStr != undefined){
+		return rawStr.indexOf(containStr) != -1
+	}
+}
+
+
 //判断字符是否为空的方法
 Vue.prototype.isEmpty = function(obj) {
 	if (typeof obj == "undefined" || obj == null || obj == "") {

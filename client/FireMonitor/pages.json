@@ -122,7 +122,11 @@
 			"path": "pages/admin_work/admin_install_detail",
 			"style": {}
 		}
-	],
+	    ,{
+            "path" : "pages/user_me/user_danger_index",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"mp-alipay": {
 			/* 支付宝小程序特有相关 */

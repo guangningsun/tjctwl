@@ -3,7 +3,9 @@
 	export default {
 		globalData: {
 			user_id:'',
+			// domain_port: domain + ':' + port + '/',
 			domain_port: 'http://114.115.136.120:8010/',
+			domain_port2: 'http://114.115.136.120:8010',
 			
 			// API 接口
 			api_login: 'user_login/',
@@ -12,6 +14,7 @@
 			api_device_opt: 'user_opt_device/',
 			api_update_device: 'device/',
 			api_danger:'danger/',
+			api_event:'event/',
 		},
 
 		onLaunch: function() {

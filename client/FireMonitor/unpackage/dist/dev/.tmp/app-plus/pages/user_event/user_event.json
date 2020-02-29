@@ -1,5 +1,6 @@
 {
   "animationType": "fade-in",
   "animationDuration": 200,
+  "enablePullDownRefresh": true,
   "usingComponents": {}
 }

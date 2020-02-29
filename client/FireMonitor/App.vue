@@ -15,6 +15,8 @@
 			api_update_device: 'device/',
 			api_danger:'danger/',
 			api_event:'event/',
+			api_update_event_read_state: 'update_event_read_state/',
+			api_update_event_read_state_all: 'update_event_read_state_all/',
 		},
 
 		onLaunch: function() {

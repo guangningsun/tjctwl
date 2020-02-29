@@ -23,7 +23,8 @@
     "pages/admin_work/admin_work_list",
     "pages/admin_work/admin_install",
     "pages/admin_work/admin_reinstall",
-    "pages/admin_work/admin_install_detail"
+    "pages/admin_work/admin_install_detail",
+    "pages/user_me/user_danger_index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#0081ff",
@@ -38,7 +39,7 @@
     "autoclose": false
   },
   "appname": "FireMonitor",
-  "compilerVersion": "2.5.1",
+  "compilerVersion": "2.6.1",
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
   }

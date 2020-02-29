@@ -83,7 +83,6 @@ Vue.prototype.containsStr = function(rawStr, containStr){
 	}
 }
 
-
 //判断字符是否为空的方法
 Vue.prototype.isEmpty = function(obj) {
 	if (typeof obj == "undefined" || obj == null || obj == "") {

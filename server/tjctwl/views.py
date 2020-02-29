@@ -287,6 +287,83 @@ def user_opt_device_detail(request,pk):
             pass
 
 
+# 管理员获取全部设备信息
+@api_view(['GET', 'POST'])
+def install_device_detail(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        deviceset = DeviceInfo.objects.all()
+        serializer = InstallDeviceSerializer(deviceset, many=True)
+        for device_data in serializer.data:
+            user_info_list = []
+            if device_data["id"] != "":
+                user_id_list = MappingUserinfoDeviceName.objects.filter(deviceinfo_id = device_data["id"])
+                for user_id in user_id_list:
+                    user_info = UserInfo.objects.get(id=user_id.userinfo_id)
+                    res_user = {"owner_name":user_info.username,"owner_tel":user_info.phone_number}
+                    user_info_list.append(res_user)
+            device_data["owner_info_list"] = user_info_list
+            
+        res_json = {
+                    "error": 0,
+                    "msg": {
+                        "install_device_list": serializer.data
+                      }   
+                    }
+        return Response(res_json)
+    elif request.method == 'POST':
+        serializer = InstallDeviceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# 管理员绑定设备和修改设备
+@api_view(['PUT'])
+def install_device_update(request,phone_number):
+     # 查询请求的设备sn是否存在
+     if request.method == 'PUT':
+        try:
+            device_sn = request.data.get('device_sn')
+            bond_device = DeviceInfo.objects.filter(device_sn=device_sn)
+            if len(bond_device) > 0:
+                to_bond_device_id = bond_device[0].id
+                copy_data = request.data.copy()
+                copy_data.pop("device_sn")
+                copy_data.appendlist("device_sn",to_bond_device_id)
+                # 查询该手机号用户是否存在
+                userinfo = UserInfo.objects.get(phone_number=phone_number)
+                #获取原有device列表
+                try:
+                    user_own_device_list = MappingUserinfoDeviceName.objects.filter(userinfo_id = userinfo.id)
+                    if user_own_device_list.count() > 0:
+                        for user_own_device in user_own_device_list:
+                            copy_data.appendlist("device_sn",user_own_device.deviceinfo_id)
+                            logger.info("bond device device_sn:%s to user %s " % (device_sn, userinfo.username))
+                except:
+                    pass
+                serializer = UserSerializer(userinfo, data=copy_data)
+                if serializer.is_valid():
+                    serializer.save()
+                    res_json = {
+                        "error": 0,
+                        "msg": {
+                        "device_list": serializer.data
+                          }   
+                        }
+                    # return Response(serializer.data)
+                    return Response(res_json)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            pass
+
+
+
 @api_view(['GET', 'POST'])
 def device_detail(request):
     """
@@ -409,7 +486,7 @@ def event_detail(request, user_id,start_index,num,start_time,end_time):
         device_list = []
         for i in user_own_device_list:
             device_list.append(DeviceInfo.objects.get(id=i.deviceinfo_id))
-        start_at = start_index*num
+        start_at = start_index
         end_at = num+start_at
         # starttimeArray = time.localtime(int(start_time))
         # endtimeArray = time.localtime(int(end_time))

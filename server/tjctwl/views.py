@@ -401,6 +401,27 @@ def device_detail(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+def get_install_by_device_sn(request):
+    try:
+        deviceinfo = DeviceInfo.objects.get(device_sn=request.POST['device_sn'])
+    except:
+        res_json = {
+                        "error": 0,
+                        "msg": "device doesn`t exist"   
+                        }
+        return Response(res_json)
+
+    if request.method == 'POST':
+        serializer = InstallDeviceSerializer(deviceinfo)
+        res_json = {
+                        "error": 0,
+                        "msg": {
+                            "device_info":serializer.data
+                         }   
+                        }
+        return Response(res_json)
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def device_opt_detail(request,sn):
     """

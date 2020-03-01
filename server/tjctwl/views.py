@@ -286,12 +286,14 @@ def user_opt_device_detail(request,pk):
 
 # 管理员获取全部设备信息
 @api_view(['GET', 'POST'])
-def install_device_detail(request):
+def install_device_detail(request,start_index,num):
     """
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        deviceset = DeviceInfo.objects.all()
+        start_at = start_index
+        end_at = start_index+num
+        deviceset = DeviceInfo.objects.all()[start_at:end_at]
         serializer = InstallDeviceSerializer(deviceset, many=True)
         for device_data in serializer.data:
             user_info_list = []
@@ -482,7 +484,7 @@ def admin_danger_detail(request,start_index,num,status):
 def admin_danger_modify(request,danger_id):
     try:
         danger_info = Dangerrectification.objects.get(id=danger_id)
-        
+
         if request.method == 'PUT':
             serializer = DangerSerializer(danger_info, data=request.data)
         if serializer.is_valid():

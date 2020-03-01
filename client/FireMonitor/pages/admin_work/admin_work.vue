@@ -6,13 +6,13 @@
 		</cu-custom>
 		
 		<view class="cu-list grid col-3 no-border margin-top-xl">
-			<view class="cu-item">
+			<view class="cu-item" @tap="onClickInstall">
 				<view class="flex justify-center">
 					<image src="../../static/work/work_icon.png" style="width: 80upx; height: 80upx;"></image>
 				</view>
 				<text class="margin-top-sm">施工安装</text>
 			</view>
-			<view class="cu-item">
+			<view class="cu-item" @tap="onClickDanger">
 				<view class="flex justify-center">
 					<image src="../../static/work/danger_icon.png" style="width: 80upx; height: 80upx;"></image>
 				</view>
@@ -66,7 +66,16 @@
 			}
 		},
 		methods: {
-
+			onClickDanger(){
+				uni.navigateTo({
+					url:'./admin_danger'
+				})
+			},
+			onClickInstall(){
+				uni.navigateTo({
+					url:'./admin_work_list',
+				})
+			},
 		}
 	}
 </script>

@@ -172,25 +172,6 @@
 			}
 		},
 		onLoad() {
-			// uni.stopPullDownRefresh();
-			// var user_id = getApp().globalData.user_id;
-			// if (this.isEmpty(user_id)) {
-			// 	user_id = uni.getStorageSync('key_user_id');
-			// }
-			// var params = {
-			// 	start_index: 0,
-			// 	num: this.event_request_num,
-			// 	start_time: this.startDate === '请选择' ? 0 : this.startDate + '00:00:00',
-			// 	end_time: this.endDate === '请选择' ? 0 : this.endDate + ' 23:59:59',
-			// };
-			// this.requestWithMethod(
-			// 	getApp().globalData.api_event + user_id + '/' + this.getEventParamsUrl(params),
-			// 	"GET",
-			// 	params,
-			// 	this.successCb,
-			// 	this.failCb,
-			// 	this.completeCb);
-
 			this.initData();
 
 		},
@@ -215,7 +196,7 @@
 			};
 
 			this.requestWithMethod(
-				getApp().globalData.api_event + user_id + '/' + this.getEventParamsUrl(params),
+				getApp().globalData.api_event + user_id + '/' + this.getParamsUrl(params),
 				"GET",
 				'',
 				this.successCb,
@@ -243,14 +224,14 @@
 			},
 		},
 		methods: {
-			getEventParamsUrl(params) {
-				var paramsUrl = params.start_index + '/' +
-					params.num + '/' +
-					params.start_time + '/' +
-					params.end_time;
+			// getEventParamsUrl(params) {
+			// 	var paramsUrl = params.start_index + '/' +
+			// 		params.num + '/' +
+			// 		params.start_time + '/' +
+			// 		params.end_time;
 
-				return paramsUrl;
-			},
+			// 	return paramsUrl;
+			// },
 			containStr(str1, str2) {
 				return this.containsStr(str1, str2);
 			},
@@ -288,9 +269,9 @@
 					end_time: this.endDate === '请选择' ? 0 : this.endDate + ' 23:59:59',
 				};
 				this.requestWithMethod(
-					getApp().globalData.api_event + user_id + '/' + this.getEventParamsUrl(params),
+					getApp().globalData.api_event + user_id + '/' + this.getParamsUrl(params),
 					"GET",
-					params,
+					'',
 					this.successCb,
 					this.failCb,
 					this.completeCb);
@@ -350,7 +331,6 @@
 				if (rsp.data.error === 0) {
 					uni.showToast({
 						title:'全部消息已读',
-						
 					})
 					this.event_list.forEach(function(value) {
 						value.if_read = true;
@@ -421,7 +401,7 @@
 							title: "正在查询...",
 						})
 						this.requestWithMethod(
-							getApp().globalData.api_event + user_id + '/' + this.getEventParamsUrl(params),
+							getApp().globalData.api_event + user_id + '/' + this.getParamsUrl(params),
 							"GET",
 							params,
 							this.successDateSearchCb,

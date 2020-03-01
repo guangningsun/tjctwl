@@ -112,7 +112,9 @@
 			"style": {}
 		}, {
 			"path": "pages/admin_work/admin_work_list",
-			"style": {}
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}, {
 			"path": "pages/admin_work/admin_install",
 			"style": {}
@@ -125,6 +127,10 @@
 		}
 	    ,{
             "path" : "pages/user_me/user_danger_index",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/admin_work/admin_danger",
             "style" : {}
         }
     ],

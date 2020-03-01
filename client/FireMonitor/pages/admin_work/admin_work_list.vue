@@ -15,28 +15,29 @@
 			</view>
 		</view>
 
-		<view class="cu-card card-margin">
+		<view class="cu-card card-margin" style="margin-bottom: -30upx;" v-for="(item,index) in install_device_list" :key="index">
 			<view class="cu-item">
 				<view class="flex justify-between">
-					<view class="cu-tag radius bg-olive">已完成</view>
-					<view class="flex align-center text-left margin-left-xl text-gray" style="width: 100%;">2020-02-02 10:00</view>
-					<view class="cu-tag radius bg-green">正常</view>
+					<!-- <view class="cu-tag radius bg-olive">已完成</view> -->
+					<view class="flex align-center text-left margin-top-sm margin-left-xl text-gray" style="width: 100%;">{{item.construction_createtime}}</view>
+					<view class="cu-tag radius bg-green">{{item.deviceStatus}}</view>
 				</view>
 				<view class="flex">
-					<image class="margin" src="../../static/tabbar/device_activate.png" style="width: 100upx; height: 100upx;"></image>
+					<image class="margin" :src="item.construction_image" style="width: 100upx; height: 100upx;"></image>
 					<view class="margin-top-sm">
-						<view>设备编码: AND19493</view>
-						<view>设 备 名: xx设备</view>
-						<view>施工人员: 李四</view>
+						<view>设备编码: {{item.device_sn}}</view>
+						<view>设 备 名: {{item.device_name}}</view>
+						<view>施工人员: {{item.construction_worker}}</view>
 					</view>
 				</view>
 				<view class="flex justify-end">
-					<button class="cu-btn line-blue margin-right-xs margin-bottom-sm">详情</button>
-					<button class="cu-btn line-orange margin-bottom-sm margin-right-xs">重装</button>
+					<button class="cu-btn line-blue margin-right-xs margin-bottom-sm" @tap="onInstallDetail(item)">详情</button>
+					<button class="cu-btn line-orange margin-bottom-sm margin-right-xs" @tap="onReinstall(item)">重装</button>
 				</view>
 			</view>
 		</view>
 		
+		<view class=" flex justify-center margin-top-sm text-gray margin-bottom-sm" v-if="showLoadMore">{{loadMoreText}}</view>	
 		<!-- 过滤 modal -->
 		<view class="cu-modal" :class="modalName=='FilterModal'?'show':''">
 			<view class="cu-dialog">
@@ -72,6 +73,14 @@
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 				modalName: null,
+				
+				loadMoreText: "加载中...",
+				showLoadMore: true,
+				
+				request_num: 20,
+				start_index: 0,
+				
+				install_device_list:[],
 			}
 		},
 		computed: {
@@ -86,6 +95,49 @@
 				return style
 			}
 		},
+		props: {
+			bgColor: {
+				type: String,
+				default: ''
+			},
+			isBack: {
+				type: [Boolean, String],
+				default: false
+			},
+			bgImage: {
+				type: String,
+				default: ''
+			},
+		},
+		onPullDownRefresh() {
+			console.log('onPullDownRefresh!!!!');
+			this.initData();
+		},
+		onReachBottom() {
+			console.log("onReachBottom");
+			this.showLoadMore = true;
+		
+			let params = {
+				start_index: this.install_device_list.length - 1,
+				num: this.request_num,
+			};
+		
+			this.requestWithMethod(
+				getApp().globalData.api_install_device + this.getParamsUrl(params),
+				"GET",
+				'',
+				this.successCb,
+				this.failCb,
+				this.completeCb);
+		},
+		onLoad() {
+			this.initData();
+		},
+		onUnload() {
+			this.install_device_list = [],
+				this.loadMoreText = "加载更多",
+				this.showLoadMore = false;
+		},
 		methods: {
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
@@ -98,7 +150,57 @@
 					delta: 1
 				});
 			},
+			initData() {
+				uni.stopPullDownRefresh();
+				
+				this.install_device_list = [],
+				this.loadMoreText = "加载更多",
+				this.showLoadMore = false;
+				
+				var params = {
+					start_index: 0,
+					num: this.request_num,
+				};
+				this.requestWithMethod(
+					getApp().globalData.api_install_device + this.getParamsUrl(params),
+					"GET",
+					'',
+					this.successCb,
+					this.failCb,
+					this.completeCb);
+			},
+			successCb(rsp) {
+				console.log('success cb')
+				if (rsp.data.error === 0) {
+					// this.install_device_list = rsp.data.msg.install_device_list;
+					let rspList = rsp.data.msg.install_device_list;
+					this.install_device_list = this.install_device_list.concat(rspList);
+					if (rspList.length < this.request_num) {
+						this.showLoadMore = true;
+						this.loadMoreText = "没有更多";
+					} else {
+						this.loadMoreText = "加载中...";
+					}
+				}
+			},
+			failCb(err) {
+				console.log('api_get_danger_list failed', err);
+			},
+			completeCb(rsp) {},
 			onConfirmSearch(){
+				
+			},
+			gotoInstall(){
+				uni.navigateTo({
+					url:'admin_install'
+				})
+			},
+			onInstallDetail(item){
+				uni.navigateTo({
+					url: 'admin_install_detail?installDeviceInfo=' + encodeURIComponent(JSON.stringify(item))
+				})
+			},
+			onReinstall(item){
 				
 			}
 		}

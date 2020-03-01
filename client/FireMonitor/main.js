@@ -77,10 +77,30 @@ Vue.prototype.requestWithMethod = function(api, method, params, successCallback,
 	});
 }
 
-Vue.prototype.containsStr = function(rawStr, containStr){
-	if(rawStr != undefined && containStr != undefined){
+Vue.prototype.containsStr = function(rawStr, containStr) {
+	if (rawStr != undefined && containStr != undefined) {
 		return rawStr.indexOf(containStr) != -1
 	}
+}
+
+// Vue.prototype.getParamsUrl = function(params){
+// 	var paramsUrl = params.start_index + '/' +
+// 		params.num + '/' +
+// 		params.start_time + '/' +
+// 		params.end_time;
+
+// 	return paramsUrl;
+// }
+
+Vue.prototype.getParamsUrl = function(params) {
+	var paramsUrl = params.start_index + '/' + params.num;
+	if (params.start_time !== undefined) {
+		paramsUrl += '/' + params.start_time;
+	}
+	if (params.end_time !== undefined) {
+		paramsUrl +=  '/' + params.end_time;
+	}
+	return paramsUrl;
 }
 
 //判断字符是否为空的方法

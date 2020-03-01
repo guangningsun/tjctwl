@@ -101,7 +101,7 @@ def reset_password(request):
         except:
             return _generate_json_message(False, "reset password failed")
 
-
+# 内部方法device的类编程json格式
 def _gen_device_info_json(device_info):
     device_info_json =  {
                                 "code": device_info.device_sn, 
@@ -170,11 +170,6 @@ def get_user_device_index_info(request):
             return _generate_json_message(False, "There are some problems when get user devices")
 
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = UserInfo.objects.all()
-#     serializer_class = UserSerializer
-#     # permission_classes = (permissions.IsAuthenticated,)
-    
 @api_view(['GET', 'POST'])
 def user_opt_device(request):
     """
@@ -191,6 +186,8 @@ def user_opt_device(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# 用户自己绑定设备
 @api_view(['GET', 'PUT', 'DELETE'])
 def user_opt_device_detail(request,pk):
     """
@@ -400,7 +397,7 @@ def device_detail(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# 管理员通过sn获取设备详情
 @api_view(['POST'])
 def get_install_by_device_sn(request):
     try:
@@ -458,6 +455,60 @@ def device_opt_detail(request,sn):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+def _response_json(success, msg):
+    res_json ={}
+    if success:
+        res_json = {"error": 0,"msg": {"danger_info": msg}}
+    else:
+        res_json = {"error": 1,"msg": msg }
+    return res_json
+
+# 管理员获取隐患列表
+@api_view(['GET'])
+def admin_danger_detail(request,start_index,num,status):
+    # import pdb;pdb.set_trace()
+
+    if request.method == 'GET':
+        start_at = start_index
+        end_at = start_index + num
+        dangerinfo = Dangerrectification.objects.all().filter(danger_status=status)[start_at:end_at]
+        serializer = DangerSerializer(dangerinfo, many=True)
+        return Response(_response_json(True,serializer.data))
+
+
+
+# 管理员获取隐患列表
+@api_view(['PUT'])
+def admin_danger_modify(request,danger_id):
+    try:
+        danger_info = Dangerrectification.objects.get(id=danger_id)
+        
+        if request.method == 'PUT':
+            serializer = DangerSerializer(danger_info, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            res_json = {"error": 0,"msg": {"danger_info": serializer.data }}
+            return Response(res_json)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        res_json = {"error": 1,"msg": "无法查询到该隐患"}
+        return Response(res_json)
+
+    
+        
+
+
+# APP修改隐患状态
+def update_danger_status(request):
+    try:
+        danger_id = request.POST['danger_id']
+        danger_status = request.POST['danger_status']
+        Dangerrectification.objects.filter(id = danger_id).update(danger_status=danger_status)
+        return _generate_json_message(True,"更改隐患整改状态成功")
+    except:
+        return _generate_json_message(False,"更改隐患整改状态失败")
+
+
 @api_view(['GET', 'POST'])
 def danger_detail(request):
     """
@@ -493,7 +544,7 @@ def danger_detail(request):
             # return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# 更新某一个事件状态为已读
 def update_event_read_state(request):
     
     if request.POST:
@@ -504,6 +555,8 @@ def update_event_read_state(request):
     except:
         pass
 
+
+# 更新全部事件为已读
 def update_event_read_state_all(request):
     
     if request.POST:
@@ -515,7 +568,7 @@ def update_event_read_state_all(request):
 
 
 
-
+# 根据条件获取事件列表
 @api_view(['GET', 'PUT', 'DELETE'])
 def event_detail(request, user_id,start_index,num,start_time,end_time):
     """

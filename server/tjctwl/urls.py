@@ -43,6 +43,11 @@ urlpatterns = [
     path('install_device/', views.install_device_detail),
     path('install_device/<phone_number>', views.install_device_update),
     url(r'^get_install_by_device_sn/', views.get_install_by_device_sn),
+    path('admin_danger/<int:start_index>/<int:num>/<status>', views.admin_danger_detail),
+    path('admin_danger/<int:danger_id>', views.admin_danger_modify),
+    url(r'^update_danger_status/', views.update_danger_status),
+    
+    
     
     
 

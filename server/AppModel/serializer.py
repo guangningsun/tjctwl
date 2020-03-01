@@ -28,10 +28,17 @@ class DangerSerializer(serializers.ModelSerializer):
     danger_status = serializers.CharField(required=False)
     danger_level = serializers.CharField(required=False)
     danger_type = serializers.CharField(required=False)
-    
+    id = serializers.CharField(required=False)
+    danger_create_user = serializers.CharField(required=False)
+    danger_floor_level = serializers.CharField(required=False)
+    danger_address_detail = serializers.CharField(required=False)
+    danger_desc = serializers.CharField(required=False)
+    danger_image = serializers.ImageField(required=False)
+    danger_create_time = serializers.CharField(required=False)
+
     class Meta:
         model = Dangerrectification
-        fields = ('danger_create_user','danger_floor_level','danger_address_detail','danger_desc', \
+        fields = ('id','danger_create_user','danger_floor_level','danger_address_detail','danger_desc', \
         'danger_image','danger_create_time','danger_status','danger_level','danger_type')
 
 class EventSerializer(serializers.ModelSerializer):

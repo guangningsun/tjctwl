@@ -47,7 +47,14 @@ class EventSerializer(serializers.ModelSerializer):
 
 class InstallDeviceSerializer(serializers.ModelSerializer):
     id = serializers.CharField(required=False)
-    
+    deviceStatus = serializers.CharField(required=False)
+    construction_image = serializers.CharField(required=False)
+    # device_sn = serializers.CharField(required=False)
+    # device_name = serializers.CharField(required=False)
+    # construction_worker = serializers.CharField(required=False)
+    # install_location = serializers.CharField(required=False)
+    # device_address = serializers.CharField(required=False)
+
     class Meta:
         model = DeviceInfo
         fields = ('id','construction_createtime','deviceStatus','construction_image','device_sn','device_name',\

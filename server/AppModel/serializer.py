@@ -28,10 +28,17 @@ class DangerSerializer(serializers.ModelSerializer):
     danger_status = serializers.CharField(required=False)
     danger_level = serializers.CharField(required=False)
     danger_type = serializers.CharField(required=False)
-    
+    id = serializers.CharField(required=False)
+    danger_create_user = serializers.CharField(required=False)
+    danger_floor_level = serializers.CharField(required=False)
+    danger_address_detail = serializers.CharField(required=False)
+    danger_desc = serializers.CharField(required=False)
+    danger_image = serializers.ImageField(required=False)
+    danger_create_time = serializers.CharField(required=False)
+
     class Meta:
         model = Dangerrectification
-        fields = ('danger_create_user','danger_floor_level','danger_address_detail','danger_desc', \
+        fields = ('id','danger_create_user','danger_floor_level','danger_address_detail','danger_desc', \
         'danger_image','danger_create_time','danger_status','danger_level','danger_type')
 
 class EventSerializer(serializers.ModelSerializer):
@@ -47,7 +54,14 @@ class EventSerializer(serializers.ModelSerializer):
 
 class InstallDeviceSerializer(serializers.ModelSerializer):
     id = serializers.CharField(required=False)
-    
+    deviceStatus = serializers.CharField(required=False)
+    construction_image = serializers.CharField(required=False)
+    # device_sn = serializers.CharField(required=False)
+    # device_name = serializers.CharField(required=False)
+    # construction_worker = serializers.CharField(required=False)
+    # install_location = serializers.CharField(required=False)
+    # device_address = serializers.CharField(required=False)
+
     class Meta:
         model = DeviceInfo
         fields = ('id','construction_createtime','deviceStatus','construction_image','device_sn','device_name',\

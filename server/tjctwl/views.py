@@ -101,7 +101,7 @@ def reset_password(request):
         except:
             return _generate_json_message(False, "reset password failed")
 
-
+# 内部方法device的类编程json格式
 def _gen_device_info_json(device_info):
     device_info_json =  {
                                 "code": device_info.device_sn, 
@@ -170,11 +170,6 @@ def get_user_device_index_info(request):
             return _generate_json_message(False, "There are some problems when get user devices")
 
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = UserInfo.objects.all()
-#     serializer_class = UserSerializer
-#     # permission_classes = (permissions.IsAuthenticated,)
-    
 @api_view(['GET', 'POST'])
 def user_opt_device(request):
     """
@@ -191,6 +186,8 @@ def user_opt_device(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# 用户自己绑定设备
 @api_view(['GET', 'PUT', 'DELETE'])
 def user_opt_device_detail(request,pk):
     """
@@ -289,12 +286,14 @@ def user_opt_device_detail(request,pk):
 
 # 管理员获取全部设备信息
 @api_view(['GET', 'POST'])
-def install_device_detail(request):
+def install_device_detail(request,start_index,num):
     """
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        deviceset = DeviceInfo.objects.all()
+        start_at = start_index
+        end_at = start_index+num
+        deviceset = DeviceInfo.objects.all()[start_at:end_at]
         serializer = InstallDeviceSerializer(deviceset, many=True)
         for device_data in serializer.data:
             user_info_list = []
@@ -324,43 +323,63 @@ def install_device_detail(request):
 # 管理员绑定设备和修改设备
 @api_view(['PUT'])
 def install_device_update(request,phone_number):
-     # 查询请求的设备sn是否存在
+     
      if request.method == 'PUT':
         try:
             device_sn = request.data.get('device_sn')
-            bond_device = DeviceInfo.objects.filter(device_sn=device_sn)
-            if len(bond_device) > 0:
-                to_bond_device_id = bond_device[0].id
-                copy_data = request.data.copy()
-                copy_data.pop("device_sn")
-                copy_data.appendlist("device_sn",to_bond_device_id)
-                # 查询该手机号用户是否存在
+            bond_device = DeviceInfo.objects.get(device_sn=device_sn) 
+            # 查询请求的设备sn是否存在
+            to_bond_device_id = bond_device.id
+            copy_data = request.data.copy()
+            copy_data.pop("device_sn")
+            copy_data.appendlist("device_sn",to_bond_device_id)
+            # 通过手机号查询该用户是否存在
+            try:
                 userinfo = UserInfo.objects.get(phone_number=phone_number)
-                #获取原有device列表
+                # 获取该用户原有device列表
                 try:
                     user_own_device_list = MappingUserinfoDeviceName.objects.filter(userinfo_id = userinfo.id)
                     if user_own_device_list.count() > 0:
                         for user_own_device in user_own_device_list:
-                            copy_data.appendlist("device_sn",user_own_device.deviceinfo_id)
-                            logger.info("bond device device_sn:%s to user %s " % (device_sn, userinfo.username))
+                            # 判断该用户是否有该设备如果有则跳过如果没有则绑定
+                            if user_own_device.deviceinfo_id != to_bond_device_id:
+                                copy_data.appendlist("device_sn",user_own_device.deviceinfo_id)
+                                logger.info("bond device device_sn:%s to user %s " % (device_sn, userinfo.username))
+                    else:
+                        copy_data.appendlist("device_sn",to_bond_device_id)
+                        logger.info("bond device device_sn:%s to user %s " % (device_sn, userinfo.username))
                 except:
                     pass
-                serializer = UserSerializer(userinfo, data=copy_data)
-                if serializer.is_valid():
-                    serializer.save()
+                # 更新用户绑定信息
+                userserializer = UserSerializer(userinfo, data=copy_data)
+                # 更新改设备的其它信息
+                deviceserializer = InstallDeviceSerializer(bond_device, data=request.data)
+                if userserializer.is_valid():
+                    userserializer.save()
+                    logger.info("bond device device_sn:%s to user %s success " % (device_sn, userinfo.username))
+                import pdb;pdb.set_trace()
+                if deviceserializer.is_valid():
+                    deviceserializer.save()
                     res_json = {
                         "error": 0,
                         "msg": {
-                        "device_list": serializer.data
-                          }   
+                        "install_device_info": deviceserializer.data
+                        }   
                         }
-                    # return Response(serializer.data)
                     return Response(res_json)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                res_json = {
+                        "error": 1,
+                        "msg": "This user doesn`t exist"
+                    }
+                return Response(res_json)
         except:
-            pass
+            res_json = {
+                        "error": 1,
+                        "msg": "device_sn doesn`t exist"   
+                        }
+            return Response(res_json, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -380,6 +399,27 @@ def device_detail(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# 管理员通过sn获取设备详情
+@api_view(['POST'])
+def get_install_by_device_sn(request):
+    try:
+        deviceinfo = DeviceInfo.objects.get(device_sn=request.POST['device_sn'])
+    except:
+        res_json = {
+                        "error": 0,
+                        "msg": "device doesn`t exist"   
+                        }
+        return Response(res_json)
+
+    if request.method == 'POST':
+        serializer = InstallDeviceSerializer(deviceinfo)
+        res_json = {
+                        "error": 0,
+                        "msg": {
+                            "device_info":serializer.data
+                         }   
+                        }
+        return Response(res_json)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def device_opt_detail(request,sn):
@@ -417,6 +457,60 @@ def device_opt_detail(request,sn):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+def _response_json(success, msg):
+    res_json ={}
+    if success:
+        res_json = {"error": 0,"msg": {"danger_info": msg}}
+    else:
+        res_json = {"error": 1,"msg": msg }
+    return res_json
+
+# 管理员获取隐患列表
+@api_view(['GET'])
+def admin_danger_detail(request,start_index,num,status):
+    # import pdb;pdb.set_trace()
+
+    if request.method == 'GET':
+        start_at = start_index
+        end_at = start_index + num
+        dangerinfo = Dangerrectification.objects.all().filter(danger_status=status)[start_at:end_at]
+        serializer = DangerSerializer(dangerinfo, many=True)
+        return Response(_response_json(True,serializer.data))
+
+
+
+# 管理员获取隐患列表
+@api_view(['PUT'])
+def admin_danger_modify(request,danger_id):
+    try:
+        danger_info = Dangerrectification.objects.get(id=danger_id)
+
+        if request.method == 'PUT':
+            serializer = DangerSerializer(danger_info, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            res_json = {"error": 0,"msg": {"danger_info": serializer.data }}
+            return Response(res_json)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        res_json = {"error": 1,"msg": "无法查询到该隐患"}
+        return Response(res_json)
+
+    
+        
+
+
+# APP修改隐患状态
+def update_danger_status(request):
+    try:
+        danger_id = request.POST['danger_id']
+        danger_status = request.POST['danger_status']
+        Dangerrectification.objects.filter(id = danger_id).update(danger_status=danger_status)
+        return _generate_json_message(True,"更改隐患整改状态成功")
+    except:
+        return _generate_json_message(False,"更改隐患整改状态失败")
+
+
 @api_view(['GET', 'POST'])
 def danger_detail(request):
     """
@@ -452,7 +546,7 @@ def danger_detail(request):
             # return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# 更新某一个事件状态为已读
 def update_event_read_state(request):
     
     if request.POST:
@@ -463,6 +557,8 @@ def update_event_read_state(request):
     except:
         pass
 
+
+# 更新全部事件为已读
 def update_event_read_state_all(request):
     
     if request.POST:
@@ -474,7 +570,7 @@ def update_event_read_state_all(request):
 
 
 
-
+# 根据条件获取事件列表
 @api_view(['GET', 'PUT', 'DELETE'])
 def event_detail(request, user_id,start_index,num,start_time,end_time):
     """

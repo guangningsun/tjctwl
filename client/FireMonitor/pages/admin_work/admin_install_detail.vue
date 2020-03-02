@@ -74,30 +74,31 @@
 			}
 		},
 		onLoad: function(option) {
-			let info = JSON.parse(option.installDeviceInfo);
-			this.id = info.id;
-			this.construction_createtime = info.construction_createtime;
-			this.deviceStatus = info.deviceStatus;
-			this.construction_image = info.construction_image;
-			this.device_sn = info.device_sn;
-			this.device_name = info.device_name;
-			this.construction_worker = info.construction_worker;
-			this.install_location = info.install_location;
-			this.device_address = info.device_address;
-			this.owner_info_list = info.owner_info_list;
-			// this.owner_info_list = [{
-			// 	"owner_name": "zysun",
-			// 	"owner_tel": "1521918621"
-			// }, {
-			// 	"owner_name": "ssdun",
-			// 	"owner_tel": "151918621"
-			// }, {
-			// 	"owner_name": "sun",
-			// 	"owner_tel": "158621"
-			// }];
-			this.owner_str = this.owner_info_list.map(item => item.owner_name).toString();
-			this.owner_tel_str = this.owner_info_list.map(item => item.owner_tel).toString();
-
+			if(option.installDeviceInfo !== undefined){
+				let info = JSON.parse(option.installDeviceInfo);
+				this.id = info.id;
+				this.construction_createtime = info.construction_createtime;
+				this.deviceStatus = info.deviceStatus;
+				this.construction_image = info.construction_image;
+				this.device_sn = info.device_sn;
+				this.device_name = info.device_name;
+				this.construction_worker = info.construction_worker;
+				this.install_location = info.install_location;
+				this.device_address = info.device_address;
+				this.owner_info_list = info.owner_info_list;
+				// this.owner_info_list = [{
+				// 	"owner_name": "zysun",
+				// 	"owner_tel": "1521918621"
+				// }, {
+				// 	"owner_name": "ssdun",
+				// 	"owner_tel": "151918621"
+				// }, {
+				// 	"owner_name": "sun",
+				// 	"owner_tel": "158621"
+				// }];
+				this.owner_str = this.owner_info_list.map(item => item.owner_name).toString();
+				this.owner_tel_str = this.owner_info_list.map(item => item.owner_tel).toString();
+			}
 		},
 		methods: {
 

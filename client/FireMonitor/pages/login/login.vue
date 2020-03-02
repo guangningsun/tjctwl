@@ -73,9 +73,10 @@
 					return;
 				}
 				if (rsp.data.error === 1) {
-					console.log('login not match');
 					if (rsp.data.msg.indexOf('doesn`t match') != -1) {
 						getApp().showToast('用户名或密码不正确，\n 请核实后输入')
+					} else{
+						getApp().showToast('登录失败，请核实')
 					}
 				}
 			},

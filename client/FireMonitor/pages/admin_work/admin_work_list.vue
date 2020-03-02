@@ -201,7 +201,9 @@
 				})
 			},
 			onReinstall(item){
-				
+				uni.navigateTo({
+					url: 'admin_reinstall?installDeviceInfo=' + encodeURIComponent(JSON.stringify(item))
+				})
 			}
 		}
 	}

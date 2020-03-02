@@ -18,6 +18,7 @@
 			api_update_event_read_state: 'update_event_read_state/',
 			api_update_event_read_state_all: 'update_event_read_state_all/',
 			api_install_device: 'install_device/',
+			api_get_install_by_device_sn: 'get_install_by_device_sn/',
 		},
 
 		onLaunch: function() {

@@ -109,7 +109,7 @@
 			},
 			failUpdateDeviceCb(err) {
 				uni.hideLoading();
-				console.log('api_update_device failed: 设备成功添加，但是修改设备修复失败' + err);
+				console.log('api_device failed: 设备成功添加，但是修改设备修复失败' + err);
 				this.showToast("设备成功添加，但是修改设备修复失败");
 				setTimeout(function() {
 					 uni.navigateBack({
@@ -134,7 +134,7 @@
 							install_location: this.location,
 						};
 						this.requestWithMethod(
-							getApp().globalData.api_update_device + this.device_sn + '/',
+							getApp().globalData.api_device + this.device_sn + '/',
 							"PUT",
 							params,
 							this.successUpdateDeviceCb,

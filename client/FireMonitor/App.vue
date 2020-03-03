@@ -12,7 +12,7 @@
 			api_reset_pass: 'reset_password/',
 			api_get_user_index: 'get_user_device_index_info/',
 			api_device_opt: 'user_opt_device/',
-			api_update_device: 'device/',
+			api_device: 'device/',
 			api_danger:'danger/',
 			api_event:'event/',
 			api_update_event_read_state: 'update_event_read_state/',

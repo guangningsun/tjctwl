@@ -51,7 +51,7 @@
 				<form>
 					<view class="cu-form-group">
 						<view class="title">设备编码</view>
-						<input class="text-left" placeholder="输入设备编码" name="input"></input>
+						<input class="text-left" placeholder="输入设备编码" name="input" v-model="search_device_sn"></input>
 					</view>
 				</form>
 		
@@ -76,6 +76,8 @@
 				
 				loadMoreText: "加载中...",
 				showLoadMore: true,
+				
+				search_device_sn:'',
 				
 				request_num: 20,
 				start_index: 0,
@@ -187,8 +189,28 @@
 				console.log('api_get_danger_list failed', err);
 			},
 			completeCb(rsp) {},
+			
+			successSearchDeviceCb(rsp) {
+				if (rsp.data.error === 0) {
+					let installDeviceInfo = rsp.data.msg.install_device_list;
+					this.install_device_list = installDeviceInfo;
+					this.showLoadMore = false;
+				}
+			},
+			failSearcheCb(err) {
+				console.log('api_device search failed', err);
+			},
+			completeSearchCb(rsp) {},
+			
 			onConfirmSearch(){
-				
+				this.hideModal();
+				this.requestWithMethod(
+					getApp().globalData.api_install_device + this.search_device_sn,
+					"GET",
+					'',
+					this.successSearchDeviceCb,
+					this.failSearcheCb,
+					this.completeSearchCb);
 			},
 			gotoInstall(){
 				uni.navigateTo({

@@ -284,6 +284,22 @@ def user_opt_device_detail(request,pk):
             pass
 
 
+@api_view(['GET'])
+def install_device_get_by_sn(request,sn):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        deviceset = DeviceInfo.objects.filter(device_sn = sn)
+        serializer = InstallDeviceSerializer(deviceset, many=True)   
+        res_json = {
+                    "error": 0,
+                    "msg": {
+                        "install_device_list": serializer.data
+                      }   
+                    }
+        return Response(res_json)
+
 # 管理员获取全部设备信息
 @api_view(['GET', 'POST'])
 def install_device_detail(request,start_index,num):

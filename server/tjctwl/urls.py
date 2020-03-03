@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^update_event_read_state/', views.update_event_read_state),
     url(r'^update_event_read_state_all/', views.update_event_read_state_all),
     path('install_device/<int:start_index>/<int:num>', views.install_device_detail),
+    path('install_device/<int:sn>', views.install_device_get_by_sn),
     path('install_device/<phone_number>', views.install_device_update),
     url(r'^get_install_by_device_sn/', views.get_install_by_device_sn),
     path('admin_danger/<int:start_index>/<int:num>/<status>', views.admin_danger_detail),

@@ -38,11 +38,21 @@
 			return {
 				user_type: 0,
 				user_name: '',
-				user_pwd: ''
+				user_pwd: '',
+				backClickTimes:0,
 			}
 		},
+		onShow() {
+			this.backClickTimes = 0;
+		},
 		onBackPress() {
-			return;
+			if(this.backClickTimes === 0){
+				this.backClickTimes++;
+				this.showToast('再按一次返回键退出');
+			}else if(this.backClickTimes === 1){
+				plus.runtime.quit();
+			}
+			return true;
 		},
 		methods: {
 			successCallback(res) {

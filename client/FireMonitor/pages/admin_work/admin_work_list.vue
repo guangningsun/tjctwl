@@ -36,8 +36,8 @@
 				</view>
 			</view>
 		</view>
-		
-		<view class=" flex justify-center margin-top-sm text-gray margin-bottom-sm" v-if="showLoadMore">{{loadMoreText}}</view>	
+
+		<view class=" flex justify-center margin-top-sm text-gray margin-bottom-sm" v-if="showLoadMore">{{loadMoreText}}</view>
 		<!-- 过滤 modal -->
 		<view class="cu-modal" :class="modalName=='FilterModal'?'show':''">
 			<view class="cu-dialog">
@@ -47,14 +47,14 @@
 						<text class="cuIcon-close text-light-purple"></text>
 					</view>
 				</view>
-		
+
 				<form>
 					<view class="cu-form-group">
 						<view class="title">设备编码</view>
 						<input class="text-left" placeholder="输入设备编码" name="input" v-model="search_device_sn"></input>
 					</view>
 				</form>
-		
+
 				<view class="cu-bar bg-white justify-end">
 					<view class="action">
 						<button class="cu-btn line-green text-purple" @tap="hideModal">取消</button>
@@ -73,16 +73,16 @@
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 				modalName: null,
-				
+
 				loadMoreText: "加载中...",
 				showLoadMore: true,
-				
-				search_device_sn:'',
-				
+
+				search_device_sn: '',
+
 				request_num: 20,
 				start_index: 0,
-				
-				install_device_list:[],
+
+				install_device_list: [],
 			}
 		},
 		computed: {
@@ -118,12 +118,17 @@
 		onReachBottom() {
 			console.log("onReachBottom");
 			this.showLoadMore = true;
-		
+			
+			let startIndex = this.install_device_list.length - 1;
+			if (this.install_device_list.length === 1) {
+				startIndex = 1;
+			}
+			
 			let params = {
-				start_index: this.install_device_list.length - 1,
+				start_index: startIndex,
 				num: this.request_num,
 			};
-		
+
 			this.requestWithMethod(
 				getApp().globalData.api_install_device + this.getParamsUrl(params),
 				"GET",
@@ -154,11 +159,11 @@
 			},
 			initData() {
 				uni.stopPullDownRefresh();
-				
+
 				this.install_device_list = [],
-				this.loadMoreText = "加载更多",
-				this.showLoadMore = false;
-				
+					this.loadMoreText = "加载更多",
+					this.showLoadMore = false;
+
 				var params = {
 					start_index: 0,
 					num: this.request_num,
@@ -189,7 +194,7 @@
 				console.log('api_get_danger_list failed', err);
 			},
 			completeCb(rsp) {},
-			
+
 			successSearchDeviceCb(rsp) {
 				if (rsp.data.error === 0) {
 					let installDeviceInfo = rsp.data.msg.install_device_list;
@@ -201,8 +206,8 @@
 				console.log('api_device search failed', err);
 			},
 			completeSearchCb(rsp) {},
-			
-			onConfirmSearch(){
+
+			onConfirmSearch() {
 				this.hideModal();
 				this.requestWithMethod(
 					getApp().globalData.api_install_device + this.search_device_sn,
@@ -212,17 +217,17 @@
 					this.failSearcheCb,
 					this.completeSearchCb);
 			},
-			gotoInstall(){
+			gotoInstall() {
 				uni.navigateTo({
-					url:'admin_install'
+					url: 'admin_install'
 				})
 			},
-			onInstallDetail(item){
+			onInstallDetail(item) {
 				uni.navigateTo({
 					url: 'admin_install_detail?installDeviceInfo=' + encodeURIComponent(JSON.stringify(item))
 				})
 			},
-			onReinstall(item){
+			onReinstall(item) {
 				uni.navigateTo({
 					url: 'admin_reinstall?installDeviceInfo=' + encodeURIComponent(JSON.stringify(item))
 				})

@@ -24,7 +24,8 @@
     "pages/admin_work/admin_install",
     "pages/admin_work/admin_reinstall",
     "pages/admin_work/admin_install_detail",
-    "pages/user_me/user_danger_index"
+    "pages/user_me/user_danger_index",
+    "pages/admin_work/admin_danger"
   ],
   "window": {
     "navigationBarBackgroundColor": "#0081ff",

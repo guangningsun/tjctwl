@@ -188,8 +188,14 @@
 			if (this.isEmpty(user_id)) {
 				user_id = uni.getStorageSync('key_user_id');
 			}
+			
+			let startIndex = this.event_list.length - 1;
+			if(this.event_list.length === 1){
+				startIndex = 1;
+			}
+			
 			let params = {
-				start_index: this.event_list.length - 1,
+				start_index: startIndex,
 				num: this.event_request_num,
 				start_time: this.startDate === '请选择' ? 0 : this.startDate + ' 00:00:00',
 				end_time: this.endDate === '请选择' ? 0 : this.endDate + ' 23:59:59',

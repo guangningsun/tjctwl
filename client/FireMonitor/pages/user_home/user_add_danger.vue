@@ -55,7 +55,7 @@
 				</view>
 
 				<view class="cu-bar bg-white margin-top solid-top">
-					<view class="action">
+					<view class="action text-black">
 						图片上传
 					</view>
 					<view class="action">

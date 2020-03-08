@@ -131,7 +131,9 @@
         }
         ,{
             "path" : "pages/admin_work/admin_danger",
-            "style" : {}
+            "style": {
+            	"enablePullDownRefresh": true
+            }
         }
     ],
 	"globalStyle": {

@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<mask v-if="showMask"></mask>
 		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
 			<block slot="content">设备</block>
 		</cu-custom>
@@ -358,9 +359,12 @@
 </template>
 
 <script>
+	import mask from '../../components/mask.vue';
 	export default {
 		data() {
 			return {
+				showMask: false,
+				
 				shouldShowNormal: true,
 				shouldShowOffline: false,
 				shouldShowAlert: false,
@@ -403,6 +407,18 @@
 		},
 		onLoad: function(options) {
 
+		},
+		components: {
+			mask
+		},
+		onBackPress() {
+			if (this.showMask) {
+				this.showMask = false;
+				return true;
+			} else {
+				this.showQuitDialog();
+				return true;
+			}
 		},
 		onShow() {
 			let user_id = getApp().globalData.user_id;

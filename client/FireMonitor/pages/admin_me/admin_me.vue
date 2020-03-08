@@ -1,6 +1,6 @@
 <template>
 	<view>
-
+		<mask v-if="showMask"></mask>
 		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
 			<block slot="content">我的</block>
 		</cu-custom>
@@ -119,15 +119,31 @@
 </template>
 
 <script>
+	import mask from '../../components/mask.vue';
 	export default {
 		data() {
 			return {
 				modalName: null,
+				showMask: false
+			}
+		},
+		components: {
+			mask
+		},
+		onBackPress() {
+			if (this.showMask) {
+				this.showMask = false;
+				return true;
+			} else {
+				this.showQuitDialog();
+				return true;
 			}
 		},
 		methods: {
 			onLogout() {
-
+				uni.navigateTo({
+					url: '../login/login'
+				})
 			},
 			gotoVersion() {
 				uni.navigateTo({
@@ -149,6 +165,14 @@
 			},
 			hideModal(e) {
 				this.modalName = null
+			},
+			onConfirmClear() {
+				try {
+					uni.clearStorageSync();
+					this.hideModal();
+				} catch (e) {
+					console.log('exception:' + e.toString());
+				}
 			}
 		}
 	}

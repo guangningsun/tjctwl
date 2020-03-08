@@ -41,6 +41,9 @@
 				user_pwd: ''
 			}
 		},
+		onBackPress() {
+			return;
+		},
 		methods: {
 			successCallback(res) {
 				uni.hideLoading();

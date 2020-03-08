@@ -13,6 +13,21 @@ Vue.prototype.showToast = function(msg) {
 	})
 }
 
+Vue.prototype.showQuitDialog = function(msg) {
+	uni.showModal({
+		title: '提示',
+		content: '是否退出应用？',
+		success: function(res) {
+			if (res.confirm) {
+				// 退出当前应用，改方法只在App中生效
+				plus.runtime.quit();
+			} else if (res.cancel) {
+				console.log('用户点击取消');
+			}
+		}
+	});
+}
+
 Vue.prototype.request = function(api, params, successCallback, failedCallback, completeCallback) {
 	uni.request({
 		url: getApp().globalData.domain_port + api,
@@ -98,7 +113,7 @@ Vue.prototype.getParamsUrl = function(params) {
 		paramsUrl += '/' + params.start_time;
 	}
 	if (params.end_time !== undefined) {
-		paramsUrl +=  '/' + params.end_time;
+		paramsUrl += '/' + params.end_time;
 	}
 	return paramsUrl;
 }

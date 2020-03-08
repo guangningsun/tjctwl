@@ -2,5 +2,7 @@
   "animationType": "fade-in",
   "animationDuration": 200,
   "enablePullDownRefresh": true,
-  "usingComponents": {}
+  "usingComponents": {
+    "mask": "/components/mask"
+  }
 }

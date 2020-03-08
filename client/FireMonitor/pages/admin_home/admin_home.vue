@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<mask v-if="showMask"></mask>
 		<cu-custom bgColor="bg-gradual-dark-purple" :isBack="false">
 			<block slot="content">首页</block>
 		</cu-custom>
@@ -45,10 +46,23 @@
 </template>
 
 <script>
+	import mask from '../../components/mask.vue';
 	export default {
 		data() {
 			return {
-
+				showMask: false,
+			}
+		},
+		components: {
+			mask
+		},
+		onBackPress() {
+			if (this.showMask) {
+				this.showMask = false;
+				return true;
+			} else {
+				this.showQuitDialog();
+				return true;
 			}
 		},
 		methods: {

@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<mask v-if="showMask"></mask>
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar bg-gradual-dark-purple fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
 				<view class="action"></view>
@@ -42,7 +43,7 @@
 							</view>
 						</view>
 						<view class="margin-sm">
-							<view class="text-grey text-sm">{{item.event_create_time}}</view>
+							<view class="text-grey text-sm text-right">{{item.event_create_time}}</view>
 							<view class="flex justify-end">
 								<view class="cu-tag round sm margin-sm" :class="!item.if_read ? 'bg-red': 'bg-gray'"></view>
 							</view>
@@ -120,9 +121,12 @@
 </template>
 
 <script>
+	import mask from '../../components/mask.vue';
 	export default {
 		data() {
 			return {
+				showMask: false,
+				
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 				modalName: null,
@@ -157,6 +161,18 @@
 				// 	event_device_location: 'jjjjj',
 				// 	event_msg: 'msgmsg',
 				// }],
+			}
+		},
+		components: {
+			mask
+		},
+		onBackPress() {
+			if (this.showMask) {
+				this.showMask = false;
+				return true;
+			} else {
+				this.showQuitDialog();
+				return true;
 			}
 		},
 		computed: {
